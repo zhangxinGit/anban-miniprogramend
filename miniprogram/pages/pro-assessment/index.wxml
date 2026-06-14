@@ -1,0 +1,93 @@
+<view class="page fadeIn {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+    <button class="retryBtn" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:else class="content">
+    <view class="formCard">
+      <view class="sheetTitle">{{sceneTitle}}</view>
+      <view class="sheetDesc">{{sceneSubtitle}}</view>
+
+      <view wx:if="{{serviceName}}" class="serviceRow">
+        <text class="serviceLabel">预约项目</text>
+        <text class="serviceValue">{{serviceName}}</text>
+      </view>
+
+      <view wx:if="{{isGuestMode}}" class="statusBanner isWarning">
+        当前为预览模式，登录后可填写并提交预约信息
+      </view>
+
+      <view wx:elif="{{appointment && appointment.status === 'ACTIVE'}}" class="statusBanner">
+        已记录预约时间 {{appointment.date}} {{appointment.time}}
+      </view>
+
+      <view wx:elif="{{appointment && appointment.status === 'CANCELLED'}}" class="statusBanner isWarning">
+        当前预约已取消，可重新提交新的上门时间
+      </view>
+
+      <view class="formList">
+        <view class="field">
+          <text class="k">姓名</text>
+          <input class="input" value="{{form.name}}" placeholder="请输入姓名" placeholder-class="inputPlaceholder" bindinput="onInput" data-key="name" />
+        </view>
+
+        <view class="field">
+          <text class="k">手机号</text>
+          <input class="input" value="{{form.phone}}" placeholder="请输入手机号" placeholder-class="inputPlaceholder" type="number" maxlength="11" bindinput="onInput" data-key="phone" />
+        </view>
+
+        <view class="field">
+          <text class="k">家庭住址</text>
+          <picker class="pickerTrigger" mode="region" value="{{addressRegionValue}}" bindchange="onPickRegion">
+            <view class="fieldValue {{addressRegionValue.length ? '' : 'placeholder'}}">{{addressRegionText}}</view>
+          </picker>
+        </view>
+
+        <view class="field">
+          <text class="k">门牌号</text>
+          <input class="input inputLong" value="{{form.doorplate}}" placeholder="请输入详细地址，例 花园小区1单元101" placeholder-class="inputPlaceholder" bindinput="onInput" data-key="doorplate" maxlength="255" />
+        </view>
+
+        <view class="field">
+          <text class="k">日期</text>
+          <picker class="pickerTrigger" mode="date" value="{{form.date}}" bindchange="onPickDate">
+            <view class="fieldValue {{form.date ? '' : 'placeholder'}}">{{form.date || '请选择日期'}}</view>
+          </picker>
+        </view>
+
+        <view class="field">
+          <text class="k">时间</text>
+          <picker class="pickerTrigger" mode="time" value="{{form.time}}" bindchange="onPickTime">
+            <view class="fieldValue {{form.time ? '' : 'placeholder'}}">{{form.time || '请选择时间'}}</view>
+          </picker>
+        </view>
+
+        <view class="field fieldColumn noBorder">
+          <text class="k kBlock">备注</text>
+          <textarea class="textarea" value="{{form.remark}}" placeholder="可填写上门事项 / 特殊需求（选填）" placeholder-class="inputPlaceholder" maxlength="200" bindinput="onInput" data-key="remark"></textarea>
+        </view>
+      </view>
+
+      <button class="submitBtn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onSubmit">{{appointment && appointment.status === 'ACTIVE' ? '修改预约' : '提交预约'}}</button>
+      <button wx:if="{{appointment && appointment.status === 'ACTIVE'}}" class="cancelBtn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onCancel">取消当前预约</button>
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{successPopupVisible}}" class="successMask" bindtap="onCloseSuccessPopup">
+  <view class="successDialog" catchtap="noop">
+    <button class="successClose" bindtap="onCloseSuccessPopup">×</button>
+    <view class="successIcon"></view>
+    <view class="successTitle">预约成功</view>
+    <view class="successText">该服务已推送给评估师，请保持电话畅通，等待评估师确认。</view>
+    <view wx:if="{{successPopupDateText}}" class="successTime">{{successPopupDateText}}</view>
+    <button class="successPrimary" bindtap="onContactAdvisor">联系评估师</button>
+  </view>
+</view>
+

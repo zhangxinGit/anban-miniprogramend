@@ -1,0 +1,38 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx 12rpx;
+  border-radius: var(--ab-radius-pill);
+  border: 1rpx solid transparent;
+}
+
+.text {
+  font-size: var(--ab-font-size-sm);
+  font-weight: 750;
+}
+
+.tag.primary {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: var(--ab-color-text-1);
+}
+
+.tag.info {
+  background: rgba(47, 143, 221, 0.1);
+  border-color: rgba(47, 143, 221, 0.18);
+  color: #2F8FDD;
+}
+
+.tag.warn {
+  background: rgba(229, 62, 62, 0.1);
+  border-color: rgba(229, 62, 62, 0.18);
+  color: var(--ab-color-danger);
+}
+
+.tag.neutral {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.70);
+}
+

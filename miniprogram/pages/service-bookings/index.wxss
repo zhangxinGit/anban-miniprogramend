@@ -1,0 +1,189 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+  padding-bottom: 64rpx;
+  background: #f7f8f5;
+  box-sizing: border-box;
+}
+
+.tabs {
+  margin-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tab {
+  min-width: 120rpx;
+  min-height: 72rpx;
+  padding: 0 22rpx;
+  border-radius: 999rpx;
+  background: #fff;
+  color: var(--ab-color-text-2);
+  font-size: var(--ab-font-size-sm);
+  font-weight: 700;
+  line-height: 72rpx;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1rpx solid var(--ab-color-border);
+}
+
+.tab.is-active {
+  background: rgba(21, 147, 77, 0.1);
+  color: #15934d;
+  border-color: rgba(21, 147, 77, 0.18);
+  box-shadow: none;
+}
+
+.list {
+  margin-top: 18rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.recordCard {
+  padding: 28rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  border: 1rpx solid var(--ab-color-border);
+  box-shadow: 0 8rpx 24rpx rgba(15, 64, 35, 0.05);
+}
+
+.recordHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.recordTitleWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.recordTitle {
+  font-size: 32rpx;
+  line-height: 1.45;
+  font-weight: 800;
+  color: var(--ab-color-text-1);
+}
+
+.recordSubtitle {
+  font-size: var(--ab-font-size-sm);
+  line-height: 1.5;
+  color: var(--ab-color-text-2);
+}
+
+.recordStatus {
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: var(--ab-font-size-sm);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.recordStatus-pending {
+  background: rgba(255, 125, 0, 0.12);
+  color: var(--ab-color-warning);
+}
+
+.recordStatus-completed {
+  background: rgba(14, 137, 70, 0.12);
+  color: var(--ab-color-primary);
+}
+
+.recordStatus-cancelled {
+  background: rgba(229, 62, 62, 0.12);
+  color: #2a3128;
+}
+
+.recordTime,
+.recordMeta,
+.recordHint {
+  display: block;
+  margin-top: 10rpx;
+  font-size: var(--ab-font-size-min);
+  line-height: var(--ab-line-height-base);
+  color: var(--ab-color-text-2);
+}
+
+.recordTime {
+  font-size: var(--ab-font-size-sm);
+  color: var(--ab-color-text-2);
+}
+
+.recordHint {
+  color: var(--ab-color-text-2);
+}
+
+.recordActions {
+  margin-top: 18rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.ghostBtn,
+.dangerBtn {
+  margin: 0;
+  min-width: 188rpx;
+  height: var(--ab-touch-height);
+  line-height: var(--ab-touch-height);
+  padding: 0 24rpx;
+  border-radius: 16rpx;
+  font-size: var(--ab-font-size-min);
+  font-weight: 700;
+  box-sizing: border-box;
+}
+
+.ghostBtn::after,
+.dangerBtn::after {
+  display: none;
+}
+
+.ghostBtn {
+  background: #ffffff;
+  color: #4f5b51;
+  border: 1rpx solid #dfe8e1;
+}
+
+.dangerBtn {
+  min-width: auto;
+  padding: 0 8rpx;
+  background: transparent;
+  color: var(--ab-color-text-1);
+  border: 0;
+  font-size: var(--ab-font-size-lg);
+  font-weight: 800;
+}
+
+.state {
+  min-height: 56vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18rpx;
+}
+
+.stateText {
+  font-size: var(--ab-font-size-min);
+  color: var(--ab-color-text-2);
+  text-align: center;
+}
+
+.spinner {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(0, 0, 0, 0.12);
+  border-top-color: rgba(0, 0, 0, 0.45);
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}

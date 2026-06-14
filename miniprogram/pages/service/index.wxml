@@ -1,0 +1,105 @@
+<view class="page fadeIn {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+    <button class="primary" bindtap="onRetry">重试</button>
+  </view>
+
+  <block wx:else>
+    <view class="content">
+      <view class="deviceHeader">
+        <view class="deviceHeaderRow">
+          <view class="deviceTitle">{{mode === 'LIST' ? '智能设备' : '设备中心'}}</view>
+          <button wx:if="{{mode === 'LIST'}}" class="headerAction" bindtap="onOpenAlarmRecords">
+            <view class="headerActionInner">
+              <text class="headerActionLabel">告警消息</text>
+              <text class="headerActionCount">{{alarmMessageCount}}</text>
+              <view wx:if="{{alarmMessageUnread}}" class="headerActionDot"></view>
+            </view>
+          </button>
+        </view>
+        <view class="deviceSub">{{mode === 'EMPTY_BIND' ? '绑定设备成功后，数据同步更新，异常告警提醒' : summaryText}}</view>
+      </view>
+
+      <view wx:if="{{mode === 'EMPTY_BIND'}}" class="card">
+        <view class="emptyIllustration"></view>
+        <view class="cardTitle">未绑定设备</view>
+        <view class="cardDesc">输出设备号即可完成绑定</view>
+        <button wx:if="{{visible.bindDevice}}" class="primary emptyPrimary" loading="{{binding}}" bindtap="onStartBind">添加设备</button>
+      </view>
+
+      <view wx:else class="deviceGrid">
+        <block wx:for="{{devices}}" wx:key="id">
+          <view class="deviceCard" bindtap="onOpenDevice" data-id="{{item.id}}">
+            <view class="deviceCardTop">
+              <view class="deviceName">{{item.displayName}}</view>
+              <view class="signalBars {{item.signalClass}}">
+                <view class="signalBar bar1"></view>
+                <view class="signalBar bar2"></view>
+                <view class="signalBar bar3"></view>
+                <view class="signalBar bar4"></view>
+              </view>
+            </view>
+
+            <view class="deviceNo">编号：{{item.deviceNoShort}}</view>
+
+            <view class="deviceBadgeRow">
+              <view class="miniBadge is-location">{{item.installLocationText}}</view>
+              <view class="miniBadge {{item.statusBadgeClass}}">{{item.statusBadgeText}}</view>
+            </view>
+
+            <view class="deviceCardBottom">
+              <view class="alarmBell">
+                <view class="alarmBellSpark spark1"></view>
+                <view class="alarmBellSpark spark2"></view>
+                <view class="alarmBellSpark spark3"></view>
+                <view class="alarmBellSpark spark4"></view>
+                <text class="alarmBellNumber">{{item.alarmCount}}</text>
+              </view>
+
+              <view class="batteryPill">
+                <view class="batteryPillMain">
+                  <text class="batteryPillText">{{item.batteryBadgeText}}</text>
+                </view>
+                <view class="batteryPillCap"></view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <button wx:if="{{mode === 'LIST' && visible.bindDevice}}" class="floatingBindButton" bindtap="onStartBind" disabled="{{binding}}">
+        <text class="floatingBindButtonIcon">+</text>
+      </button>
+    </view>
+  </block>
+
+  <view wx:if="{{bindPopupVisible}}" class="bindPopupMask" bindtap="onCloseBindPopup">
+    <view class="bindPopup" catchtap="noop">
+      <view class="bindPopupTitle">添加设备</view>
+      <view class="bindInputWrap">
+        <input
+          class="bindInput"
+          value="{{bindCode}}"
+          focus="{{bindPopupVisible}}"
+          maxlength="32"
+          cursor-spacing="120"
+          placeholder="请输入设备标号"
+          placeholder-class="bindInputPlaceholder"
+          bindinput="onBindCodeInput"
+          bindconfirm="onConfirmBind"
+          confirm-type="done"
+        />
+        <button wx:if="{{bindCode}}" class="bindInputClear" bindtap="onClearBindCode" disabled="{{binding}}">×</button>
+      </view>
+      <view class="bindPopupActions">
+        <button class="bindPopupGhost" bindtap="onCloseBindPopup" disabled="{{binding}}">取消</button>
+        <button class="bindPopupPrimary" bindtap="onConfirmBind" loading="{{binding}}" disabled="{{binding}}">立即绑定</button>
+      </view>
+    </view>
+  </view>
+</view>

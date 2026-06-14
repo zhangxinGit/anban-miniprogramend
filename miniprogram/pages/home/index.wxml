@@ -1,0 +1,271 @@
+<view class="page {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="skeletonWrap">
+    <view class="skeletonHero"></view>
+
+    <view class="skeletonBlock">
+      <view class="skeletonTitle"></view>
+      <block wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="skeletonRow">
+          <view class="skeletonAvatar"></view>
+          <view class="skeletonLines">
+            <view class="skeletonLine skeletonLineMain"></view>
+            <view class="skeletonLine skeletonLineSub"></view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <view class="skeletonBlock">
+      <view class="skeletonTitle"></view>
+      <view class="skeletonGrid">
+        <block wx:for="{{[1,2,3,4]}}" wx:key="*this">
+          <view class="skeletonCard"></view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view wx:elif="{{error}}" class="stateWrap">
+    <text class="stateText">{{error}}</text>
+    <button class="stateButton" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:else class="homeShell">
+    <view class="heroSection">
+      <swiper
+        class="heroSwiper"
+        current="{{activeBannerIndex}}"
+        autoplay="{{true}}"
+        circular="{{true}}"
+        interval="4200"
+        duration="420"
+        easing-function="easeInOutCubic"
+        skip-hidden-item-layout="{{true}}"
+        indicator-dots="{{false}}"
+        bindchange="onBannerChange">
+        <block wx:for="{{bannerCards}}" wx:key="id" wx:for-item="banner">
+          <swiper-item>
+            <view class="heroCard {{banner.toneClass}}" bindtap="onOpenBanner" data-route-mode="{{banner.routeMode}}" data-route-url="{{banner.routeUrl}}">
+              <image class="heroImage" src="{{banner.imageSrc}}" mode="aspectFill" binderror="onBannerImageError" data-index="{{index}}" />
+              <view class="heroShade"></view>
+              <view class="heroContent">
+                <view class="heroBadge">{{banner.tag}}</view>
+                <view class="heroTitle">{{banner.title}}</view>
+                <view class="heroSubtitle">{{banner.subtitle}}</view>
+              </view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+
+      <view wx:if="{{bannerCards.length > 1}}" class="heroDots">
+        <block wx:for="{{bannerCards}}" wx:key="id">
+          <view class="heroDot {{activeBannerIndex === index ? 'heroDotActive' : ''}}" bindtap="onSelectBanner" data-index="{{index}}"></view>
+        </block>
+      </view>
+    </view>
+
+    <view class="sectionBlock homeMessageSection">
+      <view class="sectionHeader sectionHeaderCompact">
+        <view class="sectionTitle">家庭消息・安全动态</view>
+      </view>
+
+      <view class="messagePanel">
+        <block wx:for="{{messageCards}}" wx:key="id" wx:for-item="card">
+          <view
+            class="messageRow"
+            bindtap="onOpenMessageCard"
+            data-action="{{card.action}}">
+            <image class="messageRowIcon" src="{{card.iconSrc}}" mode="aspectFit" />
+
+            <view class="messageRowBody">
+              <view class="messageRowHead">
+                <text class="messageRowTitle">{{card.title}}</text>
+                <text wx:if="{{card.showDot}}" class="messageRowBadge">新消息</text>
+              </view>
+
+              <view wx:if="{{card.items.length > 1}}" class="messageTickerCompact">
+                <view class="messageTickerTrack">
+                  <block wx:for="{{card.items}}" wx:key="index" wx:for-item="line">
+                    <view class="messageTickerItem">
+                      <text class="messageTickerText">{{line}}</text>
+                      <text class="messageTickerDivider">·</text>
+                    </view>
+                  </block>
+                  <block wx:for="{{card.items}}" wx:key="index" wx:for-item="line">
+                    <view class="messageTickerItem">
+                      <text class="messageTickerText">{{line}}</text>
+                      <text class="messageTickerDivider">·</text>
+                    </view>
+                  </block>
+                </view>
+              </view>
+
+              <text wx:elif="{{card.items.length}}" class="messageRowText">{{card.items[0]}}</text>
+
+              <text wx:else class="messageRowText messageRowTextMuted">{{card.emptyText}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="sectionBlock homeServiceSection">
+      <view class="sectionHeader sectionHeaderCompact">
+        <view class="sectionTitle">一站式居家养老服务</view>
+      </view>
+
+      <view class="featureGrid featureGridModern">
+        <block wx:for="{{kingkongCards}}" wx:key="id" wx:for-item="kk">
+          <view
+            class="featureServiceCard"
+            style="background: {{kk.bgColor}};"
+            bindtap="onOpenKingKongRoute"
+            data-route-mode="{{kk.routeMode}}"
+            data-route-url="{{kk.routeUrl}}">
+            <view class="featureServiceBody">
+              <view class="featureServiceTitle">{{kk.title}}</view>
+              <view class="featureServiceSubtitle">{{kk.subtitle}}</view>
+              <view class="featureServiceAction">{{kk.actionText}}</view>
+            </view>
+            <image class="featureServiceImage" src="{{kk.iconSrc}}" mode="aspectFit" binderror="onKingKongImageError" data-id="{{kk.id}}" />
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 小区专属福利专区 -->
+    <view class="sectionBlock">
+      <view class="sectionHeader">
+        <view class="sectionTitle">小区专属福利专区</view>
+        <view class="sectionDesc">福利说明与预约动作直接打通现有预约页</view>
+      </view>
+
+      <view class="benefitList">
+        <block wx:for="{{benefitCards}}" wx:key="id" wx:for-item="benefit">
+          <view class="benefitCard {{benefit.accentClass}}">
+            <view class="benefitKicker">{{benefit.kicker}}</view>
+            <view class="benefitTitle">{{benefit.title}}</view>
+            <view class="benefitDesc">{{benefit.desc}}</view>
+            <button class="benefitButton" bindtap="onBookBenefit" data-service-id="{{benefit.serviceId}}">
+              立即预约
+            </button>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="sectionBlock sectionBlockLast">
+      <view class="sectionHeader">
+        <view class="sectionTitle">服务案例</view>
+        <view class="sectionDesc">实景展示扶手改造、设备安装和管家上门排查场景</view>
+      </view>
+
+      <scroll-view class="caseScroll" scroll-x="{{true}}" enable-flex="{{true}}" show-scrollbar="{{false}}">
+        <view class="caseRow">
+          <block wx:for="{{caseCards}}" wx:key="id" wx:for-item="caseItem">
+            <view
+              class="caseCard {{caseItem.accentClass}}"
+              bindtap="onOpenCase"
+              data-service-id="{{caseItem.serviceId}}"
+              hover-class="caseCardHover">
+              <view class="caseImageWrap">
+                <image class="caseImage" src="{{caseItem.imageSrc}}" mode="aspectFill" />
+                <view class="caseImageShade"></view>
+                <view class="caseMeta">{{caseItem.meta}}</view>
+              </view>
+              <view class="caseBody">
+                <view class="caseTitle">{{caseItem.title}}</view>
+                <view class="caseDesc">{{caseItem.desc}}</view>
+                <view class="caseLinkRow">
+                  <text class="caseLinkText">查看对应服务详情</text>
+                  <text class="caseLinkArrow">›</text>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <button class="sosFloatButton" bindtap="onEmergencyHelp">
+    <view class="sosLamp">
+      <view class="sosLampGlow"></view>
+      <view class="sosLampBulb">
+        <view class="sosLampFilament"></view>
+      </view>
+      <view class="sosLampNeck"></view>
+      <view class="sosLampBase"></view>
+    </view>
+    <text class="sosFloatTitle">紧急求助</text>
+  </button>
+
+  <!-- SOS 求助结果覆盖层 -->
+  <view wx:if="{{showSosResult}}" class="sosResultOverlay" catchtouchmove="preventTouchMove">
+    <view class="sosResultCard">
+      <!-- 顶部绿色成功标记 -->
+      <view class="sosResultTopBar">
+        <view class="sosResultCheckmark">✓</view>
+        <text class="sosResultTopTitle">求助已发出，平台已为您建单</text>
+      </view>
+
+      <!-- 核心话术 -->
+      <view class="sosResultNotice">
+        <text class="sosResultNoticeText">安伴平台管家已收到您的求助，将优先审核跟进。必要时将指派社区管家上门服务或协助拨打急救电话，请保持电话畅通。</text>
+      </view>
+
+      <!-- 工单信息卡片 -->
+      <view class="sosTicketCard">
+        <view class="sosTicketRow">
+          <text class="sosTicketLabel">工单号</text>
+          <text class="sosTicketValue sosTicketNo">{{sosTicket.ticket_no || '—'}}</text>
+        </view>
+        <view class="sosTicketRow" wx:if="{{sosTicket.address}}">
+          <text class="sosTicketLabel">关联地址</text>
+          <text class="sosTicketValue">{{sosTicket.address}}</text>
+        </view>
+        <view class="sosTicketRow" wx:if="{{sosTicket.elder_name}}">
+          <text class="sosTicketLabel">长辈姓名</text>
+          <text class="sosTicketValue">{{sosTicket.elder_name}}</text>
+        </view>
+        <view class="sosTicketRow">
+          <text class="sosTicketLabel">处理状态</text>
+          <view class="sosStatusBadge sosStatus-{{sosTicket.status_class || 'default'}}">
+            <text>{{sosTicket.status_label || '待响应'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 提示信息 -->
+      <view class="sosResultHint">
+        <text>平台值班客服将在审核后联系您，工单处理进度可在「消息」页查看。</text>
+      </view>
+
+      <!-- 按钮组 -->
+      <view class="sosResultActions">
+        <button class="sosBtnPrimary" bindtap="onCloseSosResult">我知道了</button>
+        <button class="sosBtnOutline" bindtap="onSosCallHotline">📞 拨打值守热线</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评估强提醒弹窗 -->
+  <view wx:if="{{showAssessmentPopup}}" class="assessOverlay" catchtouchmove="preventTouchMove">
+    <view class="assessPopup" catchtap>
+      <image class="assessIllustration" src="/assets/banner/home_popup_banner_assessment.png" mode="widthFix" />
+      <view class="assessContentLayer">
+        <view class="assessCard">
+          <view class="assessCardTitle">居家安全风险快速自查</view>
+          <view class="assessDivider"></view>
+          <view class="assessCardBody">
+            <text class="assessCardText">2分钟快速筛查隐患，完成安全评估，守护长辈居家平安。</text>
+          </view>
+        </view>
+        <button class="assessPrimaryBtn" bindtap="onStartAssessmentFromPopup">开始评估</button>
+        <view class="assessLaterLink" bindtap="onCloseAssessmentPopup">稍后评估</view>
+      </view>
+    </view>
+    <view class="assessCloseBtn" bindtap="onCloseAssessmentPopup"><text class="assessCloseIcon">×</text></view>
+  </view>
+</view>

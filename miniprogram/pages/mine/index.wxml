@@ -1,0 +1,373 @@
+<view class="page {{displayModeClass}}">
+  <view wx:if="{{showLogin}}" class="login">
+    <view class="loginHero">
+      <view class="loginTitle">登录后解锁更多服务</view>
+      <view class="loginSub">通过手机号登录，可查看测评报告，并预约上门服务</view>
+    </view>
+
+    <view class="privacyRow">
+      <view class="privacyCheckbox {{agreedPrivacy ? 'checked' : ''}}" bindtap="onTogglePrivacyAgreement">
+        <view wx:if="{{agreedPrivacy}}" class="privacyCheckIcon"></view>
+      </view>
+      <view class="privacyText">
+        <text>我已阅读并同意</text>
+        <text class="privacyLink" catchtap="onOpenPrivacyPolicy">《用户隐私保护政策》</text>
+        <text>和</text>
+        <text class="privacyLink" catchtap="onOpenUserAgreement">《用户服务协议》</text>
+      </view>
+    </view>
+
+    <button
+      class="submitBtn {{agreedPrivacy ? '' : 'disabled'}}"
+      loading="{{loginLoading}}"
+      disabled="{{loginLoading || !agreedPrivacy}}"
+      open-type="getPhoneNumber"
+      bindgetphonenumber="onGetPhoneNumber"
+    >
+      手机号快捷登录
+    </button>
+
+    <button class="wechatLink {{agreedPrivacy ? '' : 'linkDisabled'}}" disabled="{{loginLoading || !agreedPrivacy}}" bindtap="onAltPhoneLoginWithCheck">
+      其他手机号登录
+    </button>
+
+    <view class="displaySwitchCard loginDisplaySwitchCard">
+      <view class="displaySwitchSummary">
+        <view class="displaySwitchLabel">显示模式</view>
+        <view class="displaySwitchCurrent">{{displayMode === 'aged' ? '当前适老版' : '当前标准版'}}</view>
+      </view>
+      <view class="displaySwitchActions">
+        <button class="displaySwitchOption {{displayMode === 'standard' ? 'active' : ''}}" hover-class="none" bindtap="onSwitchDisplayMode" data-mode="standard">标准版</button>
+        <button class="displaySwitchOption {{displayMode === 'aged' ? 'active' : ''}}" hover-class="none" bindtap="onSwitchDisplayMode" data-mode="aged">适老版</button>
+      </view>
+    </view>
+
+    <view class="loginAdvisorCard">
+      <image class="loginAdvisorImage" src="/assets/banner/contact_advisor_illu.jpg" mode="aspectFit" />
+      <view class="loginAdvisorMain">
+        <view class="loginAdvisorTitle">联系安伴顾问</view>
+        <view class="loginAdvisorAction" bindtap="onContactAdvisor">
+          <text class="loginAdvisorActionText">立即联系</text>
+          <view class="loginAdvisorActionIcon">
+            <view class="loginAdvisorActionDot"></view>
+            <view class="loginAdvisorActionDot"></view>
+            <view class="loginAdvisorActionDot"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:elif="{{showAccount}}" class="account">
+    <view class="profileHero">
+      <view class="profileLeft">
+        <button class="profileAvatarBtn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <view class="profileAvatarWrap">
+            <image wx:if="{{avatarUrl}}" class="profileAvatar" src="{{avatarUrl}}" mode="aspectFill" binderror="onAvatarError" />
+            <view wx:else class="profileAvatarFallback"></view>
+          </view>
+        </button>
+        <view class="profileMain">
+          <view class="profileName">您好，{{displayMineName}}</view>
+          <view class="profileMetaRow">
+            <text class="profilePhone">{{displayPhoneMask}}</text>
+            <button class="profileLink" bindtap="onChangePhone">切换手机号登录</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="displaySwitchCard accountDisplaySwitchCard">
+      <view class="displaySwitchSummary">
+        <view class="displaySwitchLabel">显示模式</view>
+        <view class="displaySwitchCurrent">{{displayMode === 'aged' ? '当前适老版' : '当前标准版'}}</view>
+      </view>
+      <view class="displaySwitchActions">
+        <button class="displaySwitchOption {{displayMode === 'standard' ? 'active' : ''}}" hover-class="none" bindtap="onSwitchDisplayMode" data-mode="standard">标准版</button>
+        <button class="displaySwitchOption {{displayMode === 'aged' ? 'active' : ''}}" hover-class="none" bindtap="onSwitchDisplayMode" data-mode="aged">适老版</button>
+      </view>
+    </view>
+
+    <view class="familyCard">
+      <view class="familyCardHead">
+        <view class="familyTitle">我的家庭</view>
+      </view>
+
+      <view wx:if="{{familyLoading}}" class="familyState">家庭信息加载中...</view>
+
+      <block wx:elif="{{familyMemberCount > 0 || familyAddress}}">
+        <view class="familyInfoRow">
+          <view class="familyInfoIcon icon-location"></view>
+          <text class="familyInfoText">{{familyAddress || '家庭地址由工作人员维护'}}</text>
+        </view>
+
+        <view class="familyInfoRow familyMembersMeta">
+          <view class="familyInfoIcon icon-members"></view>
+          <text class="familyInfoText">{{familyMemberCount}}个成员</text>
+        </view>
+
+        <view class="familyMembersRow">
+          <block wx:for="{{familyMembers}}" wx:key="id" wx:for-item="member">
+            <view class="memberCard">
+              <view class="memberAvatar {{member.avatarTone}} {{member.badgeTone}}">
+                <image wx:if="{{member.useImage}}" class="memberAvatarImg" src="{{member.avatarUrl}}" mode="aspectFill" />
+                <text wx:else class="memberAvatarText">{{member.avatarText}}</text>
+              </view>
+              <view class="memberBadge {{member.badgeTone}}">{{member.badge}}</view>
+            </view>
+          </block>
+        </view>
+
+        <button wx:if="{{familyShowInvite}}" class="familyInviteBtn" bindtap="onInviteMembers" loading="{{familyInviteLoading}}" disabled="{{familyInviteLoading}}">邀请成员</button>
+      </block>
+
+      <view wx:elif="{{familyError}}" class="familyState">{{familyError}}</view>
+      <view wx:else class="familyState">绑定设备后会自动生成家庭档案</view>
+    </view>
+
+    <view class="referralCard">
+      <view class="referralHead">
+        <view class="referralTitle">邀请自查居家风险</view>
+      </view>
+
+      <view wx:if="{{referralLoading}}" class="referralState">推荐入口加载中...</view>
+      <view wx:elif="{{referralError}}" class="referralState">{{referralError}}</view>
+      <view wx:elif="{{referralBound}}" class="referralBoundBox">
+        <view class="referralBoundLabel">当前已绑定推荐人</view>
+        <view class="referralBoundValue">{{referralReferrerName || '安伴团长'}} {{referralReferrerPhoneMask}}</view>
+      </view>
+      <view wx:else class="referralCodeBox">
+        <view class="referralCodeLabel">我的邀请码</view>
+        <view class="referralCodeValue">{{referralInviteCode || '--'}}</view>
+      </view>
+
+      <view class="referralActions">
+        <button class="referralPrimaryBtn" bindtap="onOpenReferralPopup" loading="{{referralLoading}}" disabled="{{referralLoading}}">邀请自查</button>
+        <button class="referralGhostBtn" bindtap="onScanBindReferral" disabled="{{referralBindLoading}}">扫码绑定</button>
+      </view>
+    </view>
+
+    <view wx:if="{{currentServiceBooking}}" class="serviceProcessCard" bindtap="onOpenServiceBookings">
+      <view class="serviceProcessHead">
+        <view class="serviceProcessTitleWrap">
+          <text class="serviceProcessEyebrow">当前服务进程</text>
+          <text class="serviceProcessTitle">{{currentServiceBooking.serviceTitle || '上门服务'}}</text>
+        </view>
+        <text class="serviceProcessStatus serviceProcessStatus-{{currentServiceBooking.statusClass}}">{{currentServiceBooking.statusText}}</text>
+      </view>
+      <text wx:if="{{currentServiceBooking.createdAtText}}" class="serviceProcessMeta">提交时间：{{currentServiceBooking.createdAtText}}</text>
+      <text class="serviceProcessMeta">服务位置：{{currentServiceBooking.locationLabel || '待确认'}}</text>
+      <text class="serviceProcessHint">{{currentServiceBooking.statusHint}}</text>
+      <view class="serviceProcessActions">
+        <button class="serviceProcessActionBtn serviceProcessActionBtn-secondary" catchtap="onOpenServiceBookings">预约记录</button>
+        <button class="serviceProcessActionBtn serviceProcessActionBtn-primary" catchtap="onCallCurrentServiceManager">联系管家</button>
+      </view>
+    </view>
+
+    <view class="contactCard" bindtap="onContactAdvisor">
+      <image class="contactCardImage" src="/assets/banner/contact_advisor.png" mode="widthFix" />
+    </view>
+
+    <button wx:if="{{showWorkbenchEntry}}" class="staffEntryCard" bindtap="onOpenWorkbench">
+      <view class="staffEntryMain">
+        <view class="staffEntryTitle">工作台</view>
+        <view class="staffEntrySub">已为你开通{{managementRoleLabel}}工作台，点击进入管理功能</view>
+      </view>
+      <view class="staffEntryArrow">进入</view>
+    </button>
+
+    <view class="logoutCard">
+      <button class="accountLogoutBtn" bindtap="onLogout">退出登录</button>
+      <view class="logoutTip">退出后将返回游客状态，仍可浏览首页与服务信息。</view>
+    </view>
+  </view>
+
+  <view wx:elif="{{showRoleCard}}" class="fallback">
+    <view class="card">
+      <view class="acTitle">安伴用心守护您每一天！</view>
+      <view class="acTip">请通过首页流程完成留资，或使用游客身份登录后查看此页。</view>
+    </view>
+  </view>
+
+  <view wx:if="{{familyInvitePopupVisible}}" class="invitePopupMask" bindtap="onCloseInvitePopup">
+    <view class="invitePopup" catchtap="noop">
+      <button class="invitePopupClose" bindtap="onCloseInvitePopup">×</button>
+      <view class="invitePopupIcon"></view>
+      <view class="invitePopupTitle">邀请链接已生成</view>
+      <view class="invitePopupExpire">{{familyInviteExpiresLabel ? familyInviteExpiresLabel + '前有效' : '24小时内有效，过期后需重新生成'}}</view>
+      <view class="invitePopupDesc">过期后需要重新生成，并再次分享</view>
+      <view class="invitePopupActions">
+        <button class="invitePopupGhost" bindtap="onRefreshInvitePopup" loading="{{familyInviteLoading}}" disabled="{{familyInviteLoading}}">{{familyInviteLoading ? '生成中...' : '重新生成'}}</button>
+        <button class="invitePopupPrimary" open-type="share" disabled="{{!familyInviteReady}}">立即分享</button>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{referralPopupVisible}}" class="invitePopupMask" bindtap="onCloseReferralPopup">
+    <view class="invitePopup referralPopup" catchtap="noop">
+      <button class="invitePopupClose" bindtap="onCloseReferralPopup">×</button>
+      <view class="referralPopupTitle">邀请自查居家风险</view>
+      <image wx:if="{{referralQrImageDataUrl}}" class="referralPopupQr" src="{{referralQrImageDataUrl}}" mode="aspectFit" />
+      <view class="referralPopupCodeLabel">邀请码</view>
+      <view class="referralPopupCodeValue">{{referralInviteCode}}</view>
+      <view class="invitePopupActions">
+        <button class="invitePopupGhost" bindtap="onCopyReferralCode">复制邀请码</button>
+        <button class="invitePopupPrimary" open-type="share" disabled="{{!referralSharePath}}">立即分享</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 协议文档全屏浏览层（类 webview 效果） -->
+  <view wx:if="{{docOverlayVisible}}" class="docOverlayMask" catchtap="onCloseDocOverlay">
+    <scroll-view class="docOverlay" scroll-y enhanced show-scrollbar="{{false}}" style="height: 100vh;" catchtap>
+      <view class="docOverlayHeader">
+        <view class="docOverlayCloseBtn" bindtap="onCloseDocOverlay">×</view>
+        <text class="docOverlayTitle">{{docOverlayTitle}}</text>
+        <view class="docOverlayMeta">
+          <text>天津市河东区安伴养老管理工作室 · 更新日期：2026年6月5日</text>
+        </view>
+      </view>
+      <view class="docOverlayBody">
+        <block wx:if="{{docType === 'privacy'}}">
+          <view class="docSection">
+            <view class="docH2">一、我们收集的个人信息</view>
+            <view class="docP">为提供居家养老服务，我们会收集以下信息：</view>
+            <view class="docList">
+              <view class="docLi"><text class="docStrong">手机号码</text>：通过微信授权获取，用于账号唯一标识、登录认证、身份核验及服务预约时的联系方式。</view>
+              <view class="docLi"><text class="docStrong">微信昵称、头像</text>：通过微信授权或您主动设置获取，用于个人资料页展示及家庭成员间的身份识别。</view>
+              <view class="docLi"><text class="docStrong">位置信息</text>：用于展示所在城市/地区，便于匹配和预约上门养老服务（需您主动授权）。</view>
+              <view class="docLi"><text class="docStrong">设备信息</text>（设备型号、操作系统版本）：在绑定智能监测设备时自动采集，用于设备接入管理与告警推送。</view>
+              <view class="docLi"><text class="docStrong">服务数据</text>：包括安全自查问卷结果、预约记录、家庭档案成员信息等，由您在使用过程中主动填写。</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">二、收集目的与使用方式</view>
+            <view class="docP">上述信息均仅用于以下目的：</view>
+            <view class="docList">
+              <view class="docLi">账号登录与身份识别</view>
+              <view class="docLi">居家养老安全监测服务</view>
+              <view class="docLi">上门服务预约与管理</view>
+              <view class="docLi">家庭档案建立与成员管理</view>
+              <view class="docLi">设备告警通知与紧急求助响应</view>
+              <view class="docLi">服务质量回访与改进</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">三、信息存储方式与期限</view>
+            <view class="docList">
+              <view class="docLi">您的个人信息存储于中华人民共和国境内服务器。</view>
+              <view class="docLi">我们采用 HTTPS 加密传输、数据库加密存储、访问权限控制等技术措施保障信息安全。</view>
+              <view class="docLi">账号注销后，我们将在 30 天内删除或匿名化处理您的个人信息（法律法规要求保留的除外）。</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">四、共享与披露限制</view>
+            <view class="docP">除以下情形外，我们不会向任何第三方分享您的个人信息：</view>
+            <view class="docList">
+              <view class="docLi">获得您的明确同意</view>
+              <view class="docLi">根据法律法规或政府主管部门的要求</view>
+              <view class="docLi">为履行服务合同所必需（如安排上门服务人员时向服务人员提供必要联系信息）</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">五、您的权利</view>
+            <view class="docP">您享有以下权利：</view>
+            <view class="docList">
+              <view class="docLi"><text class="docStrong">查询权</text>：可在「我的」页面查看已提交的个人资料与服务记录。</view>
+              <view class="docLi"><text class="docStrong">更正权</text>：可修改头像、昵称；切换手机号登录请联系客服。</view>
+              <view class="docLi"><text class="docStrong">删除权</text>：可在「我的」页面退出登录并申请注销账号，注销后将删除您的个人信息。</view>
+              <view class="docLi"><text class="docStrong">撤回授权</text>：可在微信「设置→隐私」中撤回已授予本小程序的相关权限。</view>
+              <view class="docLi"><text class="docStrong">联系我们</text>：如对本政策有任何疑问，可通过小程序内「联系安伴顾问」或拨打 18526209432 与我们取得联系。</view>
+            </view>
+          </view>
+           <button class="docOverlayConfirm" bindtap="onCloseDocOverlay">我已了解</button>
+        </block>
+
+        <block wx:elif="{{docType === 'agreement'}}">
+          <view class="docSection">
+            <view class="docH2">一、服务内容</view>
+            <view class="docP">本平台为您提供以下服务：</view>
+            <view class="docList">
+              <view class="docLi">居家养老安全监测（跌倒检测、呼吸心跳监测等智能设备管理）</view>
+              <view class="docLi">上门养老护理 / 保洁 / 评估等服务预约</view>
+              <view class="docLi">家庭成员档案管理</view>
+              <view class="docLi">紧急求助响应功能</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">二、账号注册与使用</view>
+            <view class="docList">
+              <view class="docLi">您须通过微信授权手机号完成注册，一个微信号仅对应一个账号。</view>
+              <view class="docLi">您对账号下的所有行为负责，不得将账号转让、出租或出借给他人使用。</view>
+              <view class="docLi">如发现账号被他人非法使用，应立即联系我们处理。</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">三、用户行为规范</view>
+            <view class="docList">
+              <view class="docLi">不得利用本平台发布违法、虚假、骚扰性信息。</view>
+              <view class="docLi">不得恶意攻击系统、干扰正常服务运营。</view>
+              <view class="docLi">预约上门服务时应如实填写地址与需求，不得虚构或恶意取消订单。</view>
+              <view class="docLi">尊重服务人员的劳动成果，配合完成服务确认。</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">四、知识产权</view>
+            <view class="docP">本平台的文字、图片、界面设计、程序代码、商标等均归天津市河东区安伴养老管理工作室所有。未经书面许可，任何人不得复制、传播或商业使用。</view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">五、免责条款</view>
+            <view class="docList">
+              <view class="docLi">因不可抗力（自然灾害、网络故障、政策调整等）导致的服务中断或延迟，我们不承担赔偿责任，但会尽力恢复服务。</view>
+              <view class="docLi">智能设备的监测数据仅供参考，不构成医疗诊断依据。如有健康问题请及时就医。</view>
+              <view class="docLi">紧急求助功能依赖于网络环境，在网络中断情况下可能存在延迟，请您同时保留其他紧急联络方式。</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">六、协议变更与终止</view>
+            <view class="docList">
+              <view class="docLi">我们有权根据法律法规变化或服务需要修订本协议，修订后的协议将在小程序内公示，继续使用即视为接受新协议。</view>
+              <view class="docLi">如您违反本协议，我们有权暂停或终止向您提供服务。</view>
+              <view class="docLi">您有权随时退出登录并停止使用本服务，不影响您退出前已享有的合法权益。</view>
+            </view>
+          </view>
+
+          <view class="docSection">
+            <view class="docH2">七、争议解决</view>
+            <view class="docP">因本协议引起的争议，双方应友好协商解决；协商不成的，任何一方可向天津市河东区人民法院提起诉讼。</view>
+            <button class="docOverlayConfirm" bindtap="onCloseDocOverlay">我已了解</button>
+          </view>
+        </block>
+      </view>
+      <view class="docOverlayFooter">
+          <view class="docOverlayConfirm" bindtap="onCloseDocOverlay"></view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 评估强提醒弹窗（登录成功后复现） -->
+  <view wx:if="{{showAssessmentPopup}}" class="assessOverlay" catchtouchmove="preventTouchMove">
+    <view class="assessPopup" catchtap>
+      <image class="assessIllustration" src="/assets/banner/service_market_banner_assessment.png" mode="aspectFit" />
+      <view class="assessCard">
+        <view class="assessCardTitle">居家安全风险快速自查</view>
+        <view class="assessDivider"></view>
+        <view class="assessCardBody">
+          <text class="assessCardText">2分钟快速筛查隐患，完成安全评估，守护长辈居家平安。</text>
+        </view>
+      </view>
+      <button class="assessPrimaryBtn" bindtap="onMineStartAssessment">开始评估</button>
+      <view class="assessLaterLink" bindtap="onMineCloseAssessmentPopup">稍后评估</view>
+    </view>
+    <view class="assessCloseBtn" bindtap="onMineCloseAssessmentPopup"><text class="assessCloseIcon">×</text></view>
+  </view>
+</view>

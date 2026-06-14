@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/safety-check/index",
+    "pages/service/index",
+    "pages/service-market/index",
+    "pages/service-detail/index",
+    "pages/service-bookings/index",
+    "pages/device-detail/index",
+    "pages/family-profile/index",
+    "pages/family-invite/index",
+    "pages/appointment/index",
+    "pages/pro-assessment/index",
+    "pages/message/index",
+    "pages/alt-phone-login/index",
+    "pages/staff-login/index",
+    "pages/staff-workbench/index",
+    "pages/staff-assessment/index",
+    "pages/staff-assessment-list/index",
+    "pages/staff-assessment-report/index",
+    "pages/settings/index",
+    "pages/mine/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "安伴"
+  },
+  "tabBar": {
+    "custom": true,
+    "list": [
+      { "pagePath": "pages/home/index", "text": "首页" },
+      { "pagePath": "pages/service/index", "text": "设备" },
+      { "pagePath": "pages/family-profile/index", "text": "家庭" },
+      { "pagePath": "pages/service-market/index", "text": "服务" },
+      { "pagePath": "pages/mine/index", "text": "我的" }
+    ]
+  }
+}
+

@@ -1,0 +1,272 @@
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 28rpx 24rpx 120rpx;
+  background:
+    radial-gradient(circle at top right, rgba(221, 243, 228, 0.9), rgba(221, 243, 228, 0) 34%),
+    linear-gradient(180deg, #f7faf7 0%, #eef5ef 100%);
+}
+
+.card {
+  margin-top: 18rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 16rpx 36rpx rgba(15, 64, 35, 0.06);
+  padding: 26rpx;
+}
+
+.heroHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18rpx;
+}
+
+.heroMeta,
+.infoLabel,
+.heroSub,
+.emptyText,
+.state {
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: #677466;
+}
+
+.heroMeta {
+  color: #15934d;
+  font-weight: 800;
+}
+
+.heroTitle {
+  margin-top: 16rpx;
+  font-size: 40rpx;
+  line-height: 1.24;
+  color: #17311f;
+  font-weight: 900;
+}
+
+.heroSub {
+  margin-top: 14rpx;
+}
+
+.heroScore {
+  margin-top: 24rpx;
+  font-size: 34rpx;
+  line-height: 1.3;
+  color: #17311f;
+  font-weight: 900;
+}
+
+.heroStats {
+  margin-top: 24rpx;
+  display: flex;
+  gap: 14rpx;
+}
+
+.heroStatCard {
+  flex: 1;
+  padding: 18rpx 20rpx;
+  border-radius: 22rpx;
+  background: #f4faf5;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+}
+
+.heroStatLabel,
+.sectionSub {
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: #677466;
+}
+
+.heroStatValue {
+  margin-top: 8rpx;
+  font-size: 32rpx;
+  line-height: 1.3;
+  color: #17311f;
+  font-weight: 900;
+}
+
+.heroDesc {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.75;
+  color: #617063;
+}
+
+.riskBadge {
+  flex-shrink: 0;
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.risk-low {
+  background: rgba(21, 147, 77, 0.12);
+  color: #15934d;
+}
+
+.risk-medium {
+  background: rgba(234, 166, 43, 0.14);
+  color: #cf8d08;
+}
+
+.risk-high {
+  background: rgba(214, 78, 50, 0.14);
+  color: #d34f35;
+}
+
+.cardTitle {
+  font-size: 28rpx;
+  line-height: 1.4;
+  color: #17311f;
+  font-weight: 900;
+}
+
+.sectionSub {
+  margin-top: 8rpx;
+}
+
+.infoGrid {
+  margin-top: 18rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18rpx;
+}
+
+.infoItem {
+  width: calc(50% - 9rpx);
+  box-sizing: border-box;
+  background: #f7fbf8;
+  border-radius: 20rpx;
+  padding: 18rpx;
+}
+
+.infoValue,
+.addressValue,
+.suggestItem,
+.tagItem,
+.questionText,
+.answerTag,
+.primaryBtn,
+.ghostBtn {
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.infoValue {
+  display: block;
+  margin-top: 10rpx;
+  color: #1f2a20;
+  font-weight: 700;
+}
+
+.addressBlock {
+  margin-top: 18rpx;
+  background: #f7fbf8;
+  border-radius: 20rpx;
+  padding: 18rpx;
+}
+
+.addressValue {
+  margin-top: 10rpx;
+  color: #1f2a20;
+  font-weight: 700;
+}
+
+.tagItem,
+.suggestItem,
+.questionRow {
+  margin-top: 16rpx;
+}
+
+.tagItem {
+  padding: 18rpx 20rpx;
+  border-radius: 18rpx;
+  background: rgba(214, 78, 50, 0.08);
+  color: #b54832;
+  font-weight: 700;
+}
+
+.suggestItem {
+  color: #203021;
+}
+
+.questionRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18rpx;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #edf1ec;
+}
+
+.questionRow:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.questionText {
+  flex: 1;
+  color: #1f2a20;
+  font-weight: 700;
+}
+
+.answerTag {
+  flex-shrink: 0;
+  min-width: 72rpx;
+  text-align: center;
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.answerTag.yes {
+  background: rgba(214, 78, 50, 0.14);
+  color: #d34f35;
+}
+
+.answerTag.no {
+  background: rgba(21, 147, 77, 0.12);
+  color: #15934d;
+}
+
+.actionBar {
+  margin-top: 28rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.actionBtn {
+  width: calc(50% - 10rpx);
+  margin: 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 20rpx;
+  background: #ECF5F0;
+  color: #0D8849;
+  border: 2rpx solid rgba(13, 136, 73, 0.30);
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.actionBtn::after {
+  display: none;
+}
+
+.state {
+  padding-top: 80rpx;
+  text-align: center;
+}
+
+.posterCanvas {
+  position: fixed;
+  left: -2000px;
+  top: -2000px;
+  width: 750px;
+  height: 1240px;
+}

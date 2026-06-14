@@ -1,0 +1,54 @@
+<view class="page {{displayModeClass}}">
+  <view class="tabs">
+    <view class="tab {{activeTab === 'ALL' ? 'is-active' : ''}}" bindtap="onSwitchTab" data-tab="ALL">全部</view>
+    <view class="tab {{activeTab === 'PENDING' ? 'is-active' : ''}}" bindtap="onSwitchTab" data-tab="PENDING">待服务</view>
+    <view class="tab {{activeTab === 'COMPLETED' ? 'is-active' : ''}}" bindtap="onSwitchTab" data-tab="COMPLETED">已完成</view>
+    <view class="tab {{activeTab === 'CANCELLED' ? 'is-active' : ''}}" bindtap="onSwitchTab" data-tab="CANCELLED">已取消</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+    <button class="ghostBtn" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:elif="{{records.length === 0}}" class="state">
+    <text class="stateText">{{emptyText}}</text>
+  </view>
+
+  <view wx:else class="list">
+    <block wx:for="{{records}}" wx:key="bookingId" wx:for-item="record">
+      <view class="recordCard">
+        <view class="recordHead">
+          <view class="recordTitleWrap">
+            <text class="recordTitle">{{record.serviceTitle}}</text>
+            <text class="recordSubtitle">{{record.serviceCategory || '上门服务'}}</text>
+          </view>
+          <text class="recordStatus recordStatus-{{record.statusClass}}">{{record.statusText}}</text>
+        </view>
+
+        <text wx:if="{{record.createdAtText}}" class="recordTime">提交时间：{{record.createdAtText}}</text>
+        <text class="recordMeta">服务位置：{{record.locationLabel || '待确认'}}</text>
+        <text class="recordMeta">跟进管家：{{record.managerDisplayName}}</text>
+        <text class="recordHint">{{record.statusHint}}</text>
+
+        <view class="recordActions">
+          <button class="ghostBtn" bindtap="onOpenService" data-id="{{record.serviceCode}}">查看服务</button>
+          <button class="ghostBtn" bindtap="onCallManager" data-phone="{{record.serviceContact.phone}}">联系管家</button>
+          <button
+            wx:if="{{record.canCancel}}"
+            class="dangerBtn"
+            loading="{{actionLoading}}"
+            disabled="{{actionLoading}}"
+            bindtap="onCancelBooking"
+            data-id="{{record.bookingId}}"
+          >取消预约</button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

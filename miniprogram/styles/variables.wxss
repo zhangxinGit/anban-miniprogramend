@@ -1,0 +1,73 @@
+:root {
+  /* Brand colors */
+  --ab-color-primary: #0E8946;
+  --ab-color-danger: #E53E3E;
+  --ab-color-warning: #FF7D00;
+  --ab-color-info: #FF7D00;
+
+  /* Neutrals */
+  --ab-color-text-1: #333333;
+  --ab-color-text-2: #666666;
+  --ab-color-text-3: #666666;
+  --ab-color-bg: #F7F7F7;
+  --ab-color-card: #FFFFFF;
+  --ab-color-border: #E7E7E7;
+  --ab-color-disabled: #B0B0B0;
+  --ab-color-mask: rgba(0, 0, 0, 0.45);
+
+  --ab-glass-bg: rgba(255, 255, 255, 0.78);
+  --ab-glass-bg-strong: rgba(255, 255, 255, 0.9);
+  --ab-glass-border: rgba(255, 255, 255, 0.4);
+  --ab-glass-border-outer: rgba(255, 255, 255, 0.22);
+  --ab-glass-highlight: rgba(255, 255, 255, 0.4);
+  --ab-glass-highlight-weak: rgba(255, 255, 255, 0.24);
+  --ab-shadow-glass: 0 12rpx 28rpx rgba(15, 23, 42, 0.1);
+  --ab-shadow-glass-soft: 0 8rpx 18rpx rgba(15, 23, 42, 0.08);
+
+  /* Typography */
+  --ab-font-size-xs: 20rpx;
+  --ab-font-size-sm: 24rpx;
+  --ab-font-size-min: 28rpx;
+  --ab-font-size-md: 30rpx;
+  --ab-font-size-lg: 32rpx;
+  --ab-font-size-xl: 36rpx;
+  --ab-font-size-3xl: 56rpx;
+  --ab-line-height-base: 1.6;
+  --ab-tabbar-item-height: 116rpx;
+  --ab-tabbar-text-size: 24rpx;
+  --ab-display-switch-height: 64rpx;
+  --ab-display-switch-font-size: 22rpx;
+  --ab-display-switch-padding-x: 20rpx;
+  --ab-display-switch-gap: 8rpx;
+  --ab-form-label-width: 150rpx;
+
+  /* Spacing */
+  --ab-space-1: 8rpx;
+  --ab-space-2: 16rpx;
+  --ab-space-3: 24rpx;
+  --ab-space-4: 32rpx;
+  --ab-space-5: 40rpx;
+  --ab-page-gutter: 24rpx;
+  --ab-section-gap: 32rpx;
+
+  /* Radius */
+  --ab-radius-sm: 12rpx;
+  --ab-radius-md: 16rpx;
+  --ab-radius-lg: 20rpx;
+  --ab-radius-pill: 999rpx;
+
+  /* Icon / badge */
+  --ab-icon-size-tab: 44rpx;
+  --ab-icon-size-card: 48rpx;
+  --ab-icon-size-tile: 56rpx;
+  --ab-icon-size-empty: 92rpx;
+  --ab-dot-size-md: 20rpx;
+  --ab-dot-size-sm: 12rpx;
+  --ab-badge-min-height: 44rpx;
+
+  /* Touch target */
+  --ab-touch-height: 88rpx;
+
+  /* Shadow */
+  --ab-shadow-card: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}

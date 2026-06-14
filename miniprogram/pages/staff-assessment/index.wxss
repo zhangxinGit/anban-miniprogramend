@@ -1,0 +1,283 @@
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 28rpx 24rpx 120rpx;
+  background:
+    radial-gradient(circle at top right, rgba(221, 243, 228, 0.92), rgba(221, 243, 228, 0) 32%),
+    linear-gradient(180deg, #f7fbf6 0%, #eef6f0 100%);
+}
+
+.hero {
+  padding: 8rpx 4rpx 26rpx;
+}
+
+.heroMeta {
+  font-size: 22rpx;
+  line-height: 1;
+  color: #15934d;
+  font-weight: 800;
+}
+
+.heroTitle {
+  margin-top: 18rpx;
+  font-size: 42rpx;
+  line-height: 1.24;
+  color: #17311f;
+  font-weight: 900;
+}
+
+.heroSub {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  line-height: 1.75;
+  color: #607062;
+}
+
+.summaryCard,
+.card {
+  margin-top: 18rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 16rpx 38rpx rgba(15, 64, 35, 0.06);
+}
+
+.summaryCard {
+  padding: 28rpx;
+}
+
+.summaryTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.summaryLabel {
+  font-size: 22rpx;
+  color: #8d9790;
+  font-weight: 700;
+}
+
+.summaryValue {
+  margin-top: 12rpx;
+  font-size: 38rpx;
+  line-height: 1.2;
+  color: #17311f;
+  font-weight: 900;
+}
+
+.riskBadge {
+  flex-shrink: 0;
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.risk-low {
+  background: rgba(21, 147, 77, 0.12);
+  color: #15934d;
+}
+
+.risk-medium {
+  background: rgba(234, 166, 43, 0.14);
+  color: #cf8d08;
+}
+
+.risk-high {
+  background: rgba(214, 78, 50, 0.14);
+  color: #d34f35;
+}
+
+.summaryScore {
+  margin-top: 22rpx;
+  font-size: 30rpx;
+  line-height: 1.4;
+  color: #17311f;
+  font-weight: 800;
+}
+
+.summaryDesc {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.75;
+  color: #647165;
+}
+
+.card {
+  padding: 26rpx;
+}
+
+.sectionTitle {
+  font-size: 30rpx;
+  line-height: 1.4;
+  color: #17311f;
+  font-weight: 900;
+}
+
+.sectionMeta {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: #7f8982;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.sectionArrow {
+  flex-shrink: 0;
+  font-size: 22rpx;
+  color: #15934d;
+  font-weight: 800;
+}
+
+.fieldGrid {
+  display: flex;
+  gap: 18rpx;
+  margin-top: 22rpx;
+}
+
+.fieldBlock {
+  flex: 1;
+  min-width: 0;
+  background: #f7fbf8;
+  border-radius: 20rpx;
+  padding: 20rpx 18rpx;
+}
+
+.fieldSingle {
+  margin-top: 18rpx;
+}
+
+.fieldSingleLast {
+  margin-bottom: 4rpx;
+}
+
+.fieldLabel {
+  font-size: 22rpx;
+  color: #8d9790;
+  font-weight: 700;
+}
+
+.fieldInput {
+  margin-top: 18rpx;
+  min-height: 48rpx;
+  font-size: 28rpx;
+  line-height: 48rpx;
+  color: #1d2b1f;
+}
+
+.fieldPlaceholder {
+  color: #b4bcb5;
+}
+
+.genderRow {
+  margin-top: 18rpx;
+  display: flex;
+  gap: 14rpx;
+}
+
+.genderBtn,
+.answerBtn {
+  margin: 0;
+}
+
+.genderBtn {
+  flex: 1;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 16rpx;
+  background: #ffffff;
+  border: 1rpx solid #dfe8e1;
+  color: #607062;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.genderBtn::after,
+.answerBtn::after,
+.submitBtn::after {
+  display: none;
+}
+
+.genderBtn.active {
+  background: rgba(21, 147, 77, 0.12);
+  border-color: rgba(21, 147, 77, 0.26);
+  color: #15934d;
+}
+
+.questionList {
+  margin-top: 18rpx;
+}
+
+.questionItem {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #edf1ec;
+}
+
+.questionItem:last-child {
+  padding-bottom: 4rpx;
+  border-bottom: 0;
+}
+
+.questionText {
+  font-size: 27rpx;
+  line-height: 1.7;
+  color: #1f2a20;
+  font-weight: 700;
+}
+
+.answerRow {
+  margin-top: 18rpx;
+  display: flex;
+  gap: 16rpx;
+}
+
+.answerBtn {
+  flex: 1;
+  height: 74rpx;
+  line-height: 74rpx;
+  border-radius: 16rpx;
+  background: #f5f8f6;
+  border: 1rpx solid #e1e8e2;
+  color: #5f6b61;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.answerYes.active {
+  background: rgba(214, 78, 50, 0.12);
+  border-color: rgba(214, 78, 50, 0.24);
+  color: #d34f35;
+}
+
+.answerNo.active {
+  background: rgba(21, 147, 77, 0.12);
+  border-color: rgba(21, 147, 77, 0.22);
+  color: #15934d;
+}
+
+.actionRow {
+  margin-top: 34rpx;
+  display: flex;
+  gap: 20rpx;
+}
+
+.actionBtn {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 20rpx;
+  background: #ECF5F0;
+  color: #0D8849;
+  border: 2rpx solid rgba(13, 136, 73, 0.30);
+  font-size: 30rpx;
+  font-weight: 800;
+}

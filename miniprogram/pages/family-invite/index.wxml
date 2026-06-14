@@ -1,0 +1,43 @@
+<view class="page fadeIn {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">正在读取邀请...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateTitle">{{errorTitle || '邀请链接异常'}}</text>
+    <text class="stateText">{{errorDetail || error}}</text>
+    <button class="primary" wx:if="{{needLogin}}" bindtap="onGoLogin">先登录再加入</button>
+    <button class="ghost" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:else class="content">
+    <view class="hero card">
+      <view class="eyebrow">家庭邀请</view>
+      <view class="title">{{preview.ownerName || '家庭管理员'}} 邀请你加入家庭</view>
+      <view class="sub">加入后可查看该家庭下设备状态与家庭成员信息。</view>
+      <view class="meta">
+        <text>管理员手机号：{{preview.ownerPhoneMask}}</text>
+        <text>当前成员数：{{preview.memberCount}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{accepted}}" class="card successCard">
+      <view class="successTitle">加入成功</view>
+      <view class="successText">{{acceptedText}}</view>
+      <button class="primary" bindtap="onOpenFamily">进入家庭页</button>
+    </view>
+
+    <view wx:elif="{{needLogin}}" class="card actionCard">
+      <view class="actionTitle">先登录，再自动加入</view>
+      <view class="actionText">登录完成后会自动回到此页，并继续完成入家。</view>
+      <button class="primary" bindtap="onGoLogin">登录后加入</button>
+    </view>
+
+    <view wx:else class="card actionCard">
+      <view class="actionTitle">正在加入家庭</view>
+      <view class="actionText">已识别当前登录手机号，正在自动完成入家。</view>
+      <button class="primary" loading="{{acting}}" disabled="{{acting}}" bindtap="tryAccept">重新尝试</button>
+    </view>
+  </view>
+</view>

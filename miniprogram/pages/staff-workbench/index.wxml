@@ -1,0 +1,42 @@
+<view class="page">
+  <view class="hero">
+    <view class="heroMeta">工作人员工作台</view>
+    <view class="heroTitle">{{displayName}}</view>
+    <view class="heroSub">{{roleLabel}}{{usernameMask ? ' · ' + usernameMask : ''}}</view>
+  </view>
+
+  <view class="panel">
+    <button class="actionCard actionPrimary" bindtap="onCreateAssessment">
+      <view class="actionTitle">新增老人评估</view>
+      <view class="actionDesc">填写基础信息并完成 32 项防跌倒评估</view>
+    </button>
+
+    <button class="actionCard" bindtap="onOpenMineHistory">
+      <view class="actionTitle">历史评估记录</view>
+      <view class="actionDesc">查看我提交过的评估报告与风险分级</view>
+    </button>
+
+    <button class="actionCard" bindtap="onOpenArchives">
+      <view class="actionTitle">老人档案列表</view>
+      <view class="actionDesc">查看所有老人档案、风险等级与评估详情</view>
+    </button>
+  </view>
+
+  <view class="tipsCard">
+    <view class="tipsTitle">工作提醒</view>
+    <view class="tipsText">提交评估后，系统会自动算分、生成报告，并同步到后台“老人评估档案”和线索列表。</view>
+  </view>
+
+  <button class="logoutBtn" bindtap="onLogout">退出工作人员登录</button>
+
+  <view wx:if="{{showLogoutPopup}}" class="logoutMask" bindtap="onCloseLogoutPopup">
+    <view class="logoutDialog" catchtap="noop">
+      <view class="logoutDialogTitle">退出工作人员登录</view>
+      <view class="logoutDialogContent">退出后将返回"我的"页面，需要重新进入工作台时会自动换取会话。</view>
+      <view class="logoutDialogActions">
+        <button class="logoutDialogBtn logoutDialogCancel" catchtap="onCloseLogoutPopup">取消</button>
+        <button class="logoutDialogBtn logoutDialogConfirm" catchtap="onConfirmLogout">退出</button>
+      </view>
+    </view>
+  </view>
+</view>

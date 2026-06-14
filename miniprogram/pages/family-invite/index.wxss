@@ -1,0 +1,129 @@
+.page {
+  min-height: 100vh;
+  padding: var(--ab-page-gutter);
+  padding-bottom: 160rpx;
+  background: var(--ab-color-bg);
+  box-sizing: border-box;
+}
+
+.fadeIn { animation: fadeIn 240ms ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12rpx);} to { opacity: 1; transform: translateY(0);} }
+
+.card {
+  margin-top: 18rpx;
+  padding: 32rpx 24rpx;
+  border-radius: var(--ab-radius-lg);
+  background: #fff;
+  border: 1rpx solid var(--ab-color-border);
+  box-shadow: var(--ab-shadow-card);
+}
+
+.hero {
+  margin-top: 0;
+}
+
+.eyebrow {
+  font-size: var(--ab-font-size-sm);
+  font-weight: 800;
+  letter-spacing: 0;
+  color: var(--ab-color-primary);
+}
+
+.title {
+  margin-top: 18rpx;
+  font-size: var(--ab-font-size-xl);
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--ab-color-text-1);
+}
+
+.sub {
+  margin-top: 12rpx;
+  font-size: var(--ab-font-size-min);
+  line-height: var(--ab-line-height-base);
+  color: var(--ab-color-text-2);
+}
+
+.meta {
+  margin-top: 18rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  font-size: var(--ab-font-size-min);
+  color: var(--ab-color-text-2);
+}
+
+.successCard {
+  border: 1rpx solid var(--ab-color-border);
+  background: #fff;
+}
+
+.successTitle,
+.actionTitle {
+  font-size: var(--ab-font-size-lg);
+  font-weight: 700;
+  color: var(--ab-color-text-1);
+}
+
+.successText,
+.actionText {
+  margin-top: 12rpx;
+  font-size: var(--ab-font-size-min);
+  line-height: var(--ab-line-height-base);
+  color: var(--ab-color-text-2);
+}
+
+.primary,
+.ghost {
+  margin-top: 20rpx;
+  height: var(--ab-touch-height);
+  line-height: var(--ab-touch-height);
+  border-radius: var(--ab-radius-md);
+  font-size: var(--ab-font-size-lg);
+  font-weight: 700;
+}
+
+.primary {
+  background: var(--ab-color-primary);
+  color: #fff;
+}
+
+.ghost {
+  background: transparent;
+  color: var(--ab-color-primary);
+  border: 1rpx solid var(--ab-color-primary);
+}
+
+.state {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22rpx;
+  text-align: center;
+}
+
+.stateText {
+  font-size: var(--ab-font-size-min);
+  line-height: var(--ab-line-height-base);
+  color: var(--ab-color-text-2);
+}
+
+.stateTitle {
+  font-size: var(--ab-font-size-lg);
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--ab-color-text-1);
+}
+
+.spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(0, 0, 0, 0.12);
+  border-top-color: rgba(0, 0, 0, 0.45);
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg);} }

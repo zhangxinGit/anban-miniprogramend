@@ -1,0 +1,176 @@
+<view class="page fadeIn {{displayModeClass}}">
+  <view class="header">
+    <view class="titleRow">
+      <view class="titleBlock">
+        <view class="title">消息中心</view>
+        <view class="subtitle">按事件去重展示告警、家庭通知与客服跟进</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="tabRow" wx:if="{{!isVisitor}}">
+    <view class="tabs {{showDealedTabs || activeTab === 'DEVICE_ALARM' || activeTab === 'FAMILY' ? 'tabsWide' : ''}}">
+      <view
+        wx:if="{{showDealedTabs || activeTab === 'DEVICE_ALARM'}}"
+        class="tab {{activeTab === 'DEVICE_ALARM' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="DEVICE_ALARM"
+      >
+        <text>告警值守</text>
+        <view class="tabBadge" wx:if="{{unreadDeviceAlarm > 0}}">{{unreadDeviceAlarm > 99 ? '99+' : unreadDeviceAlarm}}</view>
+      </view>
+      <view
+        wx:if="{{showDealedTabs || activeTab === 'FAMILY'}}"
+        class="tab {{activeTab === 'FAMILY' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="FAMILY"
+      >
+        <text>家庭通知</text>
+        <view class="tabBadge" wx:if="{{unreadFamily > 0}}">{{unreadFamily > 99 ? '99+' : unreadFamily}}</view>
+      </view>
+      <view class="tab {{activeTab === 'SYSTEM_CS' ? 'active' : ''}}" bindtap="switchTab" data-tab="SYSTEM_CS">
+        <text>系统客服</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="filterBar">
+    <scroll-view class="quickFilterScroll" scroll-x="{{true}}" show-scrollbar="{{false}}">
+      <view class="quickFilterRow">
+        <block wx:for="{{quickFilters}}" wx:key="key">
+          <view class="quickChip {{quickFilter === item.key ? 'active' : ''}}" bindtap="onQuickFilterTap" data-key="{{item.key}}">
+            {{item.label}}
+          </view>
+        </block>
+        <view wx:if="{{showBulkReadAction}}" class="quickChip bulkReadChip" bindtap="onBulkMarkRead">批量标记已读（{{bulkUnreadCount}}）</view>
+      </view>
+    </scroll-view>
+    <view class="filterToggle {{filterPanelOpen ? 'active' : ''}}" bindtap="toggleFilterPanel">筛选</view>
+  </view>
+
+  <view class="filterSummary" wx:if="{{filterSummary}}">{{filterSummary}}</view>
+
+  <view class="filterPanel" wx:if="{{filterPanelOpen}}">
+    <view class="filterSection">
+      <view class="filterLabel">时间范围</view>
+      <view class="dateRow">
+        <picker mode="date" value="{{filterForm.startDate}}" bindchange="onStartDateChange">
+          <view class="dateField">{{filterForm.startDate || '开始日期'}}</view>
+        </picker>
+        <text class="dateDivider">至</text>
+        <picker mode="date" value="{{filterForm.endDate}}" bindchange="onEndDateChange">
+          <view class="dateField">{{filterForm.endDate || '结束日期'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="filterSection">
+      <view class="filterLabel">求助/告警类型</view>
+      <view class="chipGroup">
+        <block wx:for="{{helpTypeOptions}}" wx:key="value">
+          <view
+            class="optionChip {{filterForm.helpType === item.value ? 'active' : ''}}"
+            bindtap="onHelpTypeFilterTap"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="filterSection">
+      <view class="filterLabel">状态筛选</view>
+      <view class="chipGroup">
+        <block wx:for="{{statusOptions}}" wx:key="value">
+          <view
+            class="optionChip {{filterForm.status === item.value ? 'active' : ''}}"
+            bindtap="onStatusFilterTap"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="filterSection">
+      <view class="filterLabel">住址关键词</view>
+      <input
+        class="addressInput"
+        placeholder="输入楼栋、门牌或小区名"
+        value="{{filterForm.addressKeyword}}"
+        bindinput="onAddressInput"
+        confirm-type="search"
+      />
+    </view>
+
+    <view class="filterActions">
+      <view class="ghostMini" bindtap="onResetFilters">重置</view>
+      <view class="primaryMini" bindtap="onApplyFilters">应用筛选</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view wx:if="{{loading}}" class="state">
+      <view class="spinner"></view>
+      <text class="stateText">加载中...</text>
+    </view>
+    <view wx:elif="{{error}}" class="state">
+      <text class="stateText">{{error}}</text>
+      <view class="errorActions">
+        <button class="primary" bindtap="onRetry">重试</button>
+        <button wx:if="{{activeTab !== 'SYSTEM_CS'}}" class="ghost" bindtap="onRetrySystemCs">切换至系统客服</button>
+      </view>
+    </view>
+    <view wx:elif="{{items.length === 0}}" class="empty">{{emptyText}}</view>
+    <block wx:else>
+      <block wx:for="{{items}}" wx:key="id" wx:for-index="rowIndex">
+        <view class="row" bindtap="onOpen" data-idx="{{rowIndex}}">
+          <view class="rowTop">
+            <view class="rowMeta">
+              <text class="categoryTag {{item.categoryClass}}">{{item.categoryText}}</text>
+              <text class="elderName">{{item.elderName}}</text>
+            </view>
+            <text class="time">{{item.timeText}}</text>
+          </view>
+
+          <view class="addressText">{{item.address}}</view>
+
+          <view class="rowMiddle">
+            <text class="helpType">{{item.helpTypeLabel}}</text>
+            <view class="badgeRow">
+              <block wx:for="{{item.statusBadges}}" wx:key="index" wx:for-item="badge">
+                <text class="rowState {{badge.className}}">{{badge.text}}</text>
+              </block>
+            </view>
+          </view>
+
+          <view class="rowDesc">{{item.desc}}</view>
+
+          <view class="rowBottom">
+            <text class="detailText">{{item.type === 'DEVICE_ALARM' ? '点卡片查看设备详情' : '查看详情'}}</text>
+            <view class="rowActions">
+              <block wx:for="{{item.quickActions}}" wx:key="key" wx:for-item="action">
+                <view
+                  class="inlineAction {{action.className}}"
+                  catchtap="onQuickAction"
+                  data-idx="{{rowIndex}}"
+                  data-action="{{action.key}}"
+                >
+                  {{action.text}}
+                </view>
+              </block>
+              <text class="arrow">›</text>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view class="listFooter">
+        <text class="footerText" wx:if="{{loadingMore}}">加载更多...</text>
+        <text class="footerText" wx:elif="{{!hasMore}}">没有更多了</text>
+      </view>
+    </block>
+  </view>
+</view>
+

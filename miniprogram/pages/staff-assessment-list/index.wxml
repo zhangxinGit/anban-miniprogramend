@@ -1,0 +1,46 @@
+<view class="page">
+  <view class="hero">
+    <view class="heroMeta">{{title}}</view>
+    <view class="heroSub">{{mode === 'mine' ? '查看我提交过的老人评估报告' : '查看全部老人评估档案与风险等级'}} </view>
+  </view>
+
+  <view class="filterCard">
+    <input class="searchInput" value="{{q}}" bindinput="onSearchInput" placeholder="搜索老人姓名 / 电话 / 地址 / 社区" placeholder-class="searchPlaceholder" />
+    <view class="riskFilterRow">
+      <button class="riskFilterBtn {{riskLevel === '' ? 'active' : ''}}" bindtap="onSelectRisk" data-value="">全部</button>
+      <button class="riskFilterBtn {{riskLevel === 'low' ? 'active low' : ''}}" bindtap="onSelectRisk" data-value="low">低风险</button>
+      <button class="riskFilterBtn {{riskLevel === 'medium' ? 'active medium' : ''}}" bindtap="onSelectRisk" data-value="medium">中风险</button>
+      <button class="riskFilterBtn {{riskLevel === 'high' ? 'active high' : ''}}" bindtap="onSelectRisk" data-value="high">高风险</button>
+    </view>
+    <view class="filterActions">
+      <button class="queryBtn" bindtap="onQuery">查询</button>
+      <button class="ghostBtn" bindtap="onCreateNew">新增评估</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="state">评估档案加载中...</view>
+
+  <block wx:elif="{{rows.length}}">
+    <block wx:for="{{rows}}" wx:key="id" wx:for-item="item">
+      <view class="recordCard" bindtap="onOpenDetail" data-id="{{item.id}}">
+        <view class="recordHead">
+          <view>
+            <view class="recordName">{{item.elder_name}}</view>
+            <view class="recordMeta">{{item.gender}} · {{item.age}} 岁 · {{item.phoneMask}}</view>
+          </view>
+          <view class="riskBadge risk-{{item.riskTone}}">{{item.riskLabel}}</view>
+        </view>
+        <view class="recordAddress">{{item.community}} · {{item.address}}</view>
+        <view class="recordFooter">
+          <view class="recordFooterText">总分 {{item.total_score}} · {{item.timeText}}</view>
+          <view class="recordFooterText">{{item.assessor_name}}</view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{loadingMore}}" class="state">加载更多中...</view>
+    <view wx:elif="{{!hasMore}}" class="state">已加载全部 {{total}} 条记录</view>
+  </block>
+
+  <view wx:else class="state">暂无评估记录</view>
+</view>

@@ -1,0 +1,208 @@
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 28rpx 24rpx 120rpx;
+  background:
+    radial-gradient(circle at top left, rgba(224, 244, 231, 0.92), rgba(224, 244, 231, 0) 32%),
+    linear-gradient(180deg, #f7faf7 0%, #eef5ef 100%);
+}
+
+.hero {
+  padding: 8rpx 4rpx 24rpx;
+}
+
+.heroMeta {
+  font-size: 38rpx;
+  line-height: 1.3;
+  color: #18311f;
+  font-weight: 900;
+}
+
+.heroSub {
+  margin-top: 14rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #627163;
+}
+
+.filterCard,
+.recordCard {
+  margin-top: 18rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 16rpx 36rpx rgba(15, 64, 35, 0.06);
+}
+
+.filterCard {
+  padding: 24rpx;
+}
+
+.searchInput {
+  height: 76rpx;
+  line-height: 76rpx;
+  padding: 0 22rpx;
+  background: #f6faf7;
+  border-radius: 18rpx;
+  font-size: 26rpx;
+  color: #1f2a20;
+}
+
+.searchPlaceholder {
+  color: #b3bbb4;
+}
+
+.riskFilterRow {
+  margin-top: 18rpx;
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.riskFilterBtn,
+.queryBtn,
+.ghostBtn {
+  margin: 0;
+}
+
+.riskFilterBtn {
+  min-width: 128rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  background: #f5f8f6;
+  color: #607062;
+  border: 1rpx solid #e1e8e2;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.riskFilterBtn::after,
+.queryBtn::after,
+.ghostBtn::after {
+  display: none;
+}
+
+.riskFilterBtn.active {
+  background: rgba(21, 147, 77, 0.12);
+  border-color: rgba(21, 147, 77, 0.24);
+  color: #15934d;
+}
+
+.riskFilterBtn.low.active {
+  color: #15934d;
+}
+
+.riskFilterBtn.medium.active {
+  background: rgba(234, 166, 43, 0.14);
+  border-color: rgba(234, 166, 43, 0.26);
+  color: #cf8d08;
+}
+
+.riskFilterBtn.high.active {
+  background: rgba(214, 78, 50, 0.14);
+  border-color: rgba(214, 78, 50, 0.22);
+  color: #d34f35;
+}
+
+.filterActions {
+  margin-top: 22rpx;
+  display: flex;
+  gap: 16rpx;
+}
+
+.queryBtn,
+.ghostBtn {
+  flex: 1;
+  height: 78rpx;
+  line-height: 78rpx;
+  border-radius: 18rpx;
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.queryBtn {
+  background: #15934d;
+  color: #ffffff;
+}
+
+.ghostBtn {
+  background: #f6faf7;
+  color: #15934d;
+  border: 1rpx solid rgba(21, 147, 77, 0.18);
+}
+
+.recordCard {
+  padding: 26rpx;
+}
+
+.recordHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18rpx;
+}
+
+.recordName {
+  font-size: 30rpx;
+  line-height: 1.35;
+  color: #18311f;
+  font-weight: 900;
+}
+
+.recordMeta,
+.recordAddress,
+.recordFooterText,
+.state {
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: #657264;
+}
+
+.recordMeta {
+  margin-top: 10rpx;
+}
+
+.recordAddress {
+  margin-top: 16rpx;
+}
+
+.recordFooter {
+  margin-top: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  flex-wrap: wrap;
+}
+
+.riskBadge {
+  flex-shrink: 0;
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.risk-low {
+  background: rgba(21, 147, 77, 0.12);
+  color: #15934d;
+}
+
+.risk-medium {
+  background: rgba(234, 166, 43, 0.14);
+  color: #cf8d08;
+}
+
+.risk-high {
+  background: rgba(214, 78, 50, 0.14);
+  color: #d34f35;
+}
+
+.state {
+  margin-top: 24rpx;
+  padding: 12rpx 6rpx;
+  text-align: center;
+}

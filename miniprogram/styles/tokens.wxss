@@ -1,0 +1,160 @@
+:root {
+  /* Brand colors */
+  --ab-color-primary: #0E8946;
+  --ab-color-danger: #E53E3E;
+  --ab-color-warning: #FF7D00;
+  --ab-color-info: #FF7D00;
+
+  /* Neutrals */
+  --ab-color-text-1: #333333;
+  --ab-color-text-2: #666666;
+  --ab-color-text-3: #666666;
+  --ab-color-bg: #F7F7F7;
+  --ab-color-card: #FFFFFF;
+  --ab-color-border: #E7E7E7;
+  --ab-color-disabled: #B0B0B0;
+  --ab-color-mask: rgba(0, 0, 0, 0.45);
+
+  --ab-glass-bg: rgba(255, 255, 255, 0.78);
+  --ab-glass-bg-strong: rgba(255, 255, 255, 0.9);
+  --ab-glass-border: rgba(255, 255, 255, 0.4);
+  --ab-glass-border-outer: rgba(255, 255, 255, 0.22);
+  --ab-glass-highlight: rgba(255, 255, 255, 0.4);
+  --ab-glass-highlight-weak: rgba(255, 255, 255, 0.24);
+  --ab-shadow-glass: 0 12rpx 28rpx rgba(15, 23, 42, 0.1);
+  --ab-shadow-glass-soft: 0 8rpx 18rpx rgba(15, 23, 42, 0.08);
+
+  /* Typography */
+  --ab-font-size-xs: 20rpx;
+  --ab-font-size-sm: 24rpx;
+  --ab-font-size-min: 28rpx;
+  --ab-font-size-md: 30rpx;
+  --ab-font-size-lg: 32rpx;
+  --ab-font-size-xl: 36rpx;
+  --ab-font-size-3xl: 56rpx;
+  --ab-line-height-base: 1.6;
+  --ab-tabbar-item-height: 116rpx;
+  --ab-tabbar-text-size: 22rpx;
+  --ab-display-switch-height: 64rpx;
+  --ab-display-switch-font-size: 22rpx;
+  --ab-display-switch-padding-x: 20rpx;
+  --ab-display-switch-gap: 8rpx;
+  --ab-form-label-width: 150rpx;
+
+  /* Spacing */
+  --ab-space-1: 8rpx;
+  --ab-space-2: 16rpx;
+  --ab-space-3: 24rpx;
+  --ab-space-4: 32rpx;
+  --ab-space-5: 40rpx;
+  --ab-page-gutter: 24rpx;
+  --ab-section-gap: 32rpx;
+
+  /* Radius */
+  --ab-radius-sm: 12rpx;
+  --ab-radius-md: 16rpx;
+  --ab-radius-lg: 20rpx;
+  --ab-radius-pill: 999rpx;
+
+  /* Icon / badge */
+  --ab-icon-size-tab: 48rpx;
+  --ab-icon-size-card: 48rpx;
+  --ab-icon-size-tile: 56rpx;
+  --ab-icon-size-empty: 92rpx;
+  --ab-dot-size-md: 20rpx;
+  --ab-dot-size-sm: 12rpx;
+  --ab-badge-min-height: 44rpx;
+
+  /* Touch target */
+  --ab-touch-height: 88rpx;
+
+  /* Shadow */
+  --ab-shadow-card: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.display-mode-standard {
+  --ab-font-size-xs: 20rpx;
+  --ab-font-size-sm: 24rpx;
+  --ab-font-size-min: 28rpx;
+  --ab-font-size-md: 30rpx;
+  --ab-font-size-lg: 32rpx;
+  --ab-font-size-xl: 36rpx;
+  --ab-font-size-3xl: 56rpx;
+  --ab-line-height-base: 1.6;
+  --ab-page-gutter: 24rpx;
+  --ab-section-gap: 32rpx;
+  --ab-radius-sm: 12rpx;
+  --ab-radius-md: 16rpx;
+  --ab-radius-lg: 20rpx;
+  --ab-icon-size-tab: 48rpx;
+  --ab-dot-size-md: 20rpx;
+  --ab-dot-size-sm: 12rpx;
+  --ab-badge-min-height: 44rpx;
+  --ab-touch-height: 88rpx;
+  --ab-tabbar-item-height: 116rpx;
+  --ab-tabbar-text-size: 22rpx;
+  --ab-display-switch-height: 64rpx;
+  --ab-display-switch-font-size: 22rpx;
+  --ab-display-switch-padding-x: 20rpx;
+  --ab-display-switch-gap: 8rpx;
+  --ab-form-label-width: 150rpx;
+}
+
+.display-mode-aged {
+  --ab-font-size-xs: 24rpx;
+  --ab-font-size-sm: 28rpx;
+  --ab-font-size-min: 34rpx;
+  --ab-font-size-md: 36rpx;
+  --ab-font-size-lg: 40rpx;
+  --ab-font-size-xl: 46rpx;
+  --ab-font-size-3xl: 64rpx;
+  --ab-line-height-base: 1.8;
+  --ab-page-gutter: 32rpx;
+  --ab-section-gap: 40rpx;
+  --ab-radius-sm: 16rpx;
+  --ab-radius-md: 20rpx;
+  --ab-radius-lg: 24rpx;
+  --ab-icon-size-tab: 56rpx;
+  --ab-dot-size-md: 24rpx;
+  --ab-dot-size-sm: 16rpx;
+  --ab-badge-min-height: 52rpx;
+  --ab-touch-height: 104rpx;
+  --ab-tabbar-item-height: 116rpx;
+  --ab-tabbar-text-size: 26rpx;
+  --ab-display-switch-height: 76rpx;
+  --ab-display-switch-font-size: 26rpx;
+  --ab-display-switch-padding-x: 28rpx;
+  --ab-display-switch-gap: 10rpx;
+  --ab-form-label-width: 188rpx;
+}
+
+page {
+  font-size: var(--ab-font-size-min);
+  color: var(--ab-color-text-1);
+  background: var(--ab-color-bg);
+  line-height: var(--ab-line-height-base);
+}
+
+/* 通用卡片 */
+.ab-card {
+  background: var(--ab-color-card);
+  border-radius: var(--ab-radius-lg);
+  box-shadow: var(--ab-shadow-card);
+  border: 1rpx solid var(--ab-color-border);
+}
+
+/* 通用“模拟毛玻璃”容器：稳定、跨机型一致 */
+.ab-glass {
+  background: var(--ab-glass-bg);
+  border: 1rpx solid var(--ab-glass-border);
+  backdrop-filter: blur(20rpx);
+  box-shadow: var(--ab-shadow-glass-soft);
+}
+
+.ab-glass-strong {
+  background: var(--ab-glass-bg-strong);
+  border: 1rpx solid var(--ab-glass-border);
+  backdrop-filter: blur(24rpx);
+  box-shadow: var(--ab-shadow-glass);
+}
+

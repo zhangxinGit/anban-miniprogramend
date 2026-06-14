@@ -1,0 +1,118 @@
+<view class="page {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+  </view>
+
+  <view wx:elif="{{item}}" class="content">
+    <view class="heroCard" bindtap="onPreviewCover">
+      <image wx:if="{{item.coverImg && !_coverFailed}}" class="heroImg" src="{{item.coverSrc || item.coverImg}}" mode="aspectFill" binderror="onCoverImageError" />
+      <view wx:else class="heroFallback">{{item.moduleTitle}}</view>
+    </view>
+
+    <view class="detailCard">
+      <view class="detailPriceRow">
+        <text class="detailPriceSymbol">¥</text>
+        <text class="detailPrice">{{item.price}}</text>
+        <text class="detailOriginalPrice">¥{{item.originalPrice}}</text>
+        <text class="detailBadge">限时优惠</text>
+      </view>
+
+      <view class="detailTitle">{{item.serviceName}}</view>
+
+      <view class="detailMetaRow">
+        <view class="detailMeta">{{detailMetaText}}</view>
+        <view class="detailSales">已售 6</view>
+      </view>
+
+      <view class="detailTags">
+        <block wx:if="{{item.tagList.length > 0}}">
+          <block wx:for="{{item.tagList}}" wx:key="*this" wx:for-item="tag">
+            <text class="detailTag">{{tag}}</text>
+          </block>
+        </block>
+        <text wx:else class="detailTag">上门服务</text>
+      </view>
+    </view>
+
+    <view class="promiseCard">
+      <view class="promiseRow">
+        <view class="promiseDot"></view>
+        <text class="promiseText">顾问 1v1 跟进，确认上门时间与服务内容</text>
+      </view>
+      <view class="promiseRow">
+        <view class="promiseDot"></view>
+        <text class="promiseText">上门前提醒、服务中协调、服务后回访</text>
+      </view>
+      <view class="promiseRow">
+        <view class="promiseDot"></view>
+        <text class="promiseText">未登录可先浏览服务详情，登录后可提交预约并联系顾问</text>
+      </view>
+    </view>
+
+    <view wx:if="{{currentBooking}}" class="bookingCard">
+      <view class="bookingCardHead">
+        <view class="bookingCardTitleWrap">
+          <text class="bookingCardEyebrow">我的当前服务预约</text>
+          <text class="bookingCardTitle">{{currentBooking.serviceTitle || '服务预约'}}</text>
+        </view>
+        <text class="bookingCardStatus bookingCardStatus-{{currentBooking.statusClass}}">{{currentBooking.statusText}}</text>
+      </view>
+      <text wx:if="{{currentBooking.createdAtText}}" class="bookingCardTime">提交时间：{{currentBooking.createdAtText}}</text>
+      <text class="bookingCardMeta">服务位置：{{currentBooking.locationLabel || '待确认'}}</text>
+      <text class="bookingCardMeta">跟进管家：{{currentBooking.managerDisplayName}}</text>
+      <text class="bookingCardHint">{{currentBooking.statusHint}}</text>
+      <view class="bookingCardActions">
+        <button class="bookingGhostBtn" bindtap="onCallCurrentBookingContact">联系管家</button>
+        <button class="bookingGhostBtn" bindtap="onOpenBookingHistory">预约记录</button>
+        <button wx:if="{{!currentBookingMatchesItem}}" class="bookingGhostBtn isStrong" bindtap="onOpenCurrentBookingService">查看当前预约</button>
+      </view>
+      <text wx:if="{{currentBookingMatchesItem}}" class="bookingCardFootnote">当前服务已提交预约，如需调整可直接在下方取消。</text>
+    </view>
+
+    <view class="bottomSpacer"></view>
+
+    <view class="bottomBar safe-area">
+      <button class="contactBtn" bindtap="onCallAdvisor">
+        <view class="contactCircle">
+          <view class="contactIcon phone"></view>
+        </view>
+        <text class="contactText">电话咨询</text>
+      </button>
+
+      <button class="contactBtn" bindtap="onCopyWechat">
+        <view class="contactCircle">
+          <view class="contactIcon wechat"></view>
+        </view>
+        <text class="contactText">微信咨询</text>
+      </button>
+
+      <button class="bookBtn" loading="{{submitting}}" disabled="{{submitting || currentBookingLoading}}" bindtap="onBook">{{currentBookingMatchesItem ? '取消预约' : '立即预约'}}</button>
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{successPopupVisible}}" class="successMask" bindtap="onCloseSuccessPopup">
+  <view class="successDialog" catchtap="noop">
+    <view class="successIcon">
+      <text class="successCheck">✓</text>
+    </view>
+    <view class="successTitle">预约成功</view>
+    <view class="successText">顾问会尽快与您联系，确认服务安排与上门时间。</view>
+
+    <view class="advisorCard">
+      <image class="advisorImage" src="/assets/banner/contact_advisor.png" mode="aspectFill" />
+      <view class="advisorMeta">
+        <view class="advisorTitle">联系顾问</view>
+        <view class="advisorText">如需加急确认，可直接电话联系安伴顾问。</view>
+      </view>
+    </view>
+
+    <button class="successPrimary" bindtap="onCallAdvisor">联系顾问</button>
+    <button class="successGhost" bindtap="onCloseSuccessPopup">稍后联系</button>
+  </view>
+</view>

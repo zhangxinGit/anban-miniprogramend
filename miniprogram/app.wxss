@@ -1,0 +1,38 @@
+@import "./styles/tokens.wxss";
+@import "./styles/display-mode.wxss";
+
+page {
+	background: var(--ab-color-bg);
+	color: var(--ab-color-text-1);
+	font-family: PingFang SC, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+button {
+	min-height: var(--ab-touch-height);
+	border-radius: var(--ab-radius-md);
+	font-size: var(--ab-font-size-md);
+	font-weight: 600;
+	line-height: var(--ab-touch-height);
+	box-sizing: border-box;
+}
+
+button::after {
+	border: 0;
+}
+
+button[disabled] {
+	background: var(--ab-color-disabled) !important;
+	color: #FFFFFF !important;
+	border-color: var(--ab-color-disabled) !important;
+	opacity: 1;
+}
+
+input,
+textarea,
+picker,
+label,
+text {
+	line-height: var(--ab-line-height-base);
+	font-size: var(--ab-font-size-min);
+}
+

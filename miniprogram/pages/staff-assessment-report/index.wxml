@@ -1,0 +1,85 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="state">报告加载中...</view>
+
+  <block wx:elif="{{detail}}">
+    <view class="hero card">
+      <view class="heroHead">
+        <view>
+          <view class="heroMeta">评估报告</view>
+          <view class="heroTitle">{{detail.elder_name}}</view>
+          <view class="heroSub">{{detail.timeText}} · 工作人员 {{detail.assessor_name}}</view>
+        </view>
+        <view class="riskBadge risk-{{detail.riskTone}}">{{detail.riskLabel}}</view>
+      </view>
+      <view class="heroStats">
+        <view class="heroStatCard">
+          <view class="heroStatLabel">评估评分</view>
+          <view class="heroStatValue">{{detail.total_score}}</view>
+        </view>
+        <view class="heroStatCard">
+          <view class="heroStatLabel">风险等级</view>
+          <view class="heroStatValue">{{detail.riskLabel}}</view>
+        </view>
+      </view>
+      <view class="heroDesc">{{detail.riskDescription}}</view>
+    </view>
+
+    <view class="card infoCard">
+      <view class="cardTitle">老人基础信息</view>
+      <view class="infoGrid">
+        <view class="infoItem"><text class="infoLabel">姓名</text><text class="infoValue">{{detail.elder_name}}</text></view>
+        <view class="infoItem"><text class="infoLabel">年龄</text><text class="infoValue">{{detail.age}} 岁</text></view>
+        <view class="infoItem"><text class="infoLabel">联系电话</text><text class="infoValue">{{detail.phoneText}}</text></view>
+        <view class="infoItem"><text class="infoLabel">所属社区</text><text class="infoValue">{{detail.community}}</text></view>
+      </view>
+      <view class="addressBlock">
+        <view class="infoLabel">家庭住址</view>
+        <view class="addressValue">{{detail.address}}</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="cardTitle">命中风险项</view>
+      <block wx:if="{{detail.risk_items.length}}">
+        <block wx:for="{{detail.risk_items}}" wx:key="*this" wx:for-item="item">
+          <view class="tagItem">{{item}}</view>
+        </block>
+      </block>
+      <view wx:else class="emptyText">本次未命中风险项。</view>
+    </view>
+
+    <view class="card">
+      <view class="cardTitle">优化建议</view>
+      <block wx:for="{{detail.suggestions}}" wx:key="*this" wx:for-item="item" wx:for-index="index">
+        <view class="suggestItem">{{index + 1}}. {{item}}</view>
+      </block>
+    </view>
+
+    <view class="card">
+      <view class="cardTitle">所有评估答题记录</view>
+      <view class="sectionSub">共 {{detail.questionCount}} 题，以下展示本次评估的全部答题明细。</view>
+    </view>
+
+    <block wx:for="{{detail.sections}}" wx:key="key" wx:for-item="section">
+      <view class="card">
+        <view class="cardTitle">{{section.title}}</view>
+        <view class="sectionSub">共 {{section.questions.length}} 题</view>
+        <block wx:for="{{section.questions}}" wx:key="id" wx:for-item="question">
+          <view class="questionRow">
+            <view class="questionText">{{question.text}}</view>
+            <view class="answerTag {{question.answer ? 'yes' : 'no'}}">{{question.answer ? '是' : '否'}}</view>
+          </view>
+        </block>
+      </view>
+    </block>
+
+    <view class="actionBar">
+      <button class="actionBtn" bindtap="onOpenList">历史记录</button>
+      <button class="actionBtn" bindtap="onSavePoster" loading="{{saving}}" disabled="{{saving}}">保存图片</button>
+      <button class="actionBtn" open-type="share">转发报告</button>
+      <button class="actionBtn" bindtap="onCreateNext">继续新增</button>
+    </view>
+
+    <canvas class="posterCanvas" canvas-id="reportPoster"></canvas>
+  </block>
+</view>

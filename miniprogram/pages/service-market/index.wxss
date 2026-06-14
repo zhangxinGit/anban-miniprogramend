@@ -1,0 +1,517 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+  padding-bottom: calc(236rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #eef8f1 0, #f7f8f4 180rpx, #f7f8f4 100%);
+}
+
+.heroSection {
+  margin-top: 6rpx;
+  margin-left: -12rpx;
+  margin-right: -12rpx;
+}
+
+.heroSwiper {
+  height: 230rpx;
+}
+
+.heroSlide {
+  width: 100%;
+  height: 100%;
+  border-radius: 28rpx;
+  overflow: hidden;
+  box-shadow: 0 16rpx 34rpx rgba(184, 145, 91, 0.14);
+}
+
+.heroSectionBg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.heroDots {
+  margin-top: 8rpx;
+  margin-bottom: 8rpx;
+  display: flex;
+  justify-content: center;
+  gap: 8rpx;
+}
+
+.heroDot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 999rpx;
+  background: rgba(151, 163, 155, 0.46);
+  transition: all 180ms ease;
+}
+
+.heroDotActive {
+  width: 34rpx;
+  background: #15934d;
+}
+
+.searchPanel {
+  margin-top: 24rpx;
+  display: flex;
+  align-items: stretch;
+  gap: 16rpx;
+}
+
+.searchLocationCard,
+.searchBar {
+  background: #ffffff;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 14rpx 32rpx rgba(15, 64, 35, 0.06);
+  box-sizing: border-box;
+}
+
+.searchLocationCard {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 18rpx 22rpx;
+  width: 280rpx;
+  flex-shrink: 0;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 12rpx 14rpx 12rpx 20rpx;
+  min-width: 0;
+  flex: 1;
+}
+
+.searchRegionPicker {
+  min-width: 0;
+  flex: 1;
+}
+
+.searchRegionInner {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.searchLocationText {
+  min-width: 0;
+  flex: 1;
+  font-size: 24rpx;
+  color: #1f2a20;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.searchLocationText.placeholder {
+  color: #97a39b;
+}
+
+.searchLocationArrow {
+  font-size: 18rpx;
+  color: #7b8a7d;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  font-size: 24rpx;
+  color: #1f2a20;
+  height: 68rpx;
+  line-height: 68rpx;
+  padding: 0 6rpx 0 0;
+}
+
+.searchPlaceholder {
+  color: #b1bbb0;
+  font-size: 24rpx;
+}
+
+.searchClearButton {
+  margin: 0;
+  min-width: 92rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  background: #f2f6f3;
+  color: #5f6d63;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.searchClearButton::after {
+  display: none;
+}
+
+.searchButton {
+  margin: 0;
+  min-width: 136rpx;
+  min-height: 68rpx;
+  height: 68rpx;
+  padding: 0 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #28c56e 0%, #15934d 100%);
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 800;
+  flex-shrink: 0;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.searchButton::after {
+  display: none;
+}
+
+.display-mode-aged .searchPanel {
+  margin-top: 16rpx;
+  gap: 14rpx;
+}
+
+.display-mode-aged .searchLocationCard {
+  width: 248rpx;
+  gap: 12rpx;
+  padding: 20rpx;
+}
+
+.display-mode-aged .searchBar {
+  gap: 10rpx;
+  padding: 12rpx 14rpx 12rpx 18rpx;
+}
+
+.display-mode-aged .searchRegionInner {
+  gap: 6rpx;
+}
+
+.display-mode-aged .searchLocationText,
+.display-mode-aged .searchInput,
+.display-mode-aged .searchPlaceholder {
+  font-size: 28rpx;
+}
+
+.display-mode-aged .searchLocationArrow {
+  font-size: 16rpx;
+}
+
+.display-mode-aged .searchButton,
+.display-mode-aged .searchClearButton {
+  height: 72rpx;
+  min-height: 72rpx;
+}
+
+.display-mode-aged .searchClearButton {
+  min-width: 76rpx;
+  padding: 0 16rpx;
+}
+
+.display-mode-aged .searchButton {
+  min-width: 120rpx;
+  padding: 0 24rpx;
+}
+
+.serviceProcessCard {
+  margin-top: 18rpx;
+  padding: 28rpx 26rpx;
+  background: #ffffff;
+  border-radius: 26rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 14rpx 34rpx rgba(15, 64, 35, 0.06);
+}
+
+.display-mode-aged .serviceProcessCard {
+  margin-top: 16rpx;
+  padding: 26rpx 24rpx;
+  border-radius: 24rpx;
+}
+
+.serviceProcessHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.serviceProcessTitleWrap {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.serviceProcessEyebrow {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #15934d;
+  line-height: 1;
+}
+
+.serviceProcessTitle {
+  font-size: 30rpx;
+  line-height: 1.4;
+  color: #1f2a20;
+  font-weight: 700;
+}
+
+.serviceProcessStatus {
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.serviceProcessStatus-pending {
+  background: rgba(240, 138, 42, 0.12);
+  color: #f08a2a;
+}
+
+.serviceProcessStatus-completed {
+  background: rgba(21, 147, 77, 0.12);
+  color: #15934d;
+}
+
+.serviceProcessStatus-cancelled {
+  background: rgba(208, 98, 52, 0.12);
+  color: #d06234;
+}
+
+.serviceProcessMeta,
+.serviceProcessHint {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  line-height: 1.65;
+  color: #5b685f;
+}
+
+.serviceProcessActions {
+  margin-top: 22rpx;
+  display: flex;
+  gap: 14rpx;
+}
+
+.serviceProcessActionBtn {
+  margin: 0;
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 18rpx;
+  font-size: 24rpx;
+  font-weight: 800;
+  box-sizing: border-box;
+}
+
+.serviceProcessActionBtn::after {
+  display: none;
+}
+
+.serviceProcessActionBtn-secondary {
+  background: #f5fbf6;
+  color: #0e8946;
+  border: 1rpx solid rgba(14, 137, 70, 0.16);
+}
+
+.serviceProcessActionBtn-primary {
+  background: #0e8946;
+  color: #ffffff;
+  border: 1rpx solid #0e8946;
+  box-shadow: 0 10rpx 18rpx rgba(14, 137, 70, 0.14);
+}
+
+.section {
+  margin-top: 32rpx;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.sectionTitle {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1f2a20;
+}
+
+.sectionMore {
+  font-size: 20rpx;
+  color: #7b8a7d;
+  font-weight: 500;
+}
+
+.serviceGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 20rpx;
+}
+
+.serviceCard {
+  width: calc(50% - 10rpx);
+  background: #ffffff;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 14rpx 32rpx rgba(15, 64, 35, 0.06);
+  overflow: hidden;
+}
+
+.serviceCoverWrap {
+  position: relative;
+  width: 100%;
+  height: 210rpx;
+  overflow: hidden;
+  background: #eef3ef;
+}
+
+.serviceCover,
+.serviceCoverFallback {
+  width: 100%;
+  height: 100%;
+}
+
+.serviceCoverFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  color: #7b8a7d;
+}
+
+.serviceCorner {
+  position: absolute;
+  left: 12rpx;
+  top: 12rpx;
+  min-height: 36rpx;
+  padding: 0 14rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.86);
+  color: #15934d;
+  font-size: 18rpx;
+  line-height: 36rpx;
+  font-weight: 700;
+}
+
+.serviceBody {
+  padding: 18rpx 18rpx 20rpx;
+}
+
+.serviceName {
+  font-size: 30rpx;
+  line-height: 1.4;
+  color: #1f2a20;
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.serviceTagLine {
+  margin-top: 10rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6rpx;
+}
+
+.serviceTag {
+  padding: 4rpx 10rpx;
+  border-radius: 999rpx;
+  background: #f6faf7;
+  border: 1rpx solid #e3ece4;
+  font-size: 18rpx;
+  color: #5c6b60;
+  line-height: 1.35;
+}
+
+.serviceSales {
+  margin-top: 12rpx;
+  font-size: 20rpx;
+  color: #f08a2a;
+  font-weight: 700;
+}
+
+.servicePriceRow {
+  margin-top: 10rpx;
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.servicePrice {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #15934d;
+}
+
+.serviceOriginalPrice {
+  font-size: 18rpx;
+  color: #9ca79d;
+  text-decoration: line-through;
+}
+
+.footerState,
+.stateText {
+  font-size: var(--ab-font-size-min);
+  color: var(--ab-color-text-2);
+}
+
+.emptyAction {
+  margin: 0;
+  min-width: 220rpx;
+  height: var(--ab-touch-height);
+  line-height: var(--ab-touch-height);
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  background: #FFFFFF;
+  color: #1f2a20;
+  font-size: var(--ab-font-size-min);
+  font-weight: 700;
+  border: 1rpx solid #e3ece4;
+}
+
+.emptyAction::after {
+  display: none;
+}
+
+.footerState {
+  padding: 24rpx 0 0;
+  text-align: center;
+}
+
+.state {
+  min-height: 52vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18rpx;
+}
+
+.spinner {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(0, 0, 0, 0.12);
+  border-top-color: rgba(0, 0, 0, 0.45);
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}

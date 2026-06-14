@@ -1,0 +1,59 @@
+.ab-btn {
+  height: var(--ab-touch-height);
+  line-height: var(--ab-touch-height);
+  border-radius: var(--ab-radius-md);
+  font-size: var(--ab-font-size-md);
+  font-weight: 600;
+  padding: 0 var(--ab-space-4);
+  border: 1rpx solid transparent;
+  box-sizing: border-box;
+}
+
+.ab-btn.block {
+  width: 100%;
+}
+
+.ab-btn.sm {
+  height: var(--ab-touch-height);
+  line-height: var(--ab-touch-height);
+  font-size: var(--ab-font-size-min);
+}
+
+/* 主按钮 */
+.ab-btn.primary {
+  background: var(--ab-color-primary);
+  color: #FFFFFF;
+}
+.ab-btn.primary.plain {
+  background: #FFFFFF;
+  color: var(--ab-color-text-1);
+  border-color: var(--ab-color-border);
+}
+
+.ab-btn.secondary {
+  background: #FFFFFF;
+  color: var(--ab-color-text-1);
+  border-color: var(--ab-color-border);
+}
+.ab-btn.secondary.plain {
+  background: #F1F1F1;
+  color: var(--ab-color-text-2);
+  border-color: #F1F1F1;
+}
+
+.ab-btn.danger {
+  background: var(--ab-color-danger);
+  color: #FFFFFF;
+}
+.ab-btn.danger.plain {
+  background: #FFFFFF;
+  color: var(--ab-color-danger);
+  border-color: rgba(229, 62, 62, 0.28);
+}
+
+.ab-btn[disabled] {
+  background: var(--ab-color-disabled);
+  color: #FFFFFF;
+  border-color: var(--ab-color-disabled);
+}
+

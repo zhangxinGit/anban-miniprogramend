@@ -1,0 +1,122 @@
+<view class="page {{displayModeClass}}">
+  <view class="heroSection">
+    <swiper
+      class="heroSwiper"
+      current="{{activeBannerIndex}}"
+      autoplay="{{true}}"
+      circular="{{true}}"
+      interval="4200"
+      duration="420"
+      indicator-dots="{{false}}"
+      bindchange="onBannerChange">
+      <block wx:for="{{bannerCards}}" wx:key="id" wx:for-item="banner">
+        <swiper-item>
+          <view class="heroSlide" bindtap="onOpenBanner" data-route-mode="{{banner.routeMode}}" data-route-url="{{banner.routeUrl}}">
+            <image class="heroSectionBg" src="{{banner.imageSrc}}" mode="aspectFill" binderror="onBannerImageError" data-index="{{index}}" />
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+
+    <view wx:if="{{bannerCards.length > 1}}" class="heroDots">
+      <block wx:for="{{bannerCards}}" wx:key="id">
+        <view class="heroDot {{activeBannerIndex === index ? 'heroDotActive' : ''}}" bindtap="onSelectBanner" data-index="{{index}}"></view>
+      </block>
+    </view>
+  </view>
+
+  <view class="searchPanel">
+    <view class="searchLocationCard">
+      <picker class="searchRegionPicker" mode="region" value="{{locationRegionValue}}" bindchange="onPickRegion">
+        <view class="searchRegionInner">
+          <text class="searchLocationText {{!locationRegionValue.length && (displayMode === 'aged' ? locationRegionAgedText === locationRegionAgedPlaceholderText : locationRegionText === locationRegionPlaceholderText) ? 'placeholder' : ''}}">{{locationLoading ? (displayMode === 'aged' ? agedLocationLoadingText : standardLocationLoadingText) : (displayMode === 'aged' ? locationRegionAgedText : locationRegionText)}}</text>
+          <text class="searchLocationArrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="searchBar">
+      <input
+        class="searchInput"
+        value="{{keyword}}"
+        placeholder="{{displayMode === 'aged' ? agedSearchPlaceholderText : standardSearchPlaceholderText}}"
+        placeholder-class="searchPlaceholder"
+        confirm-type="search"
+        bindinput="onKeywordInput"
+        bindconfirm="onSearchSubmit"
+      />
+      <button wx:if="{{keyword}}" class="searchClearButton" bindtap="onClearKeyword">清空</button>
+      <button class="searchButton" bindtap="onSearchSubmit">搜索</button>
+    </view>
+  </view>
+
+  <view wx:if="{{currentServiceBooking}}" class="serviceProcessCard" bindtap="onOpenServiceBookings">
+    <view class="serviceProcessHead">
+      <view class="serviceProcessTitleWrap">
+        <text class="serviceProcessEyebrow">当前服务进程</text>
+        <text class="serviceProcessTitle">{{currentServiceBooking.serviceTitle || '上门服务'}}</text>
+      </view>
+      <text class="serviceProcessStatus serviceProcessStatus-{{currentServiceBooking.statusClass}}">{{currentServiceBooking.statusText}}</text>
+    </view>
+    <text wx:if="{{currentServiceBooking.createdAtText}}" class="serviceProcessMeta">提交时间：{{currentServiceBooking.createdAtText}}</text>
+    <text class="serviceProcessMeta">服务位置：{{currentServiceBooking.locationLabel || '待确认'}}</text>
+    <text class="serviceProcessHint">{{currentServiceBooking.statusHint}}</text>
+    <view class="serviceProcessActions">
+      <button class="serviceProcessActionBtn serviceProcessActionBtn-secondary" catchtap="onOpenServiceBookings">预约记录</button>
+      <button class="serviceProcessActionBtn serviceProcessActionBtn-primary" catchtap="onCallCurrentServiceManager">联系管家</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+  </view>
+
+  <view wx:elif="{{sections.length === 0}}" class="state">
+    <text class="stateText">{{isFiltering ? '没有找到符合条件的服务' : '暂无已上架服务'}}</text>
+    <button wx:if="{{isFiltering}}" class="emptyAction" bindtap="onResetFilters">清空筛选</button>
+  </view>
+
+  <block wx:else>
+    <block wx:for="{{sections}}" wx:key="moduleTitle" wx:for-item="section">
+      <view class="section">
+        <view class="sectionHead">
+          <view class="sectionTitle">{{section.moduleTitle}}</view>
+          <view class="sectionMore">更多 ></view>
+        </view>
+
+        <view class="serviceGrid">
+          <block wx:for="{{section.items}}" wx:key="id" wx:for-item="service">
+            <view class="serviceCard" bindtap="onOpenDetail" data-id="{{service.id}}">
+              <view class="serviceCoverWrap">
+                <image wx:if="{{service.coverImg && !service._coverFailed}}" class="serviceCover" src="{{service.coverSrc || service.coverImg}}" mode="aspectFill" binderror="onCoverImageError" data-id="{{service.id}}" />
+                <view wx:else class="serviceCoverFallback">{{service.moduleTitle}}</view>
+                <view class="serviceCorner">{{service.moduleTitle}}</view>
+              </view>
+
+              <view class="serviceBody">
+                <view class="serviceName">{{service.serviceName}}</view>
+                <view class="serviceTagLine" wx:if="{{service.tagList.length > 0}}">
+                  <block wx:for="{{service.tagList}}" wx:key="*this" wx:for-item="tag">
+                    <text class="serviceTag">{{tag}}</text>
+                  </block>
+                </view>
+                <view class="serviceSales">已售 {{6 + index}} 次</view>
+                <view class="servicePriceRow">
+                  <text class="servicePrice">¥{{service.price}}</text>
+                  <text class="serviceOriginalPrice">¥{{service.originalPrice}}</text>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+
+    <view class="footerState">{{loadingMore ? '加载更多中...' : (hasMore ? '上滑加载更多' : '没有更多了')}}</view>
+  </block>
+</view>

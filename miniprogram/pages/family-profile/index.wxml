@@ -1,0 +1,116 @@
+<view class="page fadeIn {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+    <button class="primary" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:else class="content">
+    <view wx:if="{{families.length > 1}}" class="card">
+      <view class="sectionTitle">
+        <text>我加入的家庭</text>
+      </view>
+      <scroll-view scroll-x class="familyGroupScroll" enable-flex="true" show-scrollbar="false">
+        <view class="familyGroupList">
+          <view
+            wx:for="{{families}}"
+            wx:key="id"
+            class="familyGroupChip {{item.id === selectedFamilyId ? 'familyGroupChipActive' : ''}}"
+            bindtap="onSwitchFamily"
+            data-id="{{item.id}}"
+          >
+            <text class="familyGroupName">{{item.name}}</text>
+            <text class="familyGroupMeta">{{item.role === 'ADMIN' ? '管理员' : '成员'}} · {{item.memberCount}}人</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 家庭信息 -->
+    <view class="card">
+      <view class="topRow">
+        <view>
+          <view class="title">{{family.name}}</view>
+          <view class="sub" wx:if="{{family.address}}">{{family.address}}</view>
+          <view class="sub" wx:else>家庭地址由工作人员维护</view>
+        </view>
+        <view class="pill">{{isFamilyAdmin ? '家庭管理员' : '普通成员'}}</view>
+      </view>
+    </view>
+
+    <!-- 成员列表 -->
+    <view class="card">
+      <view class="sectionTitle">
+        <text>家庭成员</text>
+        <button
+          wx:if="{{visible.addMember && !inviteReady}}"
+          class="mini shareBtn"
+          loading="{{inviteLoading}}"
+          disabled="{{inviteLoading}}"
+          bindtap="onCreateInviteShare"
+        >{{inviteLoading ? '生成中...' : '生成分享链接'}}</button>
+      </view>
+      <view wx:if="{{visible.addMember && inviteReady}}" class="inviteBox">
+        <view class="inviteMeta">
+          <text class="inviteTitle">本次分享链接已就绪</text>
+          <text class="inviteDesc">{{inviteExpiresLabel || '24小时内有效，过期后需要重新生成'}}</text>
+        </view>
+        <view class="inviteActions">
+          <button class="mini shareBtn invitePrimary" open-type="share">立即分享</button>
+          <button class="mini inviteGhost" bindtap="onCreateInviteShare">重新生成</button>
+        </view>
+      </view>
+      <block wx:if="{{members.length === 0}}">
+        <view class="empty">暂无成员</view>
+      </block>
+      <block wx:else>
+        <block wx:for="{{members}}" wx:key="id">
+          <view class="memberRow">
+            <view class="left">
+              <text class="memberName">{{item.name}}</text>
+              <text class="tag">{{item.role === 'ADMIN' ? '管理员' : '成员'}}</text>
+            </view>
+            <view class="right">
+              <text class="uid">UID：{{item.userId}}</text>
+              <button
+                wx:if="{{visible.removeMember && item.role !== 'ADMIN'}}"
+                class="mini warn"
+                bindtap="onRemoveMember"
+                data-id="{{item.id}}"
+                data-name="{{item.name}}"
+              >删除</button>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+    <!-- 设备列表（只读） -->
+    <view class="card">
+      <view class="sectionTitle">
+        <text>设备（只读）</text>
+      </view>
+      <block wx:if="{{devices.length === 0}}">
+        <view class="empty">暂无设备</view>
+      </block>
+      <block wx:else>
+        <block wx:for="{{devices}}" wx:key="id">
+          <view class="deviceRow">
+            <view class="deviceLeft">
+              <view class="deviceName">{{item.name}}</view>
+              <view class="deviceMeta">SN：{{item.sn}}</view>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+    <view class="hint">
+      <text>说明：每次生成的邀请链接 24 小时内有效；过期后需要重新生成并再分享。新生成的链接会自动顶掉之前未使用的旧链接。家庭成员仅可查看当前家庭设备信息，不能继续邀请其他成员。</text>
+    </view>
+  </view>
+</view>

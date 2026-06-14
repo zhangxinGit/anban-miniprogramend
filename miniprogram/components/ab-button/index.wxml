@@ -1,0 +1,8 @@
+<button
+  class="ab-btn {{variant}} {{block ? 'block' : ''}} {{size}} {{plain ? 'plain' : ''}}"
+  disabled="{{disabled}}"
+  bindtap="onTap"
+>
+  <slot></slot>
+</button>
+

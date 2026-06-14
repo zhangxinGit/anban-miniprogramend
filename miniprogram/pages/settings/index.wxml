@@ -1,0 +1,28 @@
+<view class="page {{displayModeClass}}">
+  <view class="card">
+    <view class="sectionTitle">账号设置</view>
+    <view class="settingRow">
+      <text class="settingLabel">当前登录</text>
+      <text class="settingValue">{{phoneMask}}</text>
+    </view>
+  </view>
+
+  <view class="card displayCard">
+    <view class="sectionTitle">显示设置</view>
+    <view class="displaySwitchBar">
+      <view class="displaySwitchSummary">
+        <view class="displaySwitchLabel">显示模式</view>
+        <view class="displaySwitchCurrent">{{displayMode === 'aged' ? '当前适老版' : '当前标准版'}}</view>
+      </view>
+      <view class="displaySwitchActions">
+        <button class="displaySwitchOption {{displayMode === 'standard' ? 'active' : ''}}" hover-class="none" bindtap="onSwitchDisplayMode" data-mode="standard">标准版</button>
+        <button class="displaySwitchOption {{displayMode === 'aged' ? 'active' : ''}}" hover-class="none" bindtap="onSwitchDisplayMode" data-mode="aged">适老版</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="card actionCard">
+    <button class="logoutBtn" bindtap="onLogout">退出登录</button>
+    <view class="tips">退出后将返回游客状态，仍可浏览首页与服务信息。</view>
+  </view>
+</view>

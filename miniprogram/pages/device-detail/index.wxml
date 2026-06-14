@@ -1,0 +1,214 @@
+<view class="page fadeIn {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+    <button class="primary" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:elif="{{!device}}" class="state">
+    <text class="stateText">未找到该设备或暂无权限查看</text>
+    <button class="primary" bindtap="goBack">返回</button>
+  </view>
+
+  <view wx:else class="content">
+    <view class="card infoCard">
+      <view class="top">
+        <view class="name">{{device.titleText}}</view>
+        <view class="statusTag {{device.onlineClass}}">{{device.onlineText}}</view>
+      </view>
+
+      <view class="rows">
+        <view class="row">
+          <text class="k">SN</text>
+          <text class="v">{{device.sn}}</text>
+        </view>
+        <view class="row">
+          <text class="k">电量</text>
+          <text class="v">{{device.batteryText}}</text>
+        </view>
+        <view class="row">
+          <text class="k">安装位置</text>
+          <text class="v">{{device.installLocationText}}</text>
+        </view>
+        <view class="row">
+          <text class="k">最后在线</text>
+          <text class="v">{{device.lastSeenText}}</text>
+        </view>
+      </view>
+
+      <view class="readOnlyTip">小程序端可自主绑定设备；如需解绑、换绑或排查异常，请联系工作人员处理。</view>
+    </view>
+
+    <view class="card reportCard">
+      <view class="sectionHead">
+        <view>
+          <view class="sectionTitle">{{report.reportTitle || '雷达趋势报表'}}</view>
+          <view class="sectionSub">{{report.reportSubtitle || '按 accepted CTWing 回调聚合摘要卡片、趋势柱图和告警统计。'}}</view>
+        </view>
+        <view wx:if="{{report.sampleCountText}}" class="sampleTag">{{report.sampleCountText}}</view>
+      </view>
+
+      <block wx:if="{{!report || !report.hasData}}">
+        <view class="empty">{{report.emptyMessage || '暂无雷达趋势数据'}}</view>
+      </block>
+
+      <block wx:else>
+        <view class="windowTip">{{report.windowLabel}}</view>
+
+        <view wx:if="{{report.summaryCards.length}}" class="summaryGrid">
+          <block wx:for="{{report.summaryCards}}" wx:key="key" wx:for-item="card">
+            <view class="summaryCell">
+              <text class="summaryLabel">{{card.label}}</text>
+              <view class="summaryValueRow">
+                <text class="summaryValue {{card.toneClass}}">{{card.value}}</text>
+                <text wx:if="{{card.unit}}" class="summaryUnit">{{card.unit}}</text>
+              </view>
+              <text class="summaryHint">{{card.hint}}</text>
+            </view>
+          </block>
+        </view>
+
+        <block wx:for="{{report.trendCharts}}" wx:key="key" wx:for-item="chart">
+          <view class="trendBlock">
+            <view class="trendTitle">{{chart.title}}</view>
+            <view class="trendSub">{{chart.subtitle}}</view>
+            <block wx:for="{{chart.points}}" wx:key="label" wx:for-item="point">
+              <view class="barRow">
+                <text class="barLabel">{{point.label}}</text>
+                <view class="barTrack">
+                  <view class="barFill {{point.toneClass}}" style="width: {{point.barWidth}}%;"></view>
+                </view>
+                <text class="barValue">{{point.displayValue}}</text>
+              </view>
+            </block>
+          </view>
+        </block>
+
+        <view wx:if="{{report.alertStats.length}}" class="alertStatsWrap">
+          <view class="miniTitle">告警统计</view>
+          <view class="statGrid">
+            <block wx:for="{{report.alertStats}}" wx:key="key" wx:for-item="stat">
+              <view class="statChip {{stat.toneClass}}">
+                <text class="chipLabel">{{stat.label}}</text>
+                <text class="chipCount">{{stat.count}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 紧急联系人卡片 -->
+  <view class="card emergencyCard">
+    <view class="sectionHead">
+      <view>
+        <view class="sectionTitle">紧急联系人</view>
+        <view class="sectionSub">设备触发高风险告警（如跌倒、SOS、烟雾等）时，将通过短信通知以下联系人。</view>
+      </view>
+    </view>
+
+    <view wx:if="{{emergencyLoading}}" class="ecLoading">加载中...</view>
+
+    <!-- 联系人列表（加载完成且有数据时） -->
+    <block wx:elif="{{emergencyContacts.length > 0}}">
+      <view class="ecList">
+        <view wx:for="{{emergencyContacts}}" wx:key="id" class="ecRow">
+          <view class="ecInfo">
+            <text class="ecName">{{item.name || '未备注'}}</text>
+            <text class="ecPhone">{{item.phoneMasked}}</text>
+            <text class="ecEnabled {{item.enabled === 1 ? 'ecOn' : 'ecOff'}}">{{item.enabled === 1 ? '已启用' : '已停用'}}</text>
+          </view>
+          <view class="ecAction" data-id="{{item.id}}" bindtap="onRemoveContact">
+            <text class="ecRemove">移除</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态：无联系人 -->
+    <block wx:elif="{{!emergencyLoading && !emergencyError && emergencyContacts.length === 0}}">
+      <view class="ecEmpty">暂无紧急联系人，添加家人手机号，设备异常时将自动短信通知</view>
+    </block>
+
+    <!-- 加载失败提示（轻量，不阻塞添加按钮） -->
+    <view wx:elif="{{emergencyError}}" class="ecErrorHint">
+      <text class="ecErrorHintText">{{emergencyError}}</text>
+      <text class="ecErrorHintBtn" bindtap="loadEmergencyContacts">重试</text>
+    </view>
+
+    <!-- 添加按钮始终固定展示，最多5个 -->
+    <button wx:if="{{emergencyContacts.length < 5}}" class="ecAddBtn" bindtap="onOpenAddContact">
+      <text class="ecAddIcon">＋</text>
+      <text>添加家人手机号</text>
+    </button>
+    <view wx:else class="ecLimitReached">已达上限，最多添加5个紧急联系人</view>
+  </view>
+
+    <view class="card alarmCard">
+      <view class="sectionTitle">历史告警</view>
+      <view class="sectionSub">以下为该设备近期告警记录，按时间倒序展示。</view>
+      <block wx:if="{{alarms.length === 0}}">
+        <view class="empty">暂无告警记录</view>
+      </block>
+      <block wx:else>
+        <block wx:for="{{alarms}}" wx:key="id">
+          <view class="alarmRow">
+            <view class="alarmLeft">
+                <view class="badge {{item.recordTypeClass}}">{{item.recordTypeLabel}}</view>
+              <view class="alarmTitle">{{item.title}}</view>
+            </view>
+            <view class="alarmRight">
+              <text class="alarmTime">{{item.timeText}}</text>
+                <text class="alarmDot">{{item.handledLabel}}</text>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+  </view>
+
+
+  <!-- 添加紧急联系人弹层（独立于 wx:if 条件链，避免输入触发 setData 导致 DOM 销毁） -->
+  <view wx:if="{{showAddContact}}" class="ecOverlay" bindtap="onCancelAddContact">
+    <view class="ecPanel" catch:tap="noop" catchtouchmove="noop">
+      <view class="ecPanelTitle">添加紧急联系人</view>
+      <view class="ecPanelSub">输入家人手机号，高风险告警时将短信通知对方</view>
+
+      <view class="ecField">
+        <text class="ecFieldLabel">手机号</text>
+        <input
+          class="ecInput"
+          type="number"
+          maxlength="11"
+          placeholder="请输入11位手机号"
+          value="{{newContactPhone}}"
+          bindinput="onPhoneInput"
+        />
+      </view>
+
+      <view class="ecField">
+        <text class="ecFieldLabel">备注（选填）</text>
+        <input
+          class="ecInput"
+          type="text"
+          maxlength="20"
+          placeholder="如：儿子、女儿"
+          value="{{newContactName}}"
+          bindinput="onNameInput"
+        />
+      </view>
+
+      <view wx:if="{{addContactError}}" class="ecFieldError">{{addContactError}}</view>
+
+      <view class="ecPanelActions">
+        <button class="ecPanelCancel" bindtap="onCancelAddContact">取消</button>
+        <button class="ecPanelConfirm" bindtap="onSubmitAddContact" loading="{{addContactSubmitting}}">确认添加</button>
+      </view>
+    </view>
+  </view>
+</view>

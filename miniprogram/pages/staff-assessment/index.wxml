@@ -1,0 +1,89 @@
+<view class="page">
+  <view class="hero">
+    <view class="heroMeta">新增老人评估</view>
+    <view class="heroTitle">32 项居家防跌倒风险评估</view>
+    <view class="heroSub">完成基础信息和 32 项风险排查后，系统会自动算分、判定风险等级并生成报告。</view>
+  </view>
+
+  <view class="summaryCard">
+    <view class="summaryTop">
+      <view>
+        <view class="summaryLabel">当前填写进度</view>
+        <view class="summaryValue">{{answeredCount}} / {{totalQuestions}}</view>
+      </view>
+      <view class="riskBadge risk-{{previewRiskTone}}">{{previewRiskLabel}}</view>
+    </view>
+    <view class="summaryScore">已命中风险项：{{previewScore}}</view>
+    <view class="summaryDesc">{{previewRiskDescription}}</view>
+  </view>
+
+  <view class="card">
+    <view class="sectionTitle">老人基础信息</view>
+
+    <view class="fieldGrid">
+      <view class="fieldBlock">
+        <view class="fieldLabel">姓名</view>
+        <input class="fieldInput" value="{{elderName}}" bindinput="onFieldInput" data-field="elderName" placeholder="请输入老人姓名" placeholder-class="fieldPlaceholder" />
+      </view>
+
+      <view class="fieldBlock">
+        <view class="fieldLabel">性别</view>
+        <view class="genderRow">
+          <button class="genderBtn {{gender === '男' ? 'active' : ''}}" bindtap="onSelectGender" data-value="男">男</button>
+          <button class="genderBtn {{gender === '女' ? 'active' : ''}}" bindtap="onSelectGender" data-value="女">女</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="fieldGrid">
+      <view class="fieldBlock">
+        <view class="fieldLabel">年龄</view>
+        <input class="fieldInput" type="number" maxlength="3" value="{{age}}" bindinput="onFieldInput" data-field="age" placeholder="请输入年龄" placeholder-class="fieldPlaceholder" />
+      </view>
+
+      <view class="fieldBlock">
+        <view class="fieldLabel">电话</view>
+        <input class="fieldInput" type="number" maxlength="11" value="{{phone}}" bindinput="onFieldInput" data-field="phone" placeholder="请输入联系电话" placeholder-class="fieldPlaceholder" />
+      </view>
+    </view>
+
+    <view class="fieldBlock fieldSingle">
+      <view class="fieldLabel">家庭住址</view>
+      <input class="fieldInput" value="{{address}}" bindinput="onFieldInput" data-field="address" placeholder="请输入老人家庭住址" placeholder-class="fieldPlaceholder" />
+    </view>
+
+    <view class="fieldBlock fieldSingle fieldSingleLast">
+      <view class="fieldLabel">所属社区</view>
+      <input class="fieldInput" value="{{community}}" bindinput="onFieldInput" data-field="community" placeholder="请输入所属社区" placeholder-class="fieldPlaceholder" />
+    </view>
+  </view>
+
+  <block wx:for="{{sections}}" wx:key="key" wx:for-item="section" wx:for-index="sectionIndex">
+    <view class="card">
+      <view class="sectionHead" bindtap="onToggleSection" data-index="{{sectionIndex}}">
+        <view>
+          <view class="sectionTitle">{{section.title}}</view>
+          <view class="sectionMeta">已完成 {{section.doneCount}} / {{section.questions.length}}</view>
+        </view>
+        <view class="sectionArrow">{{section.expanded ? '收起' : '展开'}}</view>
+      </view>
+
+      <view wx:if="{{section.expanded}}" class="questionList">
+        <block wx:for="{{section.questions}}" wx:key="id" wx:for-item="question" wx:for-index="questionIndex">
+          <view class="questionItem">
+            <view class="questionText">{{questionIndex + 1}}. {{question.text}}</view>
+            <view class="answerRow">
+              <button class="answerBtn answerYes {{question.answer === 'yes' ? 'active' : ''}}" bindtap="onSelectAnswer" data-section-index="{{sectionIndex}}" data-question-index="{{questionIndex}}" data-value="yes">是</button>
+              <button class="answerBtn answerNo {{question.answer === 'no' ? 'active' : ''}}" bindtap="onSelectAnswer" data-section-index="{{sectionIndex}}" data-question-index="{{questionIndex}}" data-value="no">否</button>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </block>
+
+  <view class="actionRow">
+    <button class="actionBtn" bindtap="onSaveDraft">保存草稿</button>
+    <button class="actionBtn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onSubmit">提交评估</button>
+  </view>
+</view>

@@ -1,0 +1,10 @@
+<view class="tabbar safe-area">
+  <block wx:for="{{tabs}}" wx:key="key">
+    <view class="item {{selected === item.pagePath ? 'active' : ''}}" bindtap="onTap" data-path="{{item.pagePath}}">
+      <view class="dot" wx:if="{{item.key === 'home' && unread > 0}}">{{unread > 99 ? '99+' : unread}}</view>
+      <image wx:if="{{item.iconSrc}}" class="icon-img" src="{{selected === item.pagePath ? item.iconActiveSrc : item.iconSrc}}" mode="aspectFit" />
+      <view wx:else class="icon-text">{{selected === item.pagePath ? item.iconActive : item.icon}}</view>
+      <view class="text">{{item.text}}</view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,129 @@
+<view class="page {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">{{loadingText}}</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+    <button class="retryButton" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:else class="content fadeIn">
+    <view class="header">
+      <view class="title">居家安全自查</view>
+      <view class="sub">先补充老人信息，再完成 {{questions.length}} 题快速评估</view>
+    </view>
+
+    <view wx:if="{{mode === 'UNASSESSED'}}" class="card surveyCard">
+      <view class="guideTitle">{{surveyStage === 'PROFILE' ? '开始测评前' : '居家风险题目'}} </view>
+      <view wx:if="{{surveyStage === 'PROFILE'}}">
+        <view class="guideText">请先填写老人基本信息，测评结果会按最新规则公示风险等级。</view>
+        <view wx:if="{{pendingReferralHint}}" class="referralNotice">{{pendingReferralHint}}，登录后会自动用于建立推荐关系。</view>
+
+        <view class="formList">
+          <view class="formItem {{shakeFields.respondentName ? 'formItemShake' : ''}}">
+            <view class="formLabel">姓名</view>
+            <input class="formInput {{shakeFields.respondentName ? 'formInputError' : ''}}" placeholder="请输入姓名" value="{{profile.respondentName}}" data-field="respondentName" bindinput="onProfileInput" />
+          </view>
+
+          <view class="formItem">
+            <view class="formLabel">性别</view>
+            <view class="genderRow">
+              <view class="genderChip {{profile.respondentGender === 'male' ? 'genderChipActive' : ''}}" data-field="respondentGender" data-value="male" bindtap="onProfileInput">男</view>
+              <view class="genderChip {{profile.respondentGender === 'female' ? 'genderChipActive' : ''}}" data-field="respondentGender" data-value="female" bindtap="onProfileInput">女</view>
+            </view>
+          </view>
+
+          <view class="formItem {{shakeFields.respondentAge ? 'formItemShake' : ''}}">
+            <view class="formLabel">年龄</view>
+            <input class="formInput {{shakeFields.respondentAge ? 'formInputError' : ''}}" type="number" placeholder="请输入年龄" value="{{profile.respondentAge}}" data-field="respondentAge" bindinput="onProfileInput" />
+          </view>
+
+          <view class="formItem {{shakeFields.respondentPhone ? 'formItemShake' : ''}}">
+            <view class="formLabel">联系电话</view>
+            <input class="formInput {{shakeFields.respondentPhone ? 'formInputError' : ''}}" type="number" maxlength="11" placeholder="请输入联系电话" value="{{profile.respondentPhone}}" data-field="respondentPhone" bindinput="onProfileInput" />
+          </view>
+        </view>
+
+        <button class="primaryButton fullButton {{isProfileReady ? 'primaryButtonActive' : ''}}" bindtap="onStartSurvey">开始答题</button>
+      </view>
+
+      <view wx:else>
+        <view class="guideText">请根据老人真实居住环境选择是否存在隐患，提交后将生成风险结果与建议。</view>
+
+        <view class="profileSummary">
+          <text class="profileSummaryText">{{profile.respondentName}}</text>
+          <text class="profileSummaryText">{{profile.respondentGender === 'female' ? '女' : '男'}}</text>
+          <text class="profileSummaryText">{{profile.respondentAge}} 岁</text>
+          <text class="profileSummaryText">{{profile.respondentPhone}}</text>
+        </view>
+
+        <view class="progressRow">
+          <view class="progressBar">
+            <view class="progressInner" style="width: {{progress}}%;"></view>
+          </view>
+          <text class="progressText">{{currentIndex + 1}} / {{questions.length}}</text>
+        </view>
+
+        <view class="questionTitle">{{questions[currentIndex].title}}</view>
+
+        <view class="optionList">
+          <block wx:for="{{questions[currentIndex].options}}" wx:key="value">
+            <view
+              class="optionItem {{answers[questions[currentIndex].id] === item.value ? 'optionItemActive' : ''}}"
+              bindtap="onPick"
+              data-qid="{{questions[currentIndex].id}}"
+              data-value="{{item.value}}">
+              <text class="optionText">{{item.label}}</text>
+            </view>
+          </block>
+        </view>
+
+        <view class="surveyActions">
+          <button class="secondaryButton" bindtap="onPrev">{{currentIndex === 0 ? '修改信息' : '上一步'}}</button>
+          <button class="primaryButton {{canNext ? 'primaryButtonActive' : ''}}" bindtap="onNextOrSubmit">{{currentIndex === questions.length - 1 ? '提交测评' : '下一步'}}</button>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="card resultCard">
+      <view class="riskRow">
+        <view class="riskBadge" style="background: {{risk.color}};">
+          <text class="riskBadgeIcon">{{risk.icon}}</text>
+          <text class="riskBadgeText">{{risk.text}}</text>
+        </view>
+        <text class="riskScore">评分：{{latest.score}}</text>
+      </view>
+
+      <view class="sectionBlock">
+        <view class="sectionTitle">安全建议</view>
+        <block wx:for="{{suggestions}}" wx:key="index">
+          <view class="adviceItem">{{item}}</view>
+        </block>
+      </view>
+
+      <view class="sectionBlock">
+        <view class="sectionTitle">历史记录（最多 3 条）</view>
+        <block wx:if="{{history.length === 0}}">
+          <view class="emptyCard">暂无历史记录</view>
+        </block>
+        <block wx:else>
+          <block wx:for="{{history}}" wx:key="id">
+            <view class="historyRow">
+              <text class="historyTime">{{item.createdAtText}}</text>
+              <text class="historyRisk" style="color: {{item.riskColor}};">{{item.riskText}}</text>
+              <text class="historyScore">评分 {{item.score}}</text>
+            </view>
+          </block>
+        </block>
+      </view>
+
+      <view class="resultActions">
+        <button class="outlineButton" bindtap="onReAssess">重新测评</button>
+        <button wx:if="{{visible.btnMakeAppointment}}" class="primaryButton fullButton primaryButtonActive" bindtap="onMakeAppointment">预约上门专业评估</button>
+      </view>
+    </view>
+  </view>
+</view>
+

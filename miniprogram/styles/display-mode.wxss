@@ -1,0 +1,228 @@
+.display-mode-standard {
+  letter-spacing: 0;
+}
+
+.display-mode-aged {
+  letter-spacing: 0.01em;
+}
+
+.display-mode-aged button,
+.display-mode-aged input,
+.display-mode-aged textarea,
+.display-mode-aged picker,
+.display-mode-aged label,
+.display-mode-aged text {
+  line-height: var(--ab-line-height-base);
+}
+
+.display-mode-aged button {
+  min-height: var(--ab-touch-height);
+  line-height: var(--ab-touch-height);
+  font-size: var(--ab-font-size-md);
+}
+
+.display-mode-aged .title,
+.display-mode-aged .heroTitle,
+.display-mode-aged .deviceTitle,
+.display-mode-aged .loginTitle,
+.display-mode-aged .profileName,
+.display-mode-aged .cardTitle,
+.display-mode-aged .serviceTitle,
+.display-mode-aged .serviceName,
+.display-mode-aged .serviceProcessTitle,
+.display-mode-aged .bookingCardTitle,
+.display-mode-aged .sceneTitle,
+.display-mode-aged .detailTitle,
+.display-mode-aged .sheetTitle,
+.display-mode-aged .guideTitle,
+.display-mode-aged .qTitle,
+.display-mode-aged .statusTitle,
+.display-mode-aged .serviceValue,
+.display-mode-aged .submitMetaTitle,
+.display-mode-aged .recordTitle,
+.display-mode-aged .sectionTitle,
+.display-mode-aged .deviceName,
+.display-mode-aged .name,
+.display-mode-aged .helpType,
+.display-mode-aged .elderName,
+.display-mode-aged .alarmTitle,
+.display-mode-aged .familyGroupName,
+.display-mode-aged .loginAdvisorTitle,
+.display-mode-aged .profileHeroName {
+  font-size: var(--ab-font-size-xl);
+  line-height: 1.45;
+}
+
+.display-mode-aged .detailPrice {
+  font-size: var(--ab-font-size-3xl);
+  line-height: 1.08;
+}
+
+.display-mode-aged .servicePrice,
+.display-mode-aged .statusText,
+.display-mode-aged .riskScore,
+.display-mode-aged .sceneValue {
+  font-size: var(--ab-font-size-lg);
+  line-height: 1.45;
+}
+
+.display-mode-aged .subtitle,
+.display-mode-aged .sub,
+.display-mode-aged .heroSub,
+.display-mode-aged .heroSubtitle,
+.display-mode-aged .heroNote,
+.display-mode-aged .deviceSub,
+.display-mode-aged .loginSub,
+.display-mode-aged .profileMeta,
+.display-mode-aged .recordSubtitle,
+.display-mode-aged .recordMeta,
+.display-mode-aged .stateText,
+.display-mode-aged .cardDesc,
+.display-mode-aged .rowDesc,
+.display-mode-aged .searchLocationText,
+.display-mode-aged .searchInput,
+.display-mode-aged .promiseText,
+.display-mode-aged .detailMeta,
+.display-mode-aged .detailSales,
+.display-mode-aged .detailOriginalPrice,
+.display-mode-aged .detailText,
+.display-mode-aged .guideText,
+.display-mode-aged .progressText,
+.display-mode-aged .optText,
+.display-mode-aged .sheetDesc,
+.display-mode-aged .serviceLabel,
+.display-mode-aged .statusSub,
+.display-mode-aged .statusBanner,
+.display-mode-aged .sectionSub,
+.display-mode-aged .recordTime,
+.display-mode-aged .recordHint,
+.display-mode-aged .v,
+.display-mode-aged .k,
+.display-mode-aged .readOnlyTip,
+.display-mode-aged .alarmTime,
+.display-mode-aged .alarmDot,
+.display-mode-aged .leadText,
+.display-mode-aged .leadId,
+.display-mode-aged .historyTime,
+.display-mode-aged .historyRisk,
+.display-mode-aged .historyScore,
+.display-mode-aged .empty,
+.display-mode-aged .tip,
+.display-mode-aged .serviceProcessMeta,
+.display-mode-aged .serviceProcessHint,
+.display-mode-aged .bookingCardMeta,
+.display-mode-aged .bookingCardHint,
+.display-mode-aged .bookingCardTime,
+.display-mode-aged .bookingCardFootnote,
+.display-mode-aged .assistText,
+.display-mode-aged .tipsText,
+.display-mode-aged .rowDesc,
+.display-mode-aged .time,
+.display-mode-aged .addressText,
+.display-mode-aged .sceneHint,
+.display-mode-aged .sceneValue,
+.display-mode-aged .settingDesc,
+.display-mode-aged .memberRole,
+.display-mode-aged .memberMeta,
+.display-mode-aged .contactText,
+.display-mode-aged .advisorText,
+.display-mode-aged .successText,
+.display-mode-aged .fieldValue,
+.display-mode-aged .input,
+.display-mode-aged .textarea,
+.display-mode-aged .inputPlaceholder {
+  font-size: var(--ab-font-size-min);
+  line-height: 1.75;
+}
+
+.display-mode-aged .field .k,
+.display-mode-aged .form .field .k,
+.display-mode-aged .formList .field .k {
+  width: var(--ab-form-label-width);
+}
+
+.display-mode-aged .form .field,
+.display-mode-aged .formList .field {
+  min-height: 112rpx;
+  gap: 22rpx;
+}
+
+.display-mode-aged .input,
+.display-mode-aged .fieldValue,
+.display-mode-aged .pickerTrigger {
+  min-height: 56rpx;
+  line-height: 56rpx;
+}
+
+.display-mode-aged .textarea {
+  min-height: 280rpx;
+}
+
+.display-mode-aged .heroBadge,
+.display-mode-aged .categoryTag,
+.display-mode-aged .rowState,
+.display-mode-aged .quickChip,
+.display-mode-aged .optionChip,
+.display-mode-aged .filterToggle,
+.display-mode-aged .inlineAction,
+.display-mode-aged .familyGroupChip,
+.display-mode-aged .tab,
+.display-mode-aged .tabBadge,
+.display-mode-aged .pill {
+  font-size: var(--ab-font-size-sm);
+}
+
+.display-mode-aged .detailTag,
+.display-mode-aged .detailBadge,
+.display-mode-aged .serviceTag,
+.display-mode-aged .serviceCorner,
+.display-mode-aged .serviceProcessEyebrow,
+.display-mode-aged .serviceProcessStatus,
+.display-mode-aged .bookingCardEyebrow,
+.display-mode-aged .bookingCardStatus,
+.display-mode-aged .statusPill,
+.display-mode-aged .sectionBadge,
+.display-mode-aged .heroTag,
+.display-mode-aged .statusTag,
+.display-mode-aged .recordStatus,
+.display-mode-aged .headerActionLabel,
+.display-mode-aged .headerActionCount,
+.display-mode-aged .badge,
+.display-mode-aged .qScore,
+.display-mode-aged .fieldArrow {
+  font-size: var(--ab-font-size-xs);
+  line-height: 1.4;
+}
+
+.display-mode-aged .primary,
+.display-mode-aged .submitBtn,
+.display-mode-aged .searchButton,
+.display-mode-aged .stateButton,
+.display-mode-aged .retryBtn,
+.display-mode-aged .serviceProcessActionBtn,
+.display-mode-aged .bookingGhostBtn,
+.display-mode-aged .ghostBtn,
+.display-mode-aged .dangerBtn,
+.display-mode-aged .dockPrimary,
+.display-mode-aged .dockDanger,
+.display-mode-aged .cancelBtn,
+.display-mode-aged .successPrimary,
+.display-mode-aged .successGhost,
+.display-mode-aged .successClose,
+.display-mode-aged .reAssessBtn,
+.display-mode-aged .emptyAction,
+.display-mode-aged .heroPrimaryButton,
+.display-mode-aged .heroSecondaryButton,
+.display-mode-aged .headerAction,
+.display-mode-aged .mini,
+.display-mode-aged .primaryMini,
+.display-mode-aged .ghostMini {
+  min-height: var(--ab-touch-height);
+  line-height: var(--ab-touch-height);
+  font-size: var(--ab-font-size-md);
+}
+
+.page.display-mode-aged,
+.display-mode-aged .page {
+  line-height: var(--ab-line-height-base);
+}

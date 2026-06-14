@@ -1,0 +1,728 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+  padding-bottom: 240rpx;
+  background: #edf5ef;
+  box-sizing: border-box;
+}
+
+.fadeIn {
+  animation: fadeIn 240ms ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.deviceHeader {
+  padding: 6rpx 4rpx 28rpx;
+}
+
+.deviceHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.deviceTitle {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #0f1812;
+}
+
+.headerAction {
+  margin: 0;
+  min-width: 0;
+  height: 68rpx;
+  padding: 0 22rpx;
+  border-radius: 18rpx;
+  background: #fff7f1;
+  border: 1rpx solid rgba(241, 133, 54, 0.18);
+  box-shadow: 0 8rpx 16rpx rgba(241, 133, 54, 0.08);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.headerAction::after {
+  display: none;
+}
+
+.headerActionInner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+
+.headerActionLabel {
+  font-size: 28rpx;
+  line-height: 1;
+  font-weight: 700;
+  color: #705f49;
+}
+
+.headerActionCount {
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #f18636;
+  font-size: 20rpx;
+  line-height: 36rpx;
+  font-weight: 800;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.headerActionDot {
+  position: absolute;
+  top: -8rpx;
+  right: -10rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  background: #ff4343;
+  border: 3rpx solid #fff7f1;
+  box-sizing: border-box;
+}
+
+.deviceSub {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  line-height: 1.65;
+  color: #4f5b51;
+}
+
+.serviceProcessCard {
+  margin-bottom: 20rpx;
+  padding: 28rpx 26rpx;
+  background: #ffffff;
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 14rpx 34rpx rgba(15, 64, 35, 0.06);
+}
+
+.serviceProcessHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.serviceProcessTitleWrap {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.serviceProcessEyebrow {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #15934d;
+  line-height: 1;
+}
+
+.serviceProcessTitle {
+  font-size: 30rpx;
+  line-height: 1.4;
+  color: #1f2a20;
+  font-weight: 700;
+}
+
+.serviceProcessStatus {
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.serviceProcessStatus-pending {
+  background: rgba(240, 138, 42, 0.12);
+  color: #f08a2a;
+}
+
+.serviceProcessStatus-completed {
+  background: rgba(21, 147, 77, 0.12);
+  color: #15934d;
+}
+
+.serviceProcessStatus-cancelled {
+  background: rgba(208, 98, 52, 0.12);
+  color: #d06234;
+}
+
+.serviceProcessMeta,
+.serviceProcessHint {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  line-height: 1.65;
+  color: #5b685f;
+}
+
+.serviceProcessActions {
+  margin-top: 20rpx;
+  display: flex;
+  gap: 12rpx;
+}
+
+.serviceProcessGhostBtn {
+  margin: 0;
+  flex: 1;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #1f2a20;
+  font-size: 24rpx;
+  font-weight: 700;
+  border: 1rpx solid #e3ece4;
+}
+
+.serviceProcessGhostBtn::after {
+  display: none;
+}
+
+.card {
+  margin-top: 10rpx;
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 34rpx 26rpx 32rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 14rpx 34rpx rgba(15, 64, 35, 0.06);
+}
+
+.alarmCard {
+  background: #fff;
+  border: 1rpx solid rgba(229, 62, 62, 0.18);
+}
+
+.alarmCardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.alarmCardTitle {
+  font-size: var(--ab-font-size-lg);
+  font-weight: 700;
+  color: var(--ab-color-text-1);
+}
+
+.alarmCardStatus {
+  margin-top: 8rpx;
+  font-size: var(--ab-font-size-min);
+  color: var(--ab-color-danger);
+  font-weight: 700;
+}
+
+.alarmCardDesc {
+  margin-top: 14rpx;
+  font-size: var(--ab-font-size-min);
+  line-height: var(--ab-line-height-base);
+  color: var(--ab-color-text-2);
+}
+
+.alarmBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--ab-badge-min-height);
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  background: rgba(229, 62, 62, 0.12);
+  color: var(--ab-color-danger);
+  font-size: var(--ab-font-size-sm);
+  font-weight: 700;
+}
+
+.alarmBadge.disabled {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.alarmCardButton {
+  margin-top: 18rpx;
+}
+
+.alarmCardTestButton {
+  margin-top: 14rpx;
+}
+
+.deviceGrid {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 18rpx;
+}
+
+.deviceCard {
+  width: calc(50% - 10rpx);
+  min-height: 212rpx;
+  padding: 26rpx 22rpx 22rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(21, 147, 77, 0.08);
+  box-shadow: 0 10rpx 26rpx rgba(15, 64, 35, 0.08);
+  box-sizing: border-box;
+}
+
+.deviceCardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10rpx;
+}
+
+.deviceName {
+  font-size: 26rpx;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #0f1812;
+  word-break: break-all;
+  flex: 1;
+  min-width: 0;
+}
+
+.deviceNo {
+  margin-top: 10rpx;
+  font-size: 20rpx;
+  color: #4f5b51;
+}
+
+.deviceBadgeRow {
+  margin-top: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.miniBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34rpx;
+  padding: 0 12rpx;
+  border-radius: 999rpx;
+  font-size: 18rpx;
+  line-height: 1;
+}
+
+.miniBadge.is-location {
+  background: #ffffff;
+  border: 1rpx solid #d6d6d6;
+  color: #666666;
+}
+
+.miniBadge.is-online {
+  background: #dbf6e3;
+  color: #15934d;
+}
+
+.miniBadge.is-offline {
+  background: #fff1e8;
+  color: #ff9641;
+}
+
+.deviceCardBottom {
+  margin-top: 20rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10rpx;
+}
+
+.alarmBell {
+  position: relative;
+  width: 62rpx;
+  height: 58rpx;
+  margin-left: 6rpx;
+  border-radius: 34rpx 34rpx 10rpx 10rpx;
+  background: linear-gradient(180deg, #ffc55b 0%, #ff9838 78%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 -2rpx 0 rgba(214, 103, 15, 0.24);
+}
+
+.alarmBell::before {
+  content: '';
+  position: absolute;
+  top: -8rpx;
+  left: 50%;
+  width: 10rpx;
+  height: 12rpx;
+  margin-left: -5rpx;
+  border-radius: 8rpx 8rpx 2rpx 2rpx;
+  background: #ffc55b;
+}
+
+.alarmBell::after {
+  content: '';
+  position: absolute;
+  left: 8rpx;
+  right: 8rpx;
+  bottom: -4rpx;
+  height: 6rpx;
+  border-radius: 999rpx;
+  background: #ff9838;
+}
+
+.alarmBellSpark {
+  position: absolute;
+  width: 6rpx;
+  height: 12rpx;
+  border-radius: 999rpx;
+  background: #ffc55b;
+}
+
+.alarmBellSpark.spark1 {
+  left: -6rpx;
+  top: 8rpx;
+  transform: rotate(-42deg);
+}
+
+.alarmBellSpark.spark2 {
+  left: 8rpx;
+  top: -2rpx;
+  transform: rotate(-18deg);
+}
+
+.alarmBellSpark.spark3 {
+  right: 8rpx;
+  top: -2rpx;
+  transform: rotate(18deg);
+}
+
+.alarmBellSpark.spark4 {
+  right: -6rpx;
+  top: 8rpx;
+  transform: rotate(42deg);
+}
+
+.alarmBellNumber {
+  position: relative;
+  z-index: 1;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.batteryPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+}
+
+.batteryPillMain {
+  min-width: 100rpx;
+  height: 42rpx;
+  padding: 0 16rpx;
+  border-radius: 12rpx;
+  background: linear-gradient(90deg, #10b86d 0%, #8be6c1 100%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 16rpx rgba(16, 184, 109, 0.16);
+}
+
+.batteryPillText {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.batteryPillCap {
+  width: 10rpx;
+  height: 24rpx;
+  border-radius: 0 6rpx 6rpx 0;
+  background: linear-gradient(180deg, #c7f5e1 0%, #96e7c3 100%);
+  box-shadow: 0 4rpx 10rpx rgba(16, 184, 109, 0.12);
+}
+
+.signalBars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 4rpx;
+  height: 28rpx;
+  flex-shrink: 0;
+}
+
+.signalBar {
+  width: 4rpx;
+  border-radius: 4rpx;
+  background: #dedede;
+}
+
+.signalBar.bar1 { height: 10rpx; }
+.signalBar.bar2 { height: 14rpx; }
+.signalBar.bar3 { height: 18rpx; }
+.signalBar.bar4 { height: 22rpx; }
+
+.signalBars.strong .signalBar,
+.signalBars.medium .signalBar:nth-child(-n+3),
+.signalBars.weak .signalBar:nth-child(-n+2) {
+  background: #9d9d9d;
+}
+
+.signalBars.offline .signalBar:nth-child(1) {
+  background: #b0b0b0;
+}
+
+.cardTitle {
+  margin-top: 22rpx;
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #0f1812;
+  text-align: center;
+}
+.cardDesc {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: #667269;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.emptyIllustration {
+  width: 230rpx;
+  height: 230rpx;
+  margin: 0 auto;
+  border-radius: 50%;
+  background:
+    #f6f3ef
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'><g fill='none' stroke='%23ff8d39' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><circle cx='110' cy='110' r='96' stroke='%23f0ebe4'/><rect x='44' y='46' width='28' height='42' rx='4'/><path d='M58 54v10M51 64h14'/><path d='M90 112l34-28 34 28v40H90z'/><path d='M106 152v-22h20v22'/><path d='M96 96V76h56v20'/><path d='M166 52h18v14h-18z'/><path d='M175 66v14'/><path d='M54 126l18 18'/><path d='M72 126l-18 18'/><path d='M155 134h22'/><path d='M166 123v22'/><path d='M144 60h12M150 54v12'/><path d='M85 58h10M90 53v10'/></g></svg>") center/158rpx 158rpx no-repeat;
+}
+
+.primary {
+  margin-top: 18rpx;
+  height: 78rpx;
+  line-height: 78rpx;
+  border-radius: 10rpx;
+  background: #15934d;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.emptyPrimary {
+  margin-top: 34rpx;
+}
+
+.floatingBindButton {
+  position: fixed;
+  right: 34rpx;
+  bottom: calc(176rpx + env(safe-area-inset-bottom));
+  z-index: 20;
+  width: 108rpx;
+  height: 108rpx;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #18a14f 0%, #0e8946 100%);
+  box-shadow: 0 18rpx 36rpx rgba(14, 137, 70, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floatingBindButton::after {
+  display: none;
+}
+
+.floatingBindButton[disabled] {
+  opacity: 0.72;
+}
+
+.floatingBindButtonIcon {
+  font-size: 72rpx;
+  line-height: 1;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: -6rpx;
+}
+
+.bindPopupMask {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx;
+  background: rgba(0, 0, 0, 0.34);
+  box-sizing: border-box;
+}
+
+.bindPopup {
+  width: 100%;
+  max-width: 620rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 24rpx 60rpx rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+}
+
+.bindPopupTitle {
+  padding: 34rpx 32rpx 24rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #0f1812;
+}
+
+.bindInputWrap {
+  position: relative;
+  margin: 0 28rpx 24rpx;
+  padding: 0 54rpx 0 18rpx;
+  height: 72rpx;
+  border-radius: 8rpx;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.bindInput {
+  width: 100%;
+  height: 72rpx;
+  font-size: 26rpx;
+  color: #0f1812;
+}
+
+.bindInputPlaceholder {
+  font-size: 26rpx;
+  color: #b7b7b7;
+}
+
+.bindInputClear {
+  position: absolute;
+  top: 50%;
+  right: 10rpx;
+  width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: #cccdce;
+  color: #ffffff;
+  font-size: 22rpx;
+  font-weight: 600;
+  text-align: center;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bindInputClear::after {
+  display: none;
+}
+
+.bindPopupActions {
+  display: flex;
+  border-top: 1rpx solid #e8e8e8;
+}
+
+.bindPopupGhost,
+.bindPopupPrimary {
+  flex: 1;
+  margin: 0;
+  height: 86rpx;
+  line-height: 86rpx;
+  border-radius: 0;
+  font-size: 26rpx;
+  font-weight: 700;
+  background: #ffffff;
+}
+
+.bindPopupGhost::after,
+.bindPopupPrimary::after {
+  display: none;
+}
+
+.bindPopupGhost {
+  color: #232323;
+  border-right: 1rpx solid #e8e8e8;
+}
+
+.bindPopupPrimary {
+  color: #18a14f;
+}
+
+.bindPopupPrimary[disabled] {
+  color: rgba(24, 161, 79, 0.4);
+}
+.primary.outline {
+  background: #FFFFFF;
+  color: var(--ab-color-text-1);
+  border: 1rpx solid var(--ab-color-border);
+}
+
+.mini {
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 16rpx;
+  border-radius: 14rpx;
+  background: #F5F5F5;
+  color: var(--ab-color-text-1);
+  border: 1rpx solid var(--ab-color-border);
+  font-size: 24rpx;
+}
+.mini.warn {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+  border-color: rgba(255, 59, 48, 0.22);
+}
+
+.empty {
+  padding: 18rpx 16rpx;
+  border-radius: 16rpx;
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 26rpx;
+  color: rgba(0, 0, 0, 0.48);
+  text-align: center;
+  margin-top: 16rpx;
+}
+
+.state {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+}
+.stateText {
+  font-size: 28rpx;
+  color: #667269;
+}
+.spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(21, 147, 77, 0.12);
+  border-top-color: #15934d;
+  animation: spin 800ms linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}

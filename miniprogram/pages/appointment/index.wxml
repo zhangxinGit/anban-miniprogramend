@@ -1,0 +1,125 @@
+<view class="page fadeIn {{displayModeClass}}">
+  <view wx:if="{{loading}}" class="state">
+    <view class="spinner"></view>
+    <text class="stateText">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state">
+    <text class="stateText">{{error}}</text>
+    <button class="retryBtn" bindtap="onRetry">重试</button>
+  </view>
+
+  <view wx:else class="content">
+    <view class="heroCard">
+      <view class="heroTag">{{sceneTag}}</view>
+      <view class="heroTitle">{{sceneTitle}}</view>
+      <view class="heroSub">{{sceneSubtitle}}</view>
+    </view>
+
+    <view wx:if="{{serviceName}}" class="sceneCard">
+      <view class="sceneLabel">预约项目</view>
+      <view class="sceneValue">{{serviceName}}</view>
+      <view class="sceneHint">提交后安伴顾问会与您确认服务内容和上门安排。</view>
+    </view>
+
+    <view wx:if="{{appointment && appointment.status === 'ACTIVE'}}" class="statusCard isActive">
+      <view class="statusPill">已预约</view>
+      <view class="statusTitle">已为您保留到访档期</view>
+      <view class="statusText">{{appointment.date}} {{appointment.time}}</view>
+      <view class="statusSub">如需调整时间，可直接修改或取消当前预约。</view>
+    </view>
+
+    <view wx:elif="{{appointment && appointment.status === 'CANCELLED'}}" class="statusCard isCancelled">
+      <view class="statusPill warning">已取消</view>
+      <view class="statusTitle">预约已取消</view>
+      <view class="statusSub">可重新填写信息并再次提交预约。</view>
+    </view>
+
+    <view class="formCard">
+      <view class="sectionHead">
+        <view class="sectionTitle">联系信息</view>
+        <view wx:if="{{isGuestMode}}" class="sectionBadge">预览模式</view>
+      </view>
+
+      <view class="form">
+        <view class="field">
+          <text class="k">姓名</text>
+          <input class="input" value="{{form.name}}" placeholder="请输入姓名" placeholder-class="inputPlaceholder" bindinput="onInput" data-key="name" />
+        </view>
+
+        <view class="field">
+          <text class="k">手机号</text>
+          <input class="input" value="{{form.phone}}" placeholder="请输入手机号" placeholder-class="inputPlaceholder" type="number" maxlength="11" bindinput="onInput" data-key="phone" />
+        </view>
+
+        <view class="field">
+          <text class="k">家庭住址</text>
+          <picker class="pickerTrigger" mode="region" value="{{addressRegionValue}}" bindchange="onPickRegion">
+            <view class="fieldValue {{addressRegionValue.length ? '' : 'placeholder'}}">{{addressRegionText}}</view>
+          </picker>
+          <text class="fieldArrow">›</text>
+        </view>
+
+        <view class="field">
+          <text class="k">详细地址</text>
+          <view class="detailInputWrap">
+            <input class="input detailInput" value="{{form.doorplate}}" placeholder="请输入街道、小区、楼栋门牌号" placeholder-class="inputPlaceholder" bindinput="onInput" data-key="doorplate" maxlength="255" />
+          </view>
+        </view>
+
+        <view class="field">
+          <text class="k">日期</text>
+          <picker class="pickerTrigger" mode="date" value="{{form.date}}" bindchange="onPickDate">
+            <view class="fieldValue {{form.date ? '' : 'placeholder'}}">{{form.date || '请选择日期'}}</view>
+          </picker>
+          <text class="fieldArrow">›</text>
+        </view>
+
+        <view class="field">
+          <text class="k">时间</text>
+          <picker class="pickerTrigger" mode="time" value="{{form.time}}" bindchange="onPickTime">
+            <view class="fieldValue {{form.time ? '' : 'placeholder'}}">{{form.time || '请选择时间'}}</view>
+          </picker>
+          <text class="fieldArrow">›</text>
+        </view>
+
+        <view class="field fieldColumn">
+          <text class="k">备注</text>
+          <textarea class="textarea" value="{{form.remark}}" placeholder="可填写上门事项、家庭情况或特殊需求（选填）" placeholder-class="inputPlaceholder" maxlength="200" bindinput="onInput" data-key="remark"></textarea>
+        </view>
+      </view>
+
+      <view class="assistText">{{isGuestMode ? '当前页面仅供预览，登录后可填写并提交预约信息。' : '提交后安伴评估师会通过您填写的手机号联系您，确认具体上门时间。'}}</view>
+    </view>
+
+    <view class="tipsCard">
+      <view class="tipsTitle">服务说明</view>
+      <view class="tipsText">预约提交后，顾问会结合您的家庭情况与时间偏好安排专业评估师上门服务。</view>
+    </view>
+
+    <view class="dockSpacer"></view>
+  </view>
+</view>
+
+<view wx:if="{{!loading && !error}}" class="submitDock safe-area">
+  <view class="submitMetaTitle">提交后将由安伴顾问与您联系</view>
+  <view class="submitMetaText">{{appointment && appointment.status === 'ACTIVE' ? '当前预约可直接修改，若有变动请及时更新。' : '请保持手机畅通，方便确认到访时间。'}}</view>
+  <button class="dockPrimary" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onSubmit">{{appointment && appointment.status === 'ACTIVE' ? '修改预约' : '立即预约'}}</button>
+  <button class="dockDanger" wx:if="{{appointment && appointment.status === 'ACTIVE'}}" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onCancel">取消预约</button>
+</view>
+
+<view wx:if="{{successPopupVisible}}" class="successMask" bindtap="onCloseSuccessPopup">
+  <view class="successDialog" catchtap="noop">
+    <button class="successCloseBtn" bindtap="onCloseSuccessPopup">×</button>
+    <view class="successIcon">
+      <text class="successCheck">✓</text>
+    </view>
+    <view class="successTitle">预约成功</view>
+    <view class="successText">安伴评估师会尽快与您联系，确认具体上门时间。</view>
+    <view wx:if="{{successPopupDateText}}" class="successTime">{{successPopupDateText}}</view>
+
+    <button class="successPrimary" bindtap="onContactAdvisor">联系评估师</button>
+    <button class="successGhost" bindtap="onCloseSuccessPopup">稍后联系</button>
+  </view>
+</view>
+
