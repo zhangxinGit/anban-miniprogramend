@@ -6,6 +6,7 @@ type BackendCatalogRow = {
   moduleTitle?: string;
   serviceName?: string;
   coverImg?: string;
+  coverImgDetail?: string;
   price?: string | number;
   originalPrice?: string | number;
   tagList?: string[];
@@ -17,6 +18,8 @@ export type ServiceCatalogItem = {
   serviceName: string;
   coverImg: string;
   coverSrc: string;
+  coverImgDetail: string;
+  coverImgDetailSource: string;
   price: string;
   originalPrice: string;
   tagList: string[];
@@ -63,6 +66,7 @@ let _catalogRowDebugDone = false;
 
 function normalizeRow(row: BackendCatalogRow): ServiceCatalogItem {
   const coverImg = normalizeText(row.coverImg);
+  const coverImgDetail = normalizeText(row.coverImgDetail);
   if (!_catalogRowDebugDone) {
     _catalogRowDebugDone = true;
     console.log('[catalog] normalizeRow 示例 — 原始 coverImg:', JSON.stringify(row.coverImg));
@@ -85,6 +89,8 @@ function normalizeRow(row: BackendCatalogRow): ServiceCatalogItem {
     serviceName: normalizeText(row.serviceName) || '未命名服务',
     coverImg,
     coverSrc: coverImg,
+    coverImgDetail,
+    coverImgDetailSource: coverImgDetail,
     price: normalizeText(row.price) || '0.00',
     originalPrice: normalizeText(row.originalPrice) || normalizeText(row.price) || '0.00',
     tagList: normalizeTags(row.tagList),
@@ -95,19 +101,21 @@ let _coverSourceDebugDone = false;
 
 export async function resolveServiceCatalogItemCoverSource(item: ServiceCatalogItem): Promise<ServiceCatalogItem> {
   const coverSrc = await resolveMiniProgramImageSrc(item.coverImg);
+  const coverImgDetailSource = item.coverImgDetail ? await resolveMiniProgramImageSrc(item.coverImgDetail) : item.coverSrc;
   if (!_coverSourceDebugDone) {
     _coverSourceDebugDone = true;
     console.log('[catalog] resolveCoverSource 示例 — coverImg:', JSON.stringify(item.coverImg));
     console.log('[catalog] resolveCoverSource 示例 — coverSrc:', JSON.stringify(coverSrc));
-    console.log('[catalog] resolveCoverSource 示例 — 是否相同:', coverSrc === item.coverSrc);
+    console.log('[catalog] resolveCoverSource 示例 — coverImgDetail:', JSON.stringify(item.coverImgDetail));
+    console.log('[catalog] resolveCoverSource 示例 — coverImgDetailSource:', JSON.stringify(coverImgDetailSource));
     if (coverSrc && coverSrc.startsWith('https://')) {
       console.log('[catalog] coverSrc 是 HTTPS URL, 是否含签名:', coverSrc.includes('Expires=') || coverSrc.includes('Signature='));
     }
   }
-  if (coverSrc === item.coverSrc) {
+  if (coverSrc === item.coverSrc && coverImgDetailSource === item.coverImgDetailSource) {
     return item;
   }
-  return { ...item, coverSrc };
+  return { ...item, coverSrc, coverImgDetailSource };
 }
 
 export async function resolveServiceCatalogItemCoverSources(items: ServiceCatalogItem[]): Promise<ServiceCatalogItem[]> {

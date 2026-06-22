@@ -1,0 +1,58 @@
+<view class="page">
+  <!-- 空状态 -->
+  <view wx:if="{{isEmpty}}" class="emptyState">
+    <view class="emptyIcon">🛒</view>
+    <view class="emptyTitle">购物车空空如也</view>
+    <view class="emptySub">去逛逛吧</view>
+    <view class="emptyBtn" bindtap="onGoShopping">去逛逛</view>
+  </view>
+
+  <!-- 购物车列表 -->
+  <block wx:else>
+    <view class="cartHeader">
+      <view class="cartHeaderTitle">共 {{totalCount}} 件商品</view>
+      <view class="cartClearBtn" bindtap="onClearCart">清空</view>
+    </view>
+
+    <view class="cartList">
+      <view
+        wx:for="{{items}}"
+        wx:key="productId"
+        class="cartItem"
+      >
+        <image class="cartItemImage" src="{{item.imageUrl}}" mode="aspectFill" />
+        <view class="cartItemInfo">
+          <view class="cartItemName">{{item.name}}</view>
+          <view class="cartItemSpec">{{item.spec}}</view>
+          <view class="cartItemBottom">
+            <view class="cartItemPrice">
+              <text class="priceSymbol">¥</text>
+              <text class="priceValue">{{item.price}}</text>
+            </view>
+            <view class="quantityControl">
+              <view class="qtyBtn" bindtap="onDecrease" data-id="{{item.productId}}">-</view>
+              <view class="qtyValue">{{item.quantity}}</view>
+              <view class="qtyBtn" bindtap="onIncrease" data-id="{{item.productId}}">+</view>
+            </view>
+            <view class="cartItemSubtotal">
+              <text>小计：¥{{item.subtotal}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="cartItemDelete" bindtap="onRemove" data-id="{{item.productId}}">×</view>
+      </view>
+    </view>
+
+    <!-- 底部下单栏 -->
+    <view class="cartFooter">
+      <view class="cartFooterLeft">
+        <view class="cartFooterSummary">
+          <text class="cartFooterCount">共 {{totalCount}} 件</text>
+          <text class="cartFooterLabel">合计：</text>
+          <text class="cartFooterPrice">¥{{totalAmount}}</text>
+        </view>
+      </view>
+      <view class="cartFooterBtn" bindtap="onSubmitOrder">去下单</view>
+    </view>
+  </block>
+</view>

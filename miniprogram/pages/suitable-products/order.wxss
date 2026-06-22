@@ -1,0 +1,237 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: 160rpx;
+  background: #f5f6f8;
+}
+
+/* 区块 */
+.section {
+  margin: 20rpx 24rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+}
+
+.sectionTitle {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 24rpx;
+}
+
+/* 表单 */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.formLabel {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.formRequired {
+  color: #FF6B35;
+  margin-right: 4rpx;
+}
+
+.formInput {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 20rpx;
+  background: #f5f6f8;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.formTextarea {
+  width: 100%;
+  min-height: 120rpx;
+  padding: 16rpx 20rpx;
+  background: #f5f6f8;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.formPicker {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 20rpx;
+  background: #f5f6f8;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #999;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* 商品清单 */
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.itemRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.itemRow:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.itemImage {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.itemInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.itemSpec {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.itemMeta {
+  margin-top: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.itemPrice {
+  font-size: 24rpx;
+  color: #FF6B35;
+  font-weight: 600;
+}
+
+.itemQty {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.itemSubtotal {
+  font-size: 24rpx;
+  color: #FF6B35;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+/* 合计 */
+.totalSection {
+  margin: 20rpx 24rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+}
+
+.totalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.totalLabel {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.totalPrice {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #FF6B35;
+}
+
+.settlementHint {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #07C160;
+  text-align: right;
+  font-weight: 600;
+}
+
+/* 提交按钮 */
+.submitSection {
+  padding: 0 24rpx 40rpx;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: 16rpx;
+  background: #07C160;
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.submitBtn::after {
+  display: none;
+}
+
+.submitBtn[disabled] {
+  background: #a0e8c0;
+}
+
+.backCartBtn {
+  width: 100%;
+  height: 88rpx;
+  margin-top: 20rpx;
+  border-radius: 16rpx;
+  background: #ffffff;
+  border: 1rpx solid #07C160;
+  color: #07C160;
+  font-size: 30rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.backCartBtn::after {
+  display: none;
+}

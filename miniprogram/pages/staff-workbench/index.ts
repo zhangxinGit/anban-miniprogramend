@@ -1,5 +1,6 @@
 import { clearStaffSession, ensureStaffSession, getStaffAuthState, staffRoleLabel } from '../../utils/staffAuth';
 import { maskPhone } from '../../utils/phone';
+import { countActiveQuestions, fetchActiveSections } from '../../services/fallRiskQuestions';
 
 Page({
   data: {
@@ -7,6 +8,7 @@ Page({
     usernameMask: '',
     roleLabel: '工作人员',
     showLogoutPopup: false,
+    questionCount: 46,
   },
 
   async onShow() {
@@ -21,6 +23,16 @@ Page({
       usernameMask,
       roleLabel: staffRoleLabel(state.role),
     });
+    void this.loadQuestionCount();
+  },
+
+  async loadQuestionCount() {
+    try {
+      const sections = await fetchActiveSections();
+      this.setData({ questionCount: countActiveQuestions(sections) });
+    } catch {
+      // keep default fallback
+    }
   },
 
   onCreateAssessment() {

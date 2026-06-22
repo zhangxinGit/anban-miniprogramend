@@ -1,0 +1,366 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: 80rpx;
+  background: #f5f6f8;
+}
+
+/* 分享模式整体背景微调 */
+.share-mode {
+  background: #f0f1f3;
+}
+
+/* 加载状态 */
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.loadingText {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 订单头部（非分享模式） */
+.orderHeader {
+  padding: 32rpx 24rpx;
+  background: linear-gradient(135deg, #07C160, #05a04f);
+  color: #ffffff;
+}
+
+.orderStatusTag {
+  display: inline-block;
+  padding: 6rpx 20rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.status-pending {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.status-processing {
+  background: rgba(255, 193, 7, 0.3);
+}
+
+.status-delivering {
+  background: rgba(33, 150, 243, 0.3);
+}
+
+.status-delivered {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.status-completed {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.status-cancelled {
+  background: rgba(244, 67, 54, 0.3);
+}
+
+.status-unknown {
+  background: rgba(158, 158, 158, 0.3);
+}
+
+.orderNo {
+  font-size: 24rpx;
+  opacity: 0.85;
+}
+
+/* ========== 分享模式头部 ========== */
+.shareHeader {
+  margin: 24rpx 24rpx 0;
+  padding: 28rpx 28rpx 20rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+}
+
+.shareHeaderTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.shareBadge {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #07C160;
+}
+
+.shareBadgeIcon {
+  font-size: 24rpx;
+}
+
+.shareHeaderHint {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.shareOrderMeta {
+  display: flex;
+  align-items: center;
+  gap: 32rpx;
+  font-size: 22rpx;
+  color: #888;
+}
+
+.shareOrderNo {
+  color: #888;
+}
+
+.shareOrderDate {
+  color: #888;
+}
+
+/* ========== 隐私标记 ========== */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.privacyTag {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
+  background: #f0faf4;
+  font-size: 20rpx;
+  color: #07C160;
+  font-weight: 600;
+}
+
+.privacyIcon {
+  font-size: 18rpx;
+}
+
+/* 打码文本样式 */
+.masked {
+  color: #999 !important;
+  letter-spacing: 2rpx;
+}
+
+/* ========== 区块 ========== */
+.section {
+  margin: 20rpx 24rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+}
+
+.sectionTitle {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 0;
+}
+
+.sectionHeader .sectionTitle {
+  margin-bottom: 0;
+}
+
+/* 信息列表 */
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+
+.infoLabel {
+  width: 140rpx;
+  font-size: 26rpx;
+  color: #999;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+.infoValue {
+  flex: 1;
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+/* 商品清单 */
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.itemRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.itemRow:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.itemImage {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.itemInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.itemSpec {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.itemMeta {
+  margin-top: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.itemPrice {
+  font-size: 24rpx;
+  color: #FF6B35;
+  font-weight: 600;
+}
+
+.itemQty {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.itemSubtotal {
+  font-size: 24rpx;
+  color: #FF6B35;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+/* 合计 */
+.totalSection {
+  margin: 20rpx 24rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+}
+
+.totalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.totalLabel {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.totalPrice {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #FF6B35;
+}
+
+/* ========== 分享模式底部 ========== */
+.shareFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32rpx 24rpx 40rpx;
+}
+
+.shareFooterLine {
+  width: 60rpx;
+  height: 4rpx;
+  border-radius: 2rpx;
+  background: #ddd;
+  margin-bottom: 16rpx;
+}
+
+.shareFooterText {
+  font-size: 22rpx;
+  color: #bbb;
+}
+
+/* ========== 操作按钮 ========== */
+.actionSection {
+  padding: 20rpx 24rpx;
+}
+
+.actionBtn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: 16rpx;
+  background: #ffffff;
+  border: 1rpx solid #07C160;
+  color: #07C160;
+  font-size: 30rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  gap: 10rpx;
+}
+
+.actionBtn::after {
+  display: none;
+}
+
+.btnIcon {
+  font-size: 26rpx;
+}
+
+/* 分享按钮 hover */
+.shareBtn:active {
+  background: #f0faf4;
+}
+
+/* ========== 隐藏画布 ========== */
+.shareCanvas {
+  position: fixed;
+  left: -9999rpx;
+  top: -9999rpx;
+  pointer-events: none;
+}

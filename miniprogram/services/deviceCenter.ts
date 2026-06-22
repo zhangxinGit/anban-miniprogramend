@@ -114,6 +114,109 @@ export type EmergencyContact = {
   createdAt: string | null;
 };
 
+/** 睡眠设备最新遥测状态 */
+export type DeviceSleepStatus = {
+  deviceType: string | null;
+  deviceTypeLabel: string;
+  updatedAt: string | null;
+  paramConfig: SleepParamConfig;
+  presenceStatus: SleepPresenceStatus;
+  vitalSigns: SleepVitalSigns;
+  struggleStatus: SleepStruggleStatus;
+  untimedStatus: SleepUntimedStatus;
+  sleepReport: SleepReportSummary;
+  compositeStatus: SleepCompositeStatus;
+};
+
+export type SleepParamConfig = {
+  hasData: boolean;
+  detectionMode: number | null;
+  detectionModeLabel: string | null;
+  heartRateSwitch: number | null;
+  breathingSwitch: number | null;
+  sleepSwitch: number | null;
+  longTimeNoTimerSwitch: number | null;
+  unmanneDuration: number | null;
+  existSwitch: number | null;
+  abnormalStruggleSwitch: number | null;
+};
+
+export type SleepPresenceStatus = {
+  hasData: boolean;
+  exist: number | null;
+  existLabel: string | null;
+  movement: number | null;
+  movementLabel: string | null;
+  bodyMotion: number | null;
+  bed: number | null;
+  bedLabel: string | null;
+  sleepStatus: number | null;
+  sleepStatusLabel: string | null;
+};
+
+export type SleepVitalSigns = {
+  hasData: boolean;
+  heartRate: number | null;
+  respiration: number | null;
+  respirationStatus: number | null;
+  respirationStatusLabel: string | null;
+};
+
+export type SleepStruggleStatus = {
+  hasData: boolean;
+  abnormalStruggleState: number | null;
+  abnormalStruggleStateLabel: string | null;
+};
+
+export type SleepUntimedStatus = {
+  hasData: boolean;
+  untimedState: number | null;
+  untimedStateLabel: string | null;
+};
+
+export type SleepReportSummary = {
+  hasData: boolean;
+  sleepScore: number | null;
+  sleepQuality: number | null;
+  sleepQualityLabel: string | null;
+  totalSleepDuration: number | null;
+  lengthWakefulness: number | null;
+  lightSleepDuration: number | null;
+  deepSleepDuration: number | null;
+  meanSleepRespiration: number | null;
+  sleepMeanHeartbeat: number | null;
+  numberdEparturesBed: number | null;
+  numberTurns: number | null;
+};
+
+export type SleepCompositeStatus = {
+  hasData: boolean;
+  exist: number | null;
+  existLabel: string | null;
+  sleepStatus: number | null;
+  sleepStatusLabel: string | null;
+  meanSleepRespiration: number | null;
+  sleepMeanHeartbeat: number | null;
+  numberTurns: number | null;
+  maxBodyMotion: number | null;
+  minBodyMotion: number | null;
+  respirationStopNum: number | null;
+};
+
+/** 获取睡眠设备最新遥测状态（仅 sleepRadar 设备有数据） */
+export async function getDeviceSleepStatus(deviceId: string): Promise<DeviceSleepStatus | null> {
+  if (canUseBackendDeviceApi()) {
+    const resp = await request<DeviceSleepStatus>({
+      url: `/api/devices/${encodeURIComponent(deviceId)}/sleep-status`,
+      method: 'GET',
+    });
+    if (resp.ok) {
+      return resp.data ?? null;
+    }
+  }
+  return null;
+}
+
 export async function getEmergencyContacts(deviceId: string): Promise<EmergencyContact[]> {
   if (canUseBackendDeviceApi()) {
     const resp = await request<EmergencyContact[]>({

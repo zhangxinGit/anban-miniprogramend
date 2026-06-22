@@ -13,6 +13,7 @@ const PUBLIC_PATHS = new Set([
   '/pages/safety-check/index',
   '/pages/family-invite/index',
   '/pages/service-detail/index',
+  '/pages/suitable-products/index',
 ]);
 
 const TAB_PATHS = new Set([

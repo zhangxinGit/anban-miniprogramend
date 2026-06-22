@@ -4,6 +4,7 @@ export type StaffAssessmentQuestionInput = {
   id: string;
   text: string;
   answer: boolean;
+  productTag?: string;
 };
 
 export type StaffAssessmentSectionInput = {
@@ -19,6 +20,14 @@ export type StaffAssessmentSubmitInput = {
   phone: string;
   address: string;
   community: string;
+  emergency_contact_name?: string;
+  emergency_contact_gender?: string;
+  emergency_contact_relation?: string;
+  emergency_contact_phone?: string;
+  emergency_contact_age?: number;
+  emergency_contact_occupation?: string;
+  children_count?: number;
+  assessor_note?: string;
   sections: StaffAssessmentSectionInput[];
 };
 
@@ -30,6 +39,14 @@ export type StaffAssessmentListItem = {
   phone: string;
   address: string;
   community: string;
+  emergency_contact_name?: string | null;
+  emergency_contact_gender?: string | null;
+  emergency_contact_relation?: string | null;
+  emergency_contact_phone?: string | null;
+  emergency_contact_age?: number | null;
+  emergency_contact_occupation?: string | null;
+  children_count?: number | null;
+  assessor_note?: string | null;
   total_score: number;
   risk_level: string;
   assessor_admin_id: number;
@@ -42,6 +59,7 @@ export type StaffAssessmentQuestion = {
   id: string;
   text: string;
   answer: boolean;
+  productTag?: string;
 };
 
 export type StaffAssessmentSection = {
@@ -103,6 +121,19 @@ export async function fetchStaffAssessmentDetail(id: number): Promise<StaffAsses
   const resp = await staffRequest<StaffAssessmentDetail>({
     url: `/api/admin/fall-assessments/${id}`,
     method: 'GET',
+  });
+  if (!resp.ok) {
+    throw new Error(resp.message || '加载评估详情失败');
+  }
+  return resp.data;
+}
+
+/** 公开分享链接：无需 session 即可查看评估报告详情 */
+export async function fetchPublicAssessmentDetail(id: number): Promise<StaffAssessmentDetail> {
+  const resp = await staffRequest<StaffAssessmentDetail>({
+    url: `/api/admin/fall-assessments/${id}`,
+    method: 'GET',
+    auth: false,
   });
   if (!resp.ok) {
     throw new Error(resp.message || '加载评估详情失败');

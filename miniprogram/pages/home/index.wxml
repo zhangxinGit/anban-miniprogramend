@@ -46,7 +46,7 @@
         <block wx:for="{{bannerCards}}" wx:key="id" wx:for-item="banner">
           <swiper-item>
             <view class="heroCard {{banner.toneClass}}" bindtap="onOpenBanner" data-route-mode="{{banner.routeMode}}" data-route-url="{{banner.routeUrl}}">
-              <image class="heroImage" src="{{banner.imageSrc}}" mode="aspectFill" binderror="onBannerImageError" data-index="{{index}}" />
+              <image class="heroImage" src="{{banner.imageSrc}}" mode="aspectFill" lazy-load binderror="onBannerImageError" data-index="{{index}}" />
               <view class="heroShade"></view>
               <view class="heroContent">
                 <view class="heroBadge">{{banner.tag}}</view>
@@ -128,7 +128,7 @@
               <view class="featureServiceSubtitle">{{kk.subtitle}}</view>
               <view class="featureServiceAction">{{kk.actionText}}</view>
             </view>
-            <image class="featureServiceImage" src="{{kk.iconSrc}}" mode="aspectFit" binderror="onKingKongImageError" data-id="{{kk.id}}" />
+            <image class="featureServiceImage" src="{{kk.iconSrc}}" mode="aspectFit" lazy-load binderror="onKingKongImageError" data-id="{{kk.id}}" />
           </view>
         </block>
       </view>
@@ -170,7 +170,7 @@
               data-service-id="{{caseItem.serviceId}}"
               hover-class="caseCardHover">
               <view class="caseImageWrap">
-                <image class="caseImage" src="{{caseItem.imageSrc}}" mode="aspectFill" />
+                <image class="caseImage" src="{{caseItem.imageSrc}}" mode="aspectFill" lazy-load />
                 <view class="caseImageShade"></view>
                 <view class="caseMeta">{{caseItem.meta}}</view>
               </view>

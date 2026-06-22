@@ -1,14 +1,29 @@
 import { migrateStoredRole, USER_ROLES, type UserRole } from '../shared/roles';
+import { type MiniProgramEnvVersion, getEnvVersion } from '../utils/env';
+
+/**
+ * 存储 Key 环境后缀。
+ * - release（正式版）不加后缀，保持兼容线上已登录用户
+ * - develop / trial 加后缀，避免同一手机上测试环境 token 覆盖正式环境 token
+ */
+const ENV_SUFFIX: string = (() => {
+  try {
+    const v: MiniProgramEnvVersion = getEnvVersion();
+    return v === 'release' ? '' : `_${v}`;
+  } catch {
+    return '';
+  }
+})();
 
 const STORAGE_KEYS = {
-  token: 'ab_token',
-  refreshToken: 'ab_refresh_token',
-  tokenExpiresAt: 'ab_token_expires_at',
-  role: 'ab_role',
-  userId: 'ab_user_id',
-  leadId: 'ab_lead_id',
-  boundPhone: 'ab_bound_phone',
-  clientId: 'ab_client_id',
+  token: `ab${ENV_SUFFIX}_token`,
+  refreshToken: `ab${ENV_SUFFIX}_refresh_token`,
+  tokenExpiresAt: `ab${ENV_SUFFIX}_token_expires_at`,
+  role: `ab${ENV_SUFFIX}_role`,
+  userId: `ab${ENV_SUFFIX}_user_id`,
+  leadId: `ab${ENV_SUFFIX}_lead_id`,
+  boundPhone: `ab${ENV_SUFFIX}_bound_phone`,
+  clientId: `ab${ENV_SUFFIX}_client_id`,
 } as const;
 
 export type AuthState = {

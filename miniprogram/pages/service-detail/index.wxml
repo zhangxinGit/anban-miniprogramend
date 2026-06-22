@@ -10,7 +10,7 @@
 
   <view wx:elif="{{item}}" class="content">
     <view class="heroCard" bindtap="onPreviewCover">
-      <image wx:if="{{item.coverImg && !_coverFailed}}" class="heroImg" src="{{item.coverSrc || item.coverImg}}" mode="aspectFill" binderror="onCoverImageError" />
+      <image wx:if="{{item.coverImg && !_coverFailed}}" class="heroImg" src="{{item.coverImgDetailSource || item.coverSrc || item.coverImg}}" mode="aspectFill" lazy-load binderror="onCoverImageError" />
       <view wx:else class="heroFallback">{{item.moduleTitle}}</view>
     </view>
 

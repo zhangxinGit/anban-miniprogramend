@@ -1,6 +1,6 @@
 import { fallRiskLevelMeta } from '../../shared/fallRiskSurvey';
-import { fetchStaffAssessmentDetail, type StaffAssessmentDetail } from '../../services/staffAssessment';
-import { ensureStaffSession } from '../../utils/staffAuth';
+import { fetchStaffAssessmentDetail, fetchPublicAssessmentDetail, type StaffAssessmentDetail } from '../../services/staffAssessment';
+import { ensureStaffSession, hasStaffSession } from '../../utils/staffAuth';
 
 type Query = {
   id?: string;
@@ -13,6 +13,14 @@ type ViewDetail = StaffAssessmentDetail & {
   riskTone: string;
   riskDescription: string;
   questionCount: number;
+  contactNameText: string;
+  contactGenderText: string;
+  contactRelationText: string;
+  contactPhoneText: string;
+  contactAgeText: string;
+  contactOccupationText: string;
+  childrenCountText: string;
+  assessorNoteText: string;
 };
 
 function formatTime(value: string | null): string {
@@ -30,6 +38,7 @@ function formatTime(value: string | null): string {
 function toViewDetail(detail: StaffAssessmentDetail): ViewDetail {
   const meta = fallRiskLevelMeta(detail.risk_level === 'high' ? 'high' : detail.risk_level === 'medium' ? 'medium' : 'low');
   const questionCount = (detail.sections || []).reduce((sum, section) => sum + (section.questions?.length || 0), 0);
+  const contactName = String(detail.emergency_contact_name || '').trim();
   return {
     ...detail,
     phoneText: String(detail.phone || '').trim() || '—',
@@ -38,6 +47,14 @@ function toViewDetail(detail: StaffAssessmentDetail): ViewDetail {
     riskTone: meta.tone,
     riskDescription: meta.description,
     questionCount,
+    contactNameText: contactName || '—',
+    contactGenderText: String(detail.emergency_contact_gender || '').trim() || '—',
+    contactRelationText: String(detail.emergency_contact_relation || '').trim() || '—',
+    contactPhoneText: String(detail.emergency_contact_phone || '').trim() || '—',
+    contactAgeText: detail.emergency_contact_age != null ? String(detail.emergency_contact_age) : '—',
+    contactOccupationText: String(detail.emergency_contact_occupation || '').trim() || '—',
+    childrenCountText: detail.children_count != null ? String(detail.children_count) : '—',
+    assessorNoteText: String(detail.assessor_note || '').trim(),
   };
 }
 
@@ -57,26 +74,36 @@ Page({
     loading: true,
     saving: false,
     detail: null as ViewDetail | null,
+    isPublic: false,
   },
 
   onLoad(query: Query) {
     const id = Number(query?.id);
     this.setData({ id: Number.isFinite(id) && id > 0 ? id : 0 });
+    // 启用导航栏右上角分享按钮
+    wx.showShareMenu({
+      withShareTicket: false,
+      menus: ['shareAppMessage', 'shareTimeline'],
+    });
   },
 
   async onShow() {
     const id = Number(this.data.id);
-    const redirectUrl = `/pages/staff-assessment-report/index?id=${id}`;
-    if (!id || !(await ensureStaffSession(redirectUrl))) {
-      return;
+    if (!id) return;
+
+    // 优先尝试工作人员登录态；若已有 session 则确保仍有效
+    if (hasStaffSession()) {
+      await ensureStaffSession(`/pages/staff-assessment-report/index?id=${id}`);
     }
-    void this.load();
+    void this.load(!hasStaffSession());
   },
 
-  async load() {
+  async load(asPublic = false) {
     this.setData({ loading: true });
     try {
-      const detail = await fetchStaffAssessmentDetail(Number(this.data.id));
+      const detail = asPublic
+        ? await fetchPublicAssessmentDetail(Number(this.data.id))
+        : await fetchStaffAssessmentDetail(Number(this.data.id));
       this.setData({ detail: toViewDetail(detail) });
     } catch (error) {
       const message = error instanceof Error ? error.message : '加载报告失败';
@@ -91,6 +118,16 @@ Page({
     return {
       title: detail ? `${detail.elder_name} · ${detail.riskLabel}防跌倒评估报告` : '防跌倒评估报告',
       path: `/pages/staff-assessment-report/index?id=${this.data.id}`,
+      imageUrl: '/assets/banner/home_popup_banner_assessment.png',
+    };
+  },
+
+  onShareTimeline() {
+    const detail = this.data.detail;
+    return {
+      title: detail ? `${detail.elder_name} · ${detail.riskLabel}防跌倒评估报告` : '防跌倒评估报告',
+      query: `id=${this.data.id}`,
+      imageUrl: '/assets/banner/home_popup_banner_assessment.png',
     };
   },
 
@@ -120,7 +157,25 @@ Page({
   async drawPoster(detail: ViewDetail) {
     const ctx = wx.createCanvasContext('reportPoster', this);
     const width = 750;
-    const height = 1240;
+
+    // 计算海报动态高度
+    let estimatedHeight = 400; // header + margin
+    const hasContact = detail.contactNameText !== '—';
+    const noteLines = detail.assessorNoteText ? Math.ceil(detail.assessorNoteText.length / 30) : 0;
+    estimatedHeight += (hasContact ? 14 : 6) * 34; // info lines (with or without contact)
+    if (noteLines > 0) {
+      estimatedHeight += 36; // note title
+      estimatedHeight += noteLines * 28; // note lines
+    }
+    estimatedHeight += 80; // risk items section header
+    estimatedHeight += Math.min(detail.risk_items.length, 12) * 32;
+    estimatedHeight += 80; // suggestions section header
+    detail.suggestions.forEach((item) => {
+      estimatedHeight += item.startsWith('【') ? 40 : 28;
+    });
+    estimatedHeight += 100; // footer
+    const height = Math.max(1400, estimatedHeight + 60);
+
     ctx.setFillStyle('#f6faf7');
     ctx.fillRect(0, 0, width, height);
 
@@ -134,14 +189,16 @@ Page({
     ctx.setFontSize(18);
     ctx.fillText(`${detail.riskLabel} · 总分 ${detail.total_score} · ${detail.timeText}`, 36, 146);
 
+    let cursorY = 226;
     ctx.setFillStyle('#ffffff');
-    ctx.fillRect(28, 208, 694, 972);
+    ctx.fillRect(28, 208, 694, height - 280);
     ctx.setStrokeStyle('rgba(21,147,77,0.12)');
-    ctx.strokeRect(28, 208, 694, 972);
+    ctx.strokeRect(28, 208, 694, height - 280);
 
     ctx.setFillStyle('#17311f');
     ctx.setFontSize(24);
-    ctx.fillText('基础信息', 52, 252);
+    ctx.fillText('基础信息', 52, cursorY);
+    cursorY += 40;
     ctx.setFontSize(18);
     const infoLines = [
       `性别：${detail.gender}`,
@@ -151,38 +208,86 @@ Page({
       `地址：${detail.address}`,
       `工作人员：${detail.assessor_name}`,
     ];
-    infoLines.forEach((line, index) => {
-      ctx.fillText(line, 52, 290 + index * 34);
+    if (hasContact) {
+      infoLines.push(
+        '',
+        '—— 家属联系人 ——',
+        `姓名：${detail.contactNameText}`,
+        `性别：${detail.contactGenderText}`,
+        `关系：${detail.contactRelationText}`,
+        `电话：${detail.contactPhoneText}`,
+        `年龄：${detail.contactAgeText} 岁`,
+        `职业：${detail.contactOccupationText}`,
+        `子女数：${detail.childrenCountText}`,
+      );
+    }
+    infoLines.forEach((line) => {
+      ctx.fillText(line, 52, cursorY);
+      cursorY += 34;
     });
 
-    let cursorY = 520;
+    if (detail.assessorNoteText) {
+      cursorY += 16;
+      ctx.setFontSize(24);
+      ctx.fillText('评估人员备注', 52, cursorY);
+      cursorY += 40;
+      ctx.setFontSize(18);
+      ctx.setFillStyle('#203021');
+      wrapText(detail.assessorNoteText, 30).forEach((line) => {
+        ctx.fillText(line, 52, cursorY);
+        cursorY += 28;
+      });
+      ctx.setFillStyle('#17311f');
+    }
+
+    cursorY += 16;
     ctx.setFontSize(24);
     ctx.fillText('命中风险项', 52, cursorY);
-    cursorY += 34;
+    cursorY += 40;
     ctx.setFontSize(18);
-    detail.risk_items.slice(0, 8).forEach((item) => {
-      wrapText(`• ${item}`, 28).forEach((line) => {
-        ctx.fillText(line, 52, cursorY);
-        cursorY += 28;
+    const riskSlice = detail.risk_items.slice(0, 12);
+    if (riskSlice.length === 0) {
+      ctx.fillText('本次未命中风险项', 52, cursorY);
+      cursorY += 28;
+    } else {
+      riskSlice.forEach((item) => {
+        wrapText(`• ${item}`, 30).forEach((line) => {
+          ctx.fillText(line, 52, cursorY);
+          cursorY += 28;
+        });
       });
-    });
+      if (detail.risk_items.length > 12) {
+        ctx.fillText(`... 共 ${detail.risk_items.length} 项`, 52, cursorY);
+        cursorY += 28;
+      }
+    }
 
-    cursorY += 10;
+    cursorY += 16;
     ctx.setFontSize(24);
     ctx.fillText('改善建议', 52, cursorY);
-    cursorY += 34;
+    cursorY += 40;
     ctx.setFontSize(18);
-    detail.suggestions.slice(0, 3).forEach((item) => {
-      wrapText(`• ${item}`, 30).forEach((line) => {
-        ctx.fillText(line, 52, cursorY);
-        cursorY += 28;
-      });
-      cursorY += 8;
+    ctx.setFillStyle('#15934d');
+    detail.suggestions.forEach((item) => {
+      if (item.startsWith('【') && item.endsWith('】')) {
+        cursorY += 8;
+        ctx.setFontSize(20);
+        ctx.setFillStyle('#15934d');
+        ctx.fillText(item, 52, cursorY);
+        ctx.setFontSize(18);
+        cursorY += 36;
+      } else {
+        ctx.setFillStyle('#203021');
+        wrapText(`• ${item}`, 30).forEach((line) => {
+          ctx.fillText(line, 52, cursorY);
+          cursorY += 28;
+        });
+      }
     });
 
     ctx.setFontSize(16);
     ctx.setFillStyle('#8a938c');
-    ctx.fillText('安伴工作人员评估工作台自动生成', 52, 1140);
+    ctx.fillText('安伴工作人员评估工作台自动生成', 52, height - 60);
 
     await new Promise<void>((resolve) => {
       ctx.draw(false, () => resolve());

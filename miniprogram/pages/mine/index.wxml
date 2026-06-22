@@ -164,6 +164,38 @@
       </view>
     </view>
 
+    <!-- 适老好物订单 -->
+    <view class="suitableOrdersCard">
+      <view class="suitableOrdersHead">
+        <view class="suitableOrdersTitle">适老好物订单</view>
+        <view class="suitableOrdersMore" bindtap="onOpenSuitableProducts">查看更多</view>
+      </view>
+
+      <view wx:if="{{suitableOrdersLoading}}" class="suitableOrdersState">订单加载中...</view>
+
+      <block wx:elif="{{suitableOrders.length > 0}}">
+        <view
+          wx:for="{{suitableOrders}}"
+          wx:key="id"
+          class="suitableOrderItem"
+          bindtap="onOpenSuitableOrderDetail"
+          data-id="{{item.id}}"
+        >
+          <view class="suitableOrderInfo">
+            <view class="suitableOrderName">{{item.orderName}}</view>
+            <view class="suitableOrderMeta">
+              <text class="suitableOrderTime">{{item.createdAt}}</text>
+              <view class="suitableOrderStatus {{item.statusClass}}">{{item.statusText}}</view>
+            </view>
+          </view>
+          <view class="suitableOrderAmount">¥{{item.totalAmount}}</view>
+        </view>
+      </block>
+
+      <view wx:elif="{{!suitableOrdersLoading && suitableOrdersError}}" class="suitableOrdersState">{{suitableOrdersError}}</view>
+      <view wx:else class="suitableOrdersState">暂无订单</view>
+    </view>
+
     <view class="contactCard" bindtap="onContactAdvisor">
       <image class="contactCardImage" src="/assets/banner/contact_advisor.png" mode="widthFix" />
     </view>

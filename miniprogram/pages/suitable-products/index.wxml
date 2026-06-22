@@ -1,0 +1,109 @@
+<view class="page">
+  <!-- 搜索栏 -->
+  <view class="searchBar">
+    <view class="searchInputWrap">
+      <view class="searchIcon"></view>
+      <input
+        class="searchInput"
+        type="text"
+        placeholder="搜索适老好物"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+      />
+    </view>
+    <!-- 购物车入口：始终可见 -->
+    <view class="headerCart" bindtap="onGoToCart">
+      <view class="headerCartIcon">
+        <view class="cartIconInner"></view>
+        <view wx:if="{{cartCount > 0}}" class="headerCartBadge">
+          {{cartCount > 99 ? '99+' : cartCount}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view class="categoryScroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="categoryList">
+      <view
+        class="categoryTag {{activeCategoryId === '' ? 'active' : ''}}"
+        bindtap="onCategoryTap"
+        data-id=""
+      >
+        全部
+      </view>
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="categoryTag {{activeCategoryId === item.id ? 'active' : ''}}"
+        bindtap="onCategoryTap"
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 商品网格 -->
+  <view class="productGrid">
+    <view
+      wx:for="{{products}}"
+      wx:key="id"
+      class="productCard"
+      bindtap="onProductTap"
+      data-product="{{item}}"
+    >
+      <image class="productImage" src="{{item.imageUrl}}" mode="aspectFill" />
+      <view class="productInfo">
+        <view class="productName">{{item.name}}</view>
+        <view class="productSpec">{{item.spec}}</view>
+        <view class="productBottom">
+          <view class="productPrice">
+            <text class="priceSymbol">¥</text>
+            <text class="priceValue">{{item.price}}</text>
+          </view>
+          <view
+            class="addBtn"
+            catchtap="onAddToCart"
+            data-product="{{item}}"
+          >+</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loadingRow">
+    <view class="loadingText">加载中...</view>
+  </view>
+  <view wx:elif="{{!hasMore && products.length > 0}}" class="loadingRow">
+    <view class="loadingText">— 没有更多了 —</view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!loading && products.length === 0}}" class="emptyState">
+    <view class="emptyIcon">📦</view>
+    <view class="emptyText">暂无商品</view>
+  </view>
+
+  <!-- 底部购物车栏 -->
+  <view class="cartBar">
+    <view class="cartBarLeft" bindtap="onGoToCart">
+      <view class="cartBarIcon">
+        <view class="cartIconInner"></view>
+        <view wx:if="{{cartCount > 0}}" class="cartBadge">{{cartCount > 99 ? '99+' : cartCount}}</view>
+      </view>
+      <view class="cartBarTotal">
+        <block wx:if="{{cartCount > 0}}">
+          <text class="cartBarTotalLabel">合计：</text>
+          <text class="cartBarTotalPrice">¥{{cartTotal}}</text>
+        </block>
+        <text wx:else class="cartBarEmpty">购物车是空的</text>
+      </view>
+    </view>
+    <view class="cartBarBtn {{cartCount === 0 ? 'disabled' : ''}}" bindtap="onGoToCart">
+      去购物车
+    </view>
+  </view>
+</view>

@@ -1,7 +1,7 @@
 import type { UserRole } from '../shared/roles';
 import { USER_ROLES } from '../shared/roles';
 
-export type TabKey = 'home' | 'device' | 'family' | 'service' | 'mine';
+export type TabKey = 'home' | 'device' | 'suitable' | 'service' | 'mine';
 
 export type TabItem = {
   key: TabKey;
@@ -32,12 +32,12 @@ export const TAB_ITEMS: Record<TabKey, TabItem> = {
     iconSrc: '/assets/tab/device.png',
     iconActiveSrc: '/assets/tab/device_select.png',
   },
-  family: {
-    key: 'family',
-    text: '家庭',
-    pagePath: '/pages/family-profile/index',
-    icon: '◎',
-    iconActive: '◎',
+  suitable: {
+    key: 'suitable',
+    text: '好物',
+    pagePath: '/pages/suitable-products/index',
+    icon: '♥',
+    iconActive: '♥',
   },
   service: {
     key: 'service',
@@ -61,8 +61,8 @@ export const TAB_ITEMS: Record<TabKey, TabItem> = {
 
 export function getTabsByRole(role: UserRole): TabItem[] {
   if (role === USER_ROLES.VISITOR || role === USER_ROLES.OPERATOR || role === USER_ROLES.ADMIN) {
-    return [TAB_ITEMS.home, TAB_ITEMS.device, TAB_ITEMS.service, TAB_ITEMS.mine];
+    return [TAB_ITEMS.home, TAB_ITEMS.device, TAB_ITEMS.suitable, TAB_ITEMS.service, TAB_ITEMS.mine];
   }
-  return [TAB_ITEMS.home, TAB_ITEMS.device, TAB_ITEMS.service, TAB_ITEMS.mine];
+  return [TAB_ITEMS.home, TAB_ITEMS.device, TAB_ITEMS.suitable, TAB_ITEMS.service, TAB_ITEMS.mine];
 }
 

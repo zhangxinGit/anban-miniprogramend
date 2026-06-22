@@ -73,7 +73,9 @@ export async function staffRequest<T = unknown>(options: RequestOptions): Promis
         resolve({ ok: false, message: `HTTP ${res.statusCode}` });
       },
       fail: (error) => {
-        const message = isRecord(error) && typeof error.errMsg === 'string' ? error.errMsg : '网络异常';
+        const msg = isRecord(error) && typeof error.errMsg === 'string' && error.errMsg ? error.errMsg : '';
+        const message = msg || '网络异常，请检查网络后重试';
+        console.error('[staffRequest] network fail', error);
         resolve({ ok: false, message });
       },
     });

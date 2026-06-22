@@ -12,7 +12,7 @@
       <block wx:for="{{bannerCards}}" wx:key="id" wx:for-item="banner">
         <swiper-item>
           <view class="heroSlide" bindtap="onOpenBanner" data-route-mode="{{banner.routeMode}}" data-route-url="{{banner.routeUrl}}">
-            <image class="heroSectionBg" src="{{banner.imageSrc}}" mode="aspectFill" binderror="onBannerImageError" data-index="{{index}}" />
+            <image class="heroSectionBg" src="{{banner.imageSrc}}" mode="aspectFill" lazy-load binderror="onBannerImageError" data-index="{{index}}" />
           </view>
         </swiper-item>
       </block>
@@ -93,7 +93,7 @@
           <block wx:for="{{section.items}}" wx:key="id" wx:for-item="service">
             <view class="serviceCard" bindtap="onOpenDetail" data-id="{{service.id}}">
               <view class="serviceCoverWrap">
-                <image wx:if="{{service.coverImg && !service._coverFailed}}" class="serviceCover" src="{{service.coverSrc || service.coverImg}}" mode="aspectFill" binderror="onCoverImageError" data-id="{{service.id}}" />
+                <image wx:if="{{service.coverImg && !service._coverFailed}}" class="serviceCover" src="{{service.coverSrc || service.coverImg}}" mode="aspectFill" lazy-load binderror="onCoverImageError" data-id="{{service.id}}" />
                 <view wx:else class="serviceCoverFallback">{{service.moduleTitle}}</view>
                 <view class="serviceCorner">{{service.moduleTitle}}</view>
               </view>

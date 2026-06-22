@@ -28,6 +28,7 @@
       <view class="cardTitle">老人基础信息</view>
       <view class="infoGrid">
         <view class="infoItem"><text class="infoLabel">姓名</text><text class="infoValue">{{detail.elder_name}}</text></view>
+        <view class="infoItem"><text class="infoLabel">性别</text><text class="infoValue">{{detail.gender}}</text></view>
         <view class="infoItem"><text class="infoLabel">年龄</text><text class="infoValue">{{detail.age}} 岁</text></view>
         <view class="infoItem"><text class="infoLabel">联系电话</text><text class="infoValue">{{detail.phoneText}}</text></view>
         <view class="infoItem"><text class="infoLabel">所属社区</text><text class="infoValue">{{detail.community}}</text></view>
@@ -35,6 +36,19 @@
       <view class="addressBlock">
         <view class="infoLabel">家庭住址</view>
         <view class="addressValue">{{detail.address}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{detail.contactNameText !== '—'}}" class="card infoCard">
+      <view class="cardTitle">家属联系人</view>
+      <view class="infoGrid">
+        <view class="infoItem"><text class="infoLabel">姓名</text><text class="infoValue">{{detail.contactNameText}}</text></view>
+        <view class="infoItem"><text class="infoLabel">性别</text><text class="infoValue">{{detail.contactGenderText}}</text></view>
+        <view class="infoItem"><text class="infoLabel">与老人关系</text><text class="infoValue">{{detail.contactRelationText}}</text></view>
+        <view class="infoItem"><text class="infoLabel">联系电话</text><text class="infoValue">{{detail.contactPhoneText}}</text></view>
+        <view class="infoItem"><text class="infoLabel">年龄</text><text class="infoValue">{{detail.contactAgeText}} 岁</text></view>
+        <view class="infoItem"><text class="infoLabel">职业</text><text class="infoValue">{{detail.contactOccupationText}}</text></view>
+        <view class="infoItem"><text class="infoLabel">子女数</text><text class="infoValue">{{detail.childrenCountText}}</text></view>
       </view>
     </view>
 
@@ -49,10 +63,16 @@
     </view>
 
     <view class="card">
-      <view class="cardTitle">优化建议</view>
-      <block wx:for="{{detail.suggestions}}" wx:key="*this" wx:for-item="item" wx:for-index="index">
-        <view class="suggestItem">{{index + 1}}. {{item}}</view>
+      <view class="cardTitle">改善建议</view>
+      <block wx:for="{{detail.suggestions}}" wx:key="*this" wx:for-item="item">
+        <view wx:if="{{item[0] === '【'}}" class="suggestSectionTitle">{{item}}</view>
+        <view wx:else class="suggestItem">{{item}}</view>
       </block>
+    </view>
+
+    <view wx:if="{{detail.assessorNoteText}}" class="card">
+      <view class="cardTitle">评估人员备注</view>
+      <view class="addressValue">{{detail.assessorNoteText}}</view>
     </view>
 
     <view class="card">

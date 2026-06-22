@@ -1,0 +1,130 @@
+<view class="page">
+  <!-- 收货信息表单 -->
+  <view class="section">
+    <view class="sectionTitle">收货信息</view>
+    <view class="formGroup">
+      <view class="formItem">
+        <view class="formLabel">
+          <text class="formRequired">*</text>订单名称
+        </view>
+        <input
+          class="formInput"
+          placeholder="请填写 小区-楼门-户主姓名"
+          value="{{orderName}}"
+          bindinput="onOrderNameInput"
+          maxlength="50"
+        />
+      </view>
+      <view class="formItem">
+        <view class="formLabel">
+          <text class="formRequired">*</text>收货人
+        </view>
+        <input
+          class="formInput"
+          placeholder="请填写收货人姓名"
+          value="{{receiverName}}"
+          bindinput="onReceiverNameInput"
+          maxlength="20"
+        />
+      </view>
+      <view class="formItem">
+        <view class="formLabel">
+          <text class="formRequired">*</text>联系电话
+        </view>
+        <input
+          class="formInput"
+          type="number"
+          placeholder="请填写手机号码"
+          value="{{receiverPhone}}"
+          bindinput="onReceiverPhoneInput"
+          maxlength="11"
+        />
+      </view>
+      <view class="formItem">
+        <view class="formLabel">
+          <text class="formRequired">*</text>详细收货地址
+        </view>
+        <textarea
+          class="formTextarea"
+          placeholder="请填写详细收货地址"
+          value="{{receiverAddress}}"
+          bindinput="onReceiverAddressInput"
+          maxlength="200"
+          auto-height
+        />
+      </view>
+      <view class="formItem">
+        <view class="formLabel">
+          <text class="formRequired">*</text>预约配送时间
+        </view>
+        <picker mode="date" value="{{deliveryTime}}" bindchange="onDeliveryTimeChange">
+          <view class="formPicker">
+            {{deliveryTime || '请选择期望配送时间'}}
+          </view>
+        </picker>
+      </view>
+      <view class="formItem">
+        <view class="formLabel">订单备注</view>
+        <textarea
+          class="formTextarea"
+          placeholder="选填，如有特殊需求请备注"
+          value="{{remark}}"
+          bindinput="onRemarkInput"
+          maxlength="200"
+          auto-height
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品清单 -->
+  <view class="section">
+    <view class="sectionTitle">商品清单</view>
+    <view class="itemList">
+      <view
+        wx:for="{{items}}"
+        wx:key="productId"
+        class="itemRow"
+      >
+        <image class="itemImage" src="{{item.imageUrl}}" mode="aspectFill" />
+        <view class="itemInfo">
+          <view class="itemName">{{item.name}}</view>
+          <view class="itemSpec">{{item.spec}}</view>
+          <view class="itemMeta">
+            <view class="itemPrice">¥{{item.price}}</view>
+            <view class="itemQty">×{{item.quantity}}</view>
+            <view class="itemSubtotal">¥{{item.subtotal}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 合计 -->
+  <view class="totalSection">
+    <view class="totalRow">
+      <text class="totalLabel">合计</text>
+      <text class="totalPrice">¥{{totalAmount}}</text>
+    </view>
+    <view class="settlementHint">货到付款，线下结算</view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submitSection">
+    <button
+      class="submitBtn"
+      bindtap="onSubmitOrder"
+      loading="{{submitting}}"
+      disabled="{{submitting}}"
+    >
+      提交订单
+    </button>
+    <button
+      class="backCartBtn"
+      bindtap="onBackToCart"
+      disabled="{{submitting}}"
+    >
+      返回购物车
+    </button>
+  </view>
+</view>

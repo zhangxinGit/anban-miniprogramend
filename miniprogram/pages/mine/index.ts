@@ -35,6 +35,8 @@ import {
   syncAssessmentCompletedFromServer,
 } from '../../utils/assessmentPopup';
 import { getErrorMessage } from '../../utils/errorMessage';
+import { getMyOrders, ORDER_STATUS_MAP } from '../../services/suitableProducts';
+import { offlineFirst, cacheForOffline } from '../../utils/offlineCache';
 
 const PROFILE_KEY = 'ab_wx_profile';
 const INVITE_EXPIRING_SOON_MS = 15_000;
@@ -321,6 +323,18 @@ Page({
     lastLoginErrorMessage: '',
     /** 评估强提醒弹窗 */
     showAssessmentPopup: false,
+
+    // 适老好物订单
+    suitableOrders: [] as Array<{
+      id: number | string;
+      orderName: string;
+      totalAmount: number;
+      statusText: string;
+      statusClass: string;
+      createdAt: string;
+    }>,
+    suitableOrdersLoading: false,
+    suitableOrdersError: '',
   },
 
   _inviteTimer: null as ReturnType<typeof setTimeout> | null,
@@ -340,7 +354,7 @@ Page({
       this.applyAuthView(role);
     });
     this.applyAuthView(roleStore.getState().role);
-    void Promise.all([this.reloadFamilySummary(), this.reloadCurrentServiceBooking(), this.loadReferralCenter()]);
+    void Promise.all([this.reloadFamilySummary(), this.reloadCurrentServiceBooking(), this.loadReferralCenter(), this.reloadSuitableOrders()]);
   },
 
   onUnload() {
@@ -411,7 +425,7 @@ Page({
     if ((this as MinePageCustom)._pageHidden) return;
     this.applyAuthView(roleStore.getState().role);
     if ((this as MinePageCustom)._pageHidden) return;
-    await Promise.all([this.reloadFamilySummary(), this.reloadCurrentServiceBooking(), this.loadReferralCenter()]);
+    await Promise.all([this.reloadFamilySummary(), this.reloadCurrentServiceBooking(), this.loadReferralCenter(), this.reloadSuitableOrders()]);
   },
 
   onShareAppMessage() {
@@ -1229,5 +1243,70 @@ Page({
     clearAssessmentPopup();
     // 标记本次会话已关闭，本次不再弹
     markSessionClosed();
+  },
+
+  /* ========== 适老好物订单 ========== */
+
+  async reloadSuitableOrders() {
+    const page = this as unknown as MinePageCustom;
+    if (!getToken()) {
+      safeSetData(page, { suitableOrders: [], suitableOrdersLoading: false, suitableOrdersError: '' });
+      return;
+    }
+
+    safeSetData(page, { suitableOrdersLoading: true, suitableOrdersError: '' });
+    try {
+      const result = await offlineFirst(
+        'ab_offline_suitable_my_orders',
+        () => getMyOrders(),
+        {
+          ttlMs: 5 * 60_000,
+          staleMessage: '网络异常，正在查看离线订单',
+        },
+      );
+
+      if (page._pageHidden) return;
+
+      if (!result) {
+        safeSetData(page, { suitableOrders: [], suitableOrdersLoading: false });
+        return;
+      }
+
+      const orders = result.data;
+      const suitableOrders = (orders || []).slice(0, 10).map((o) => {
+        const meta = ORDER_STATUS_MAP[o.status] || { text: o.statusText || o.status || '未知', class: 'status-unknown' };
+        return {
+          id: o.id,
+          orderName: o.orderName,
+          totalAmount: o.totalAmount,
+          statusText: meta.text,
+          statusClass: meta.class,
+          createdAt: o.createdAt,
+        };
+      });
+
+      safeSetData(page, { suitableOrders, suitableOrdersLoading: false });
+
+      if (result.fresh) {
+        cacheForOffline('ab_offline_suitable_my_orders', orders, 5 * 60_000);
+      }
+    } catch (error: unknown) {
+      if (!page._pageHidden) {
+        safeSetData(page, {
+          suitableOrdersLoading: false,
+          suitableOrdersError: getErrorMessage(error, '订单加载失败'),
+        });
+      }
+    }
+  },
+
+  onOpenSuitableProducts() {
+    wx.navigateTo({ url: '/pages/suitable-products/index' });
+  },
+
+  onOpenSuitableOrderDetail(e: WechatMiniprogram.BaseEvent) {
+    const id = e.currentTarget?.dataset?.id;
+    if (!id) return;
+    wx.navigateTo({ url: `/pages/suitable-products/detail?id=${id}` });
   },
 });

@@ -100,7 +100,9 @@ Page({
         hasMore: rows.length < (result.totalElements || 0),
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : '加载失败';
+      const raw = error instanceof Error ? error.message : '';
+      const message = raw || '加载失败，请重试';
+      console.error('[staff-list] load error', error);
       wx.showToast({ title: message, icon: 'none' });
     } finally {
       this.setData({ loading: false, loadingMore: false });

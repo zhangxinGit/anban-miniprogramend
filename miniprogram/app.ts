@@ -5,7 +5,7 @@ import { syncMe } from './services/appMe';
 import { FORCE_MOCK } from './config/mock';
 import { ensureSeedFamily } from './services/familyProfile';
 import { resetSessionClosed } from './utils/assessmentPopup';
-import { markBackendReachable } from './utils/networkStatus';
+import { markBackendReachable, installNetworkListener } from './utils/networkStatus';
 
 App({
   onLaunch() {
@@ -18,6 +18,9 @@ App({
     } catch {
       // ignore
     }
+
+    // 安装全局网络状态监听（用于离线提示 + 断网恢复自动清除熔断）
+    installNetworkListener();
 
     ensureSeedFamily();
     // 初始化 role（来自本地缓存，含旧版角色迁移）

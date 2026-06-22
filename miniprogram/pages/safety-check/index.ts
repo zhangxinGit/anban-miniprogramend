@@ -238,6 +238,10 @@ Page({
         history: buildHistoryView(history),
         ...resolveLeadState(leadId, status),
       });
+      wx.showShareMenu({
+        withShareTicket: false,
+        menus: ['shareAppMessage', 'shareTimeline'],
+      });
       return;
     }
 
@@ -265,6 +269,7 @@ Page({
       leadStatusText: '未生成线索',
       leadIdText: '--',
     });
+    wx.hideShareMenu();
   },
 
   onRetry() {
@@ -412,6 +417,11 @@ Page({
         ...resolveLeadState(result.leadId || null, result.leadId ? 'NEW' : null),
       });
 
+      wx.showShareMenu({
+        withShareTicket: false,
+        menus: ['shareAppMessage', 'shareTimeline'],
+      });
+
       // 标记已完成测评，后续不再弹窗
       markAssessmentCompleted();
 
@@ -468,6 +478,26 @@ Page({
       content: '预约上门评估仅支持登录后发起。',
     })) return;
     wx.navigateTo({ url: buildAppointmentUrl() });
+  },
+
+  onShareAppMessage() {
+    const risk = this.data.risk;
+    const title = `居家安全自查 · ${risk.text}`;
+    return {
+      title,
+      path: '/pages/safety-check/index',
+      imageUrl: '/assets/banner/home_popup_banner_assessment.png',
+    };
+  },
+
+  onShareTimeline() {
+    const risk = this.data.risk;
+    const title = `居家安全自查 · ${risk.text}`;
+    return {
+      title,
+      query: '',
+      imageUrl: '/assets/banner/home_popup_banner_assessment.png',
+    };
   },
 });
 

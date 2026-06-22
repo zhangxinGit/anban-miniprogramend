@@ -1,0 +1,132 @@
+<view class="page {{isShareMode ? 'share-mode' : ''}}">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loadingState">
+    <view class="loadingText">加载中...</view>
+  </view>
+
+  <!-- 订单详情 -->
+  <block wx:elif="{{order}}">
+    <!-- 分享模式：独立卡片头部 -->
+    <view wx:if="{{isShareMode}}" class="shareHeader">
+      <view class="shareHeaderTop">
+        <view class="shareBadge">
+          <text class="shareBadgeIcon">🔒</text>
+          <text>订单分享</text>
+        </view>
+        <text class="shareHeaderHint">以下信息已隐私加密</text>
+      </view>
+      <view class="shareOrderMeta">
+        <text class="shareOrderNo">订单编号：{{maskedOrderNo}}</text>
+        <text class="shareOrderDate" wx:if="{{order.createdAt}}">{{order.createdAt}}</text>
+      </view>
+    </view>
+
+    <!-- 常规模式：订单头部 -->
+    <view wx:else class="orderHeader">
+      <view class="orderStatusTag {{statusClass}}">{{statusText}}</view>
+      <view class="orderNo">订单编号：{{order.orderNo}}</view>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="section">
+      <view class="sectionTitle">订单信息</view>
+      <view class="infoList">
+        <view class="infoRow">
+          <text class="infoLabel">订单名称</text>
+          <text class="infoValue">{{order.orderName}}</text>
+        </view>
+        <view class="infoRow">
+          <text class="infoLabel">下单时间</text>
+          <text class="infoValue">{{order.createdAt}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 收货信息 -->
+    <view class="section">
+      <view class="sectionHeader">
+        <view class="sectionTitle">收货信息</view>
+        <!-- 分享模式下显示隐私标记 -->
+        <view wx:if="{{isShareMode}}" class="privacyTag">
+          <text class="privacyIcon">🔒</text>
+          <text>已加密</text>
+        </view>
+      </view>
+      <view class="infoList">
+        <view class="infoRow">
+          <text class="infoLabel">收货人</text>
+          <text class="infoValue {{isShareMode ? 'masked' : ''}}">{{isShareMode ? maskedReceiverName : order.receiverName}}</text>
+        </view>
+        <view class="infoRow">
+          <text class="infoLabel">联系电话</text>
+          <text class="infoValue {{isShareMode ? 'masked' : ''}}">{{isShareMode ? maskedReceiverPhone : order.receiverPhone}}</text>
+        </view>
+        <view class="infoRow">
+          <text class="infoLabel">收货地址</text>
+          <text class="infoValue {{isShareMode ? 'masked' : ''}}">{{isShareMode ? maskedReceiverAddress : order.receiverAddress}}</text>
+        </view>
+        <view class="infoRow">
+          <text class="infoLabel">配送时间</text>
+          <text class="infoValue">{{order.deliveryTime}}</text>
+        </view>
+        <view wx:if="{{order.remark && !isShareMode}}" class="infoRow">
+          <text class="infoLabel">备注</text>
+          <text class="infoValue">{{order.remark}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 商品清单 -->
+    <view class="section">
+      <view class="sectionTitle">商品清单</view>
+      <view class="itemList">
+        <view
+          wx:for="{{order.items}}"
+          wx:key="productId"
+          class="itemRow"
+        >
+          <image class="itemImage" src="{{item.imageUrl}}" mode="aspectFill" lazy-load />
+          <view class="itemInfo">
+            <view class="itemName">{{item.productName}}</view>
+            <view class="itemSpec">{{item.spec}}</view>
+            <view class="itemMeta">
+              <view class="itemPrice">¥{{item.price}}</view>
+              <view class="itemQty">×{{item.quantity}}</view>
+              <view class="itemSubtotal">¥{{item.subtotal}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 合计 -->
+    <view class="totalSection">
+      <view class="totalRow">
+        <text class="totalLabel">合计</text>
+        <text class="totalPrice">¥{{order.totalAmount}}</text>
+      </view>
+    </view>
+
+    <!-- 分享模式底部提示 -->
+    <view wx:if="{{isShareMode}}" class="shareFooter">
+      <view class="shareFooterLine"></view>
+      <text class="shareFooterText">以上信息已进行隐私保护处理</text>
+    </view>
+
+    <!-- 操作按钮（非分享模式下显示） -->
+    <view wx:if="{{!isShareMode}}" class="actionSection">
+      <button class="actionBtn shareBtn" bindtap="onShareOrder">
+        <text class="btnIcon">📤</text>
+        <text>转发订单</text>
+      </button>
+    </view>
+  </block>
+
+  <!-- 隐藏画布，用于生成分享图片 -->
+  <canvas
+    type="2d"
+    id="shareCanvas"
+    class="shareCanvas"
+    style="width:{{500}}px;height:{{580}}px;"
+  ></canvas>
+</view>

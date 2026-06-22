@@ -1,0 +1,85 @@
+<view class="page">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loadingState">
+    <view class="loadingText">加载中...</view>
+  </view>
+
+  <!-- 商品详情 -->
+  <block wx:elif="{{product}}">
+    <!-- 封面大图 -->
+    <view class="coverWrap" bindtap="onPreviewImage">
+      <image
+        wx:if="{{product.imageUrl}}"
+        class="coverImage"
+        src="{{product.imageUrl}}"
+        mode="aspectFill"
+      />
+      <view wx:else class="coverPlaceholder">
+        <text class="placeholderIcon">📦</text>
+        <text class="placeholderText">暂无图片</text>
+      </view>
+    </view>
+
+    <!-- 商品基本信息 -->
+    <view class="infoCard">
+      <view class="priceRow">
+        <text class="priceSymbol">¥</text>
+        <text class="priceValue">{{product.price}}</text>
+      </view>
+      <view class="productName">{{product.name}}</view>
+      <view class="tagRow">
+        <view wx:if="{{product.categoryName}}" class="categoryTag">{{product.categoryName}}</view>
+        <view class="specTag" wx:if="{{product.spec}}">规格详情</view>
+      </view>
+    </view>
+
+    <!-- 规格描述 -->
+    <view wx:if="{{product.spec}}" class="specCard">
+      <view class="cardTitle">规格参数</view>
+      <view class="specContent">{{product.spec}}</view>
+    </view>
+
+    <!-- 商品描述（如有） -->
+    <view wx:if="{{product.description}}" class="descCard">
+      <view class="cardTitle">商品介绍</view>
+      <view class="descContent">{{product.description}}</view>
+    </view>
+
+    <!-- 占位间距，避免被底部栏遮挡 -->
+    <view class="bottomSpacer"></view>
+
+    <!-- 底部操作栏 -->
+    <view class="actionBar">
+      <view class="actionCart" bindtap="onGoToCart">
+        <view class="actionCartIcon">
+          <view class="cartIconInner"></view>
+          <view wx:if="{{cartCount > 0}}" class="actionCartBadge">{{cartCount > 99 ? '99+' : cartCount}}</view>
+        </view>
+        <text class="actionCartText">购物车</text>
+      </view>
+
+      <!-- 数量选择 -->
+      <view class="qtySelector">
+        <view class="qtyBtn {{quantity <= 1 ? 'disabled' : ''}}" bindtap="onDecQuantity">-</view>
+        <input
+          class="qtyInput"
+          type="number"
+          value="{{quantity}}"
+          bindinput="onQuantityChange"
+        />
+        <view class="qtyBtn {{quantity >= 99 ? 'disabled' : ''}}" bindtap="onIncQuantity">+</view>
+      </view>
+
+      <view class="actionBtnGroup">
+        <view class="actionBtn addBtn" bindtap="onAddToCart">加入购物车</view>
+        <view class="actionBtn buyBtn" bindtap="onBuyNow">立即购买</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 加载失败 -->
+  <view wx:else class="emptyState">
+    <view class="emptyIcon">📦</view>
+    <view class="emptyText">商品不存在或已下架</view>
+  </view>
+</view>

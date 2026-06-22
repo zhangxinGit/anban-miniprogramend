@@ -1,7 +1,7 @@
 import { ensureClientId, getAuthState } from './auth';
 import { normalizeToAppRole, type UserRole } from '../shared/roles';
 import { roleStore } from '../store/roleStore';
-import { getApiBaseUrl } from '../config/api';
+import { getApiBaseUrl, normalizeAppApiPath } from '../config/api';
 import { isBackendUnreachable, markBackendUnreachable, markBackendReachable, isNetworkError } from './networkStatus';
 
 export type ApiOk<T> = {
@@ -150,10 +150,11 @@ export async function request<T = unknown>(options: RequestOptions): Promise<Api
 
   const url = (() => {
     const baseUrl = getApiBaseUrl();
-    const u = options.url || '';
-    if (/^https?:\/\//.test(u)) return u;
-    if (u.startsWith('/')) return `${baseUrl}${u}`;
-    return `${baseUrl}/${u}`;
+    const rawUrl = options.url || '';
+    if (/^https?:\/\//.test(rawUrl)) return rawUrl;
+    // 规范化 API 路径为版本化 URL（/api/app/... → /api/v1/app/...）
+    const versionedPath = normalizeAppApiPath(rawUrl.startsWith('/') ? rawUrl : `/${rawUrl}`);
+    return `${baseUrl}${versionedPath}`;
   })();
 
   // 熔断器：公开接口（skipBreaker）不参与熔断，避免部署重启时误伤无需鉴权的页面

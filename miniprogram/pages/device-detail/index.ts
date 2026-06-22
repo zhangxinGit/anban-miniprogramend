@@ -6,7 +6,9 @@ import {
   getEmergencyContacts,
   addEmergencyContact,
   removeEmergencyContact,
+  getDeviceSleepStatus,
   type EmergencyContact,
+  type DeviceSleepStatus,
 } from '../../services/deviceCenter';
 
 function fmtTime(ts: number) {
@@ -97,6 +99,73 @@ function maskPhone(phone: string) {
   return phone.slice(0, 3) + '****' + phone.slice(-4);
 }
 
+function onOffText(v: number | null | undefined): string {
+  if (v === 1) return '开';
+  if (v === 0) return '关';
+  return '--';
+}
+
+function decorateSleepStatus(raw: DeviceSleepStatus | null) {
+  if (!raw) return null;
+  const pc = raw.paramConfig;
+  const vs = raw.vitalSigns;
+  const ps = raw.presenceStatus;
+  const sr = raw.sleepReport;
+  const cs = raw.compositeStatus;
+  const ss = raw.struggleStatus;
+  const us = raw.untimedStatus;
+
+  // 使用复合状态或存在状态
+  const effectiveExist = cs.hasData ? cs : ps;
+
+  return {
+    deviceTypeLabel: raw.deviceTypeLabel,
+    updatedText: raw.updatedAt ? fmtTime(new Date(raw.updatedAt).getTime()) : '--',
+    hasParam: pc.hasData,
+    params: pc.hasData ? [
+      { label: '探测模式', value: pc.detectionModeLabel ?? '--' },
+      { label: '心率检测', value: onOffText(pc.heartRateSwitch) },
+      { label: '呼吸检测', value: onOffText(pc.breathingSwitch) },
+      { label: '睡眠检测', value: onOffText(pc.sleepSwitch) },
+      { label: '存在检测', value: onOffText(pc.existSwitch) },
+      { label: '异常挣扎检测', value: onOffText(pc.abnormalStruggleSwitch) },
+      { label: '无人计时', value: pc.longTimeNoTimerSwitch === 1 ? `${pc.unmanneDuration ?? '--'}分钟` : '关' },
+    ] : [],
+    hasVital: vs.hasData,
+    vitals: vs.hasData ? [
+      { label: '心率', value: vs.heartRate != null ? `${vs.heartRate} bpm` : '--', cls: vs.heartRate != null && vs.heartRate > 100 ? 'danger' : (vs.heartRate != null && vs.heartRate < 50 ? 'warn' : '') },
+      { label: '呼吸', value: vs.respiration != null ? `${vs.respiration} 次/分` : '--', cls: '' },
+      { label: '呼吸状态', value: vs.respirationStatusLabel ?? '--', cls: vs.respirationStatus === 2 || vs.respirationStatus === 3 ? 'warn' : '' },
+    ] : [],
+    hasStatus: effectiveExist.hasData,
+    statuses: effectiveExist.hasData ? [
+      { label: '有人/无人', value: effectiveExist.existLabel ?? '--' },
+      { label: '睡眠状态', value: (cs.hasData ? cs.sleepStatusLabel : ps.sleepStatusLabel) ?? '--' },
+      { label: '离床状态', value: ps.bedLabel ?? '--' },
+      { label: '体动幅度', value: ps.bodyMotion != null ? String(ps.bodyMotion) : '--' },
+    ] : [],
+    hasStruggle: ss.hasData,
+    struggleText: ss.hasData ? (ss.abnormalStruggleStateLabel ?? '--') : null,
+    hasUntimed: us.hasData,
+    untimedText: us.hasData ? (us.untimedStateLabel ?? '--') : null,
+    hasReport: sr.hasData,
+    report: sr.hasData ? {
+      score: sr.sleepScore ?? 0,
+      scoreClass: (sr.sleepScore ?? 0) >= 80 ? 'positive' : ((sr.sleepScore ?? 0) >= 60 ? 'warn' : 'danger'),
+      quality: sr.sleepQualityLabel ?? '--',
+      totalDuration: sr.totalSleepDuration != null ? `${sr.totalSleepDuration} 分钟` : '--',
+      deepDuration: sr.deepSleepDuration != null ? `${sr.deepSleepDuration} 分钟` : '--',
+      lightDuration: sr.lightSleepDuration != null ? `${sr.lightSleepDuration} 分钟` : '--',
+      wakeDuration: sr.lengthWakefulness != null ? `${sr.lengthWakefulness} 分钟` : '--',
+      avgHeart: sr.sleepMeanHeartbeat != null ? `${sr.sleepMeanHeartbeat} bpm` : '--',
+      avgBreath: sr.meanSleepRespiration != null ? `${sr.meanSleepRespiration} 次/分` : '--',
+      bedExitCount: sr.numberdEparturesBed ?? 0,
+      turnCount: sr.numberTurns ?? 0,
+    } : null,
+    isSleepRadar: raw.deviceType === 'sleepRadar',
+  };
+}
+
 Page({
   data: {
     loading: true,
@@ -105,6 +174,7 @@ Page({
     device: null as any,
     alarms: [] as any[],
     report: null as any,
+    sleepStatus: null as any,
     // 紧急联系人
     emergencyContacts: [] as Array<EmergencyContact & { phoneMasked: string }>,
     emergencyLoading: false,
@@ -122,6 +192,8 @@ Page({
     this.reload();
     // 独立加载紧急联系人，不受设备/告警/报表 API 失败影响
     this.loadEmergencyContacts();
+    // 独立加载睡眠设备状态（仅睡眠雷达有数据，不影响其他卡片）
+    this.loadSleepStatus();
   },
 
   async reload() {
@@ -155,11 +227,11 @@ Page({
         report: decorateRadarReport(report),
       });
 
-    } catch (e: any) {
+    } catch (e: unknown) {
       if ((this as DeviceDetailCustom)._pageHidden) return;
       this.setData({
         loading: false,
-        error: typeof e?.message === 'string' ? e.message : '加载失败',
+        error: e instanceof Error ? e.message : '加载失败',
       });
     }
   },
@@ -178,9 +250,9 @@ Page({
           phoneMasked: maskPhone(c.phone),
         })),
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       if ((this as DeviceDetailCustom)._pageHidden) return;
-      const raw = typeof e?.message === 'string' ? e.message : '';
+      const raw = e instanceof Error ? e.message : '';
       // 将后端权限错误转换为用户可理解的提示
       const friendly = !raw || raw === 'forbidden' || raw === 'unauthorized'
         ? '紧急联系人加载失败，请确认设备已绑定到您的家庭'
@@ -189,6 +261,21 @@ Page({
         emergencyLoading: false,
         emergencyError: friendly,
       });
+    }
+  },
+
+  /** 独立加载睡眠设备遥测状态 */
+  async loadSleepStatus() {
+    const id = this.data.deviceId;
+    if (!id) return;
+    try {
+      const status = await getDeviceSleepStatus(id);
+      if ((this as DeviceDetailCustom)._pageHidden) return;
+      this.setData({
+        sleepStatus: decorateSleepStatus(status),
+      });
+    } catch {
+      // 静默失败，不影响主页面
     }
   },
 

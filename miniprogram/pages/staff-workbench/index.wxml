@@ -8,7 +8,7 @@
   <view class="panel">
     <button class="actionCard actionPrimary" bindtap="onCreateAssessment">
       <view class="actionTitle">新增老人评估</view>
-      <view class="actionDesc">填写基础信息并完成 32 项防跌倒评估</view>
+      <view class="actionDesc">填写基础信息并完成 {{questionCount}} 项防跌倒评估</view>
     </button>
 
     <button class="actionCard" bindtap="onOpenMineHistory">

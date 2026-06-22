@@ -19,7 +19,12 @@
     "pages/staff-assessment-list/index",
     "pages/staff-assessment-report/index",
     "pages/settings/index",
-    "pages/mine/index"
+    "pages/mine/index",
+    "pages/suitable-products/index",
+    "pages/suitable-products/cart",
+    "pages/suitable-products/order",
+    "pages/suitable-products/detail",
+    "pages/product-detail/detail"
   ],
   "window": {
     "navigationBarTitleText": "安伴"
@@ -29,7 +34,7 @@
     "list": [
       { "pagePath": "pages/home/index", "text": "首页" },
       { "pagePath": "pages/service/index", "text": "设备" },
-      { "pagePath": "pages/family-profile/index", "text": "家庭" },
+      { "pagePath": "pages/suitable-products/index", "text": "好物" },
       { "pagePath": "pages/service-market/index", "text": "服务" },
       { "pagePath": "pages/mine/index", "text": "我的" }
     ]

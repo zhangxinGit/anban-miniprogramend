@@ -1,9 +1,9 @@
 import {
-  FALL_RISK_SURVEY,
+  loadFallRiskSurvey,
   computeFallRiskLevel,
-  countFallRiskQuestions,
   fallRiskLevelMeta,
   type FallRiskLevel,
+  type FallRiskSection,
 } from '../../shared/fallRiskSurvey';
 import { submitStaffAssessment, type StaffAssessmentSectionInput } from '../../services/staffAssessment';
 import { ensureStaffSession } from '../../utils/staffAuth';
@@ -14,6 +14,7 @@ type SurveyQuestionItem = {
   id: string;
   text: string;
   answer: QuestionAnswer;
+  productTag?: string;
 };
 
 type SurveySectionItem = {
@@ -43,8 +44,8 @@ type SelectEvent = WechatMiniprogram.BaseEvent & {
   };
 };
 
-function buildSections(): SurveySectionItem[] {
-  return FALL_RISK_SURVEY.map((section, index) => ({
+function buildSections(survey: FallRiskSection[]): SurveySectionItem[] {
+  return survey.map((section, index) => ({
     key: section.key,
     title: section.title,
     expanded: index === 0,
@@ -53,6 +54,7 @@ function buildSections(): SurveySectionItem[] {
       id: question.id,
       text: question.text,
       answer: '',
+      productTag: question.productTag,
     })),
   }));
 }
@@ -79,6 +81,7 @@ function toSubmitSections(sections: SurveySectionItem[]): StaffAssessmentSection
       id: question.id,
       text: question.text,
       answer: question.answer === 'yes',
+      productTag: question.productTag,
     })),
   }));
 }
@@ -103,9 +106,18 @@ Page({
     phone: '',
     address: '',
     community: '',
-    sections: buildSections() as SurveySectionItem[],
-    totalQuestions: countFallRiskQuestions(),
+    contactName: '',
+    contactGender: '男',
+    contactRelation: '',
+    contactPhone: '',
+    contactAge: '',
+    contactOccupation: '',
+    childrenCount: '',
+    assessorNote: '',
+    sections: [] as SurveySectionItem[],
+    totalQuestions: 0,
     answeredCount: 0,
+    loadingQuestions: true,
     previewScore: 0,
     previewRiskLabel: fallRiskLevelMeta('low').label,
     previewRiskTone: fallRiskLevelMeta('low').tone,
@@ -115,18 +127,41 @@ Page({
 
   async onShow() {
     await ensureStaffSession('/pages/staff-assessment/index');
+    if (this.data.loadingQuestions) {
+      await this.loadSurvey();
+    }
+  },
+
+  async loadSurvey() {
+    try {
+      const survey = await loadFallRiskSurvey();
+      const sections = buildSections(survey);
+      const totalQuestions = survey.reduce((sum, s) => sum + s.questions.length, 0);
+      this.setData({ sections, totalQuestions, loadingQuestions: false });
+    } catch {
+      wx.showToast({ title: '加载题目失败', icon: 'none' });
+      this.setData({ loadingQuestions: true });
+    }
   },
 
   onFieldInput(e: InputEvent) {
     const field = String(e?.currentTarget?.dataset?.field || '');
     const value = typeof e?.detail?.value === 'string' ? e.detail.value : '';
     if (!field) return;
-    if (field === 'age') {
-      this.setData({ age: value.replace(/\D/g, '').slice(0, 3) });
+    if (field === 'age' || field === 'contactAge') {
+      this.setData({ [field]: value.replace(/\D/g, '').slice(0, 3) });
       return;
     }
-    if (field === 'phone') {
-      this.setData({ phone: value.replace(/\D/g, '').slice(0, 11) });
+    if (field === 'phone' || field === 'contactPhone') {
+      this.setData({ [field]: value.replace(/\D/g, '').slice(0, 11) });
+      return;
+    }
+    if (field === 'childrenCount') {
+      this.setData({ childrenCount: value.replace(/\D/g, '').slice(0, 2) });
+      return;
+    }
+    if (field === 'assessorNote') {
+      this.setData({ assessorNote: value.slice(0, 500) });
       return;
     }
     this.setData({ [field]: value } as Record<string, unknown>);
@@ -136,6 +171,12 @@ Page({
     const value = String(e?.currentTarget?.dataset?.value || '');
     if (!value) return;
     this.setData({ gender: value });
+  },
+
+  onSelectContactGender(e: SelectEvent) {
+    const value = String(e?.currentTarget?.dataset?.value || '');
+    if (!value) return;
+    this.setData({ contactGender: value });
   },
 
   onToggleSection(e: SelectEvent) {
@@ -181,7 +222,6 @@ Page({
     if (!(this.data.phone || '').trim() || String(this.data.phone).trim().length !== 11) return '请填写11位联系电话';
     if (!(this.data.address || '').trim()) return '请填写家庭住址';
     if (!(this.data.community || '').trim()) return '请填写所属社区';
-    if (countAnswered(this.data.sections) !== this.data.totalQuestions) return '请完成全部 32 项题目后再提交';
     return null;
   },
 
@@ -202,6 +242,14 @@ Page({
         phone: String(this.data.phone).trim(),
         address: String(this.data.address).trim(),
         community: String(this.data.community).trim(),
+        emergency_contact_name: String(this.data.contactName || '').trim() || undefined,
+        emergency_contact_gender: String(this.data.contactGender || '').trim() || undefined,
+        emergency_contact_relation: String(this.data.contactRelation || '').trim() || undefined,
+        emergency_contact_phone: String(this.data.contactPhone || '').trim() || undefined,
+        emergency_contact_age: (this.data.contactAge || '') !== '' ? Number(this.data.contactAge) : undefined,
+        emergency_contact_occupation: String(this.data.contactOccupation || '').trim() || undefined,
+        children_count: (this.data.childrenCount || '') !== '' ? Number(this.data.childrenCount) : undefined,
+        assessor_note: String(this.data.assessorNote || '').trim() || undefined,
         sections: toSubmitSections(this.data.sections),
       });
       wx.showToast({ title: '评估已生成', icon: 'success' });
@@ -222,6 +270,14 @@ Page({
       phone: this.data.phone,
       address: this.data.address,
       community: this.data.community,
+      contactName: this.data.contactName,
+      contactGender: this.data.contactGender,
+      contactRelation: this.data.contactRelation,
+      contactPhone: this.data.contactPhone,
+      contactAge: this.data.contactAge,
+      contactOccupation: this.data.contactOccupation,
+      childrenCount: this.data.childrenCount,
+      assessorNote: this.data.assessorNote,
       sections: this.data.sections,
       savedAt: Date.now(),
     };

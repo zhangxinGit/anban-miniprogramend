@@ -102,6 +102,101 @@
       </block>
     </view>
 
+    <!-- 睡眠雷达设备 — 实时遥测状态 -->
+    <view wx:if="{{sleepStatus && sleepStatus.isSleepRadar}}" class="card sleepCard">
+      <view class="sectionHead">
+        <view>
+          <view class="sectionTitle">{{sleepStatus.deviceTypeLabel}} · 实时状态</view>
+          <view class="sectionSub">最近更新：{{sleepStatus.updatedText}}</view>
+        </view>
+      </view>
+
+      <!-- 生命体征 -->
+      <view wx:if="{{sleepStatus.hasVital}}" class="vitalRow">
+        <block wx:for="{{sleepStatus.vitals}}" wx:key="label">
+          <view class="vitalItem">
+            <text class="vitalValue {{item.cls}}">{{item.value}}</text>
+            <text class="vitalLabel">{{item.label}}</text>
+          </view>
+        </block>
+      </view>
+
+      <!-- 当前状态 -->
+      <view wx:if="{{sleepStatus.hasStatus}}" class="statusGrid">
+        <block wx:for="{{sleepStatus.statuses}}" wx:key="label">
+          <view class="statusChip">
+            <text class="chipVal">{{item.value}}</text>
+            <text class="chipLab">{{item.label}}</text>
+          </view>
+        </block>
+      </view>
+
+      <!-- 异常挣扎/无人计时 -->
+      <view wx:if="{{sleepStatus.hasStruggle || sleepStatus.hasUntimed}}" class="warnRow">
+        <text wx:if="{{sleepStatus.hasStruggle}}" class="warnTag {{sleepStatus.struggleText === '异常' ? 'danger' : ''}}">异常挣扎：{{sleepStatus.struggleText}}</text>
+        <text wx:if="{{sleepStatus.hasUntimed}}" class="warnTag {{sleepStatus.untimedText === '异常' ? 'warn' : ''}}">无人计时：{{sleepStatus.untimedText}}</text>
+      </view>
+
+      <!-- 睡眠报告摘要 -->
+      <view wx:if="{{sleepStatus.hasReport}}" class="sleepReportBlock">
+        <view class="miniTitle">最新睡眠报告</view>
+        <view class="sleepScoreWrap">
+          <view class="sleepScoreRing {{sleepStatus.report.scoreClass}}">
+            <text class="scoreNum">{{sleepStatus.report.score}}</text>
+            <text class="scoreUnit">分</text>
+          </view>
+          <text class="scoreQuality">{{sleepStatus.report.quality}}</text>
+        </view>
+        <view class="sleepDetailGrid">
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.totalDuration}}</text>
+            <text class="sdLab">总时长</text>
+          </view>
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.deepDuration}}</text>
+            <text class="sdLab">深睡</text>
+          </view>
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.lightDuration}}</text>
+            <text class="sdLab">浅睡</text>
+          </view>
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.wakeDuration}}</text>
+            <text class="sdLab">清醒</text>
+          </view>
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.avgHeart}}</text>
+            <text class="sdLab">平均心率</text>
+          </view>
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.avgBreath}}</text>
+            <text class="sdLab">平均呼吸</text>
+          </view>
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.bedExitCount}}次</text>
+            <text class="sdLab">离床次数</text>
+          </view>
+          <view class="sdCell">
+            <text class="sdVal">{{sleepStatus.report.turnCount}}次</text>
+            <text class="sdLab">翻身次数</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 设备参数 -->
+      <view wx:if="{{sleepStatus.hasParam}}" class="paramBlock">
+        <view class="miniTitle">设备参数</view>
+        <view class="paramGrid">
+          <block wx:for="{{sleepStatus.params}}" wx:key="label">
+            <view class="paramItem">
+              <text class="paramLab">{{item.label}}</text>
+              <text class="paramVal">{{item.value}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+
     <!-- 紧急联系人卡片 -->
   <view class="card emergencyCard">
     <view class="sectionHead">

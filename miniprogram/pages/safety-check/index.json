@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "安伴",
-  "enablePullDownRefresh": false
+  "enablePullDownRefresh": false,
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
 }
 
